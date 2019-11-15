@@ -3,8 +3,12 @@
 @section('title', 'Vue.js App')
 
 @section('content')
+
+    <ul class="nav">
+        <li><router-link to="/home">Home</router-link></li>
+        <li><router-link to="/login">Login</router-link></li>
+    </ul>   
     
-    <router-link to="/home">Home</router-link> -
    
     <router-view></router-view>
 @endsection

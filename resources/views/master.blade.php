@@ -25,7 +25,7 @@
    .nav {
     display: flex;
     list-style: none;
-    padding: 15px 0;
+    padding: 7px 0;
     margin: 0;
     justify-content: flex-end;
     background: #F5F8FA;
@@ -35,7 +35,7 @@
 
   .nav a {
     color: #636b6f;
-    padding: 0 25px;
+    padding: 0 15px;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: .1rem;

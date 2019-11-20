@@ -6,7 +6,11 @@
 
     <ul class="nav">
         <li><router-link to="/home">Home</router-link></li>
-        <li><router-link to="/login">Login</router-link></li>
+        
+        <li ><router-link to="/login">Login</router-link></li>
+       
+        <li ><router-link to="/logout">Logout</router-link></li>
+       
     </ul>   
     
    

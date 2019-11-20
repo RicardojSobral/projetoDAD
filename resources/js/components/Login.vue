@@ -1,60 +1,47 @@
 <template>
-    <div>
-        <div class="login-form1">
-            <h2 class="login-heading1">Login</h2>
-            <form action="#" >
+        <div class="login-form">
+            <h2 class="login-heading">Login</h2>
+            <form action="#" @submit.prevent="login">
 
-                <div class="form-control1">
-                    <label name="label1" for="email">Email</label>
-                    <input type="email" name="email" id="email" class="login-input1" v-model="email">
+                <div class="form-control">
+                    <label name="label" for="email">Email</label>
+                    <input type="email" name="email" id="email" class="login-input" required v-model="email">
                 </div>
 
-                 <div class="form-control1">
-                    <label name="label1" for="password">Password</label>
-                    <input type="password" name="password" id="password" class="login-input1" v-model="password">
+                 <div class="form-control">
+                    <label name="label" for="password">Password</label>
+                    <input type="password" name="password" id="password" class="login-input" required v-model="password">
                 </div>
 
-                <div class="form-control1">
+                <div class="form-control">
                     <button type="submit" class="btn-submit">Login</button>
                 </div>
 
             </form>
         </div>
-    </div>
 </template>
 
 <script>
-    export default {
+  export default {
 
-      name: 'login',
-
-        data: function(){
-            return{
-                email: '',
-                password: '',
-            }
-        },
-        methods: {
-          login(){
-           axios.post('./api/login', {
-                email: email,
-                password: password,
-              })
-                .then(response => {
-                  console.log();
-                  /*const token = response.data.access_token;
-      
-                  localStorage.setItem('access_token', token);
-                  context.commit('retrieveToken', token);
-                  resolve(response);*/
-                })
-                .catch(error => {
-                  console.log(error);
-                  //reject(error);
-                });
-          }
+    data(){
+        return{
+            email: '',
+            password: '',
         }
+    },
+    methods: {
+      login(){
+        this.$store.dispatch('retrieveToken', {
+            email: this.email,
+            password: this.password,
+        })
+        .then(response => {
+          this.$router.push('/');
+        })
+      }
     }
+  }
 </script>
 <style lang="scss">
   .label1 {

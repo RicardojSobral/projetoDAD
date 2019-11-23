@@ -20243,8 +20243,8 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "login-form" }, [
-    _c("h2", { staticClass: "login-heading" }, [_vm._v("Login")]),
+  return _c("div", { staticClass: "login-form1" }, [
+    _c("h2", { staticClass: "login-heading1" }, [_vm._v("Login")]),
     _vm._v(" "),
     _c(
       "form",
@@ -20258,8 +20258,8 @@ var render = function() {
         }
       },
       [
-        _c("div", { staticClass: "form-control" }, [
-          _c("label", { attrs: { name: "label", for: "email" } }, [
+        _c("div", { staticClass: "form-control1" }, [
+          _c("label", { attrs: { name: "label1", for: "email" } }, [
             _vm._v("Email")
           ]),
           _vm._v(" "),
@@ -20272,7 +20272,7 @@ var render = function() {
                 expression: "email"
               }
             ],
-            staticClass: "login-input",
+            staticClass: "login-input1",
             attrs: { type: "email", name: "email", id: "email", required: "" },
             domProps: { value: _vm.email },
             on: {
@@ -20286,8 +20286,8 @@ var render = function() {
           })
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "form-control" }, [
-          _c("label", { attrs: { name: "label", for: "password" } }, [
+        _c("div", { staticClass: "form-control1" }, [
+          _c("label", { attrs: { name: "label1", for: "password" } }, [
             _vm._v("Password")
           ]),
           _vm._v(" "),
@@ -20300,7 +20300,7 @@ var render = function() {
                 expression: "password"
               }
             ],
-            staticClass: "login-input",
+            staticClass: "login-input1",
             attrs: {
               type: "password",
               name: "password",
@@ -20329,8 +20329,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-control" }, [
-      _c("button", { staticClass: "btn-submit", attrs: { type: "submit" } }, [
+    return _c("div", { staticClass: "form-control1" }, [
+      _c("button", { staticClass: "btn-submit1", attrs: { type: "submit" } }, [
         _vm._v("Login")
       ])
     ])

@@ -1,20 +1,20 @@
 <template>
-        <div class="login-form">
-            <h2 class="login-heading">Login</h2>
+        <div class="login-form1">
+            <h2 class="login-heading1">Login</h2>
             <form action="#" @submit.prevent="login">
 
-                <div class="form-control">
-                    <label name="label" for="email">Email</label>
-                    <input type="email" name="email" id="email" class="login-input" required v-model="email">
+                <div class="form-control1">
+                    <label name="label1" for="email">Email</label>
+                    <input type="email" name="email" id="email" class="login-input1" required v-model="email">
                 </div>
 
-                 <div class="form-control">
-                    <label name="label" for="password">Password</label>
-                    <input type="password" name="password" id="password" class="login-input" required v-model="password">
+                 <div class="form-control1">
+                    <label name="label1" for="password">Password</label>
+                    <input type="password" name="password" id="password" class="login-input1" required v-model="password">
                 </div>
 
-                <div class="form-control">
-                    <button type="submit" class="btn-submit">Login</button>
+                <div class="form-control1">
+                    <button type="submit" class="btn-submit1">Login</button>
                 </div>
 
             </form>

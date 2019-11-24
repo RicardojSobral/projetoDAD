@@ -1,11 +1,9 @@
 <template>
     <div>
         <div class="jumbotron">
-                <h1>{{ title }}</h1>
-                <br>
-               
+                <h1>{{ title }}</h1>               
         </div>
-         <h3>There are currently {{ wallets }} Virtual Wallets!</h3>
+         <h3>There are currently {{ wallets }} Virtual Wallets! {{ teste }}</h3>
     </div>
 </template>
 
@@ -14,7 +12,8 @@
         data: function(){
             return{
                 title: 'Welcome To Virtual Wallet!',
-                wallets: null
+                wallets: 0,
+                teste: null
             }
         },
         mounted() {

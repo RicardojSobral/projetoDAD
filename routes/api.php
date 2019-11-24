@@ -13,11 +13,21 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+/*Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});*/
+
+Route::middleware('auth:api')->group(function (){
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
 });
 
 Route::post('login', 'LoginControllerAPI@login');
 Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');
 
+Route::middleware('auth:api')->get('users/me', 'UserControllerAPI@myProfile');
 Route::get('home', 'WalletControllerAPI@countWallets');
+
+

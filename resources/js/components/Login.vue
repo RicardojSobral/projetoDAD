@@ -1,23 +1,25 @@
 <template>
         <div class="login-form1">
+
+            <div class="alert" :class="typeofmsg" v-if="showMessage">             
+              <strong>{{ message }}</strong>
+            </div>
+
             <h2 class="login-heading1">Login</h2>
-            <form action="#" @submit.prevent="login">
 
                 <div class="form-control1">
                     <label name="label1" for="email">Email</label>
-                    <input type="email" name="email" id="email" class="login-input1" required v-model="email">
+                    <input type="email" name="email" id="email" class="login-input1" required v-model.trim="user.email">
                 </div>
 
                  <div class="form-control1">
                     <label name="label1" for="password">Password</label>
-                    <input type="password" name="password" id="password" class="login-input1" required v-model="password">
+                    <input type="password" name="password" id="password" class="login-input1" required v-model="user.password">
                 </div>
 
                 <div class="form-control1">
-                    <button type="submit" class="btn-submit1">Login</button>
+                    <button type="submit" class="btn-submit1" v-on:click.prevent="login">Login</button>
                 </div>
-
-            </form>
         </div>
 </template>
 
@@ -26,19 +28,33 @@
 
     data(){
         return{
-            email: '',
-            password: '',
+            user:{
+                email: "",
+                password: ""
+            },
+            typeofmsg: "alert-success",
+            showMessage: false,
+            message: "",
         }
     },
     methods: {
       login(){
-        this.$store.dispatch('retrieveToken', {
-            email: this.email,
-            password: this.password,
-        })
-        .then(response => {
-          this.$router.push('/');
-        })
+        axios.post('api/login', this.user)
+            .then(response => {
+                this.$store.commit('setToken',response.data.access_token);
+                return axios.get('api/users/me');
+            })
+            .then(response => {
+                this.$store.commit('setUser',response.data.data);
+                this.$router.push('/')
+            })
+            .catch(error => {
+                this.$store.commit('clearUserAndToken');
+                this.typeofmsg = "alert-danger";
+                this.message = "Invalid credentials";
+                this.showMessage = true;
+                console.log(error);
+            })
       }
     }
   }

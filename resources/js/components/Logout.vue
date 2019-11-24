@@ -5,10 +5,15 @@
 <script>
 export default {
     created(){
-        this.$store.dispatch('destroyToken')
-        .then(response => {
-          this.$router.push('/');
-        })
+        axios.post('api/logout')
+          .then(response => {
+              this.$store.commit('clearUserAndToken');
+          })
+          .catch(error => {
+              this.$store.commit('clearUserAndToken');
+              console.log(error);
+          })
+        this.$router.push('/')
     }
 }
 </script>

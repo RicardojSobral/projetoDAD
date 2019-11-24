@@ -1851,7 +1851,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       title: 'Welcome To Virtual Wallet!',
-      wallets: 0
+      wallets: 0,
+      teste: null
     };
   },
   mounted: function mounted() {
@@ -1897,22 +1898,39 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      email: '',
-      password: ''
+      user: {
+        email: "",
+        password: ""
+      },
+      typeofmsg: "alert-success",
+      showMessage: false,
+      message: ""
     };
   },
   methods: {
     login: function login() {
       var _this = this;
 
-      this.$store.dispatch('retrieveToken', {
-        email: this.email,
-        password: this.password
+      axios.post('api/login', this.user).then(function (response) {
+        _this.$store.commit('setToken', response.data.access_token);
+
+        return axios.get('api/users/me');
       }).then(function (response) {
+        _this.$store.commit('setUser', response.data.data);
+
         _this.$router.push('/');
+      })["catch"](function (error) {
+        _this.$store.commit('clearUserAndToken');
+
+        _this.typeofmsg = "alert-danger";
+        _this.message = "Invalid credentials";
+        _this.showMessage = true;
+        console.log(error);
       });
     }
   }
@@ -1937,9 +1955,14 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    this.$store.dispatch('destroyToken').then(function (response) {
-      _this.$router.push('/');
+    axios.post('api/logout').then(function (response) {
+      _this.$store.commit('clearUserAndToken');
+    })["catch"](function (error) {
+      _this.$store.commit('clearUserAndToken');
+
+      console.log(error);
     });
+    this.$router.push('/');
   }
 });
 
@@ -20217,7 +20240,12 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("h3", [
-      _vm._v("There are currently " + _vm._s(_vm.wallets) + " Virtual Wallets!")
+      _vm._v(
+        "There are currently " +
+          _vm._s(_vm.wallets) +
+          " Virtual Wallets! " +
+          _vm._s(_vm.teste)
+      )
     ])
   ])
 }
@@ -20244,98 +20272,98 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "login-form1" }, [
+    _vm.showMessage
+      ? _c("div", { staticClass: "alert", class: _vm.typeofmsg }, [
+          _c("strong", [_vm._v(_vm._s(_vm.message))])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
     _c("h2", { staticClass: "login-heading1" }, [_vm._v("Login")]),
     _vm._v(" "),
-    _c(
-      "form",
-      {
-        attrs: { action: "#" },
+    _c("div", { staticClass: "form-control1" }, [
+      _c("label", { attrs: { name: "label1", for: "email" } }, [
+        _vm._v("Email")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model.trim",
+            value: _vm.user.email,
+            expression: "user.email",
+            modifiers: { trim: true }
+          }
+        ],
+        staticClass: "login-input1",
+        attrs: { type: "email", name: "email", id: "email", required: "" },
+        domProps: { value: _vm.user.email },
         on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.login($event)
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.user, "email", $event.target.value.trim())
+          },
+          blur: function($event) {
+            return _vm.$forceUpdate()
           }
         }
-      },
-      [
-        _c("div", { staticClass: "form-control1" }, [
-          _c("label", { attrs: { name: "label1", for: "email" } }, [
-            _vm._v("Email")
-          ]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.email,
-                expression: "email"
-              }
-            ],
-            staticClass: "login-input1",
-            attrs: { type: "email", name: "email", id: "email", required: "" },
-            domProps: { value: _vm.email },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.email = $event.target.value
-              }
+      })
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-control1" }, [
+      _c("label", { attrs: { name: "label1", for: "password" } }, [
+        _vm._v("Password")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.user.password,
+            expression: "user.password"
+          }
+        ],
+        staticClass: "login-input1",
+        attrs: {
+          type: "password",
+          name: "password",
+          id: "password",
+          required: ""
+        },
+        domProps: { value: _vm.user.password },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
             }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-control1" }, [
-          _c("label", { attrs: { name: "label1", for: "password" } }, [
-            _vm._v("Password")
-          ]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.password,
-                expression: "password"
-              }
-            ],
-            staticClass: "login-input1",
-            attrs: {
-              type: "password",
-              name: "password",
-              id: "password",
-              required: ""
-            },
-            domProps: { value: _vm.password },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.password = $event.target.value
-              }
+            _vm.$set(_vm.user, "password", $event.target.value)
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-control1" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn-submit1",
+          attrs: { type: "submit" },
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              return _vm.login($event)
             }
-          })
-        ]),
-        _vm._v(" "),
-        _vm._m(0)
-      ]
-    )
+          }
+        },
+        [_vm._v("Login")]
+      )
+    ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-control1" }, [
-      _c("button", { staticClass: "btn-submit1", attrs: { type: "submit" } }, [
-        _vm._v("Login")
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -36471,7 +36499,7 @@ module.exports = function(module) {
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-/*! exports provided: default */
+/*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36520,7 +36548,7 @@ router.beforeEach(function (to, from, next) {
   if (to.matched.some(function (record) {
     return record.meta.requiresAuth;
   })) {
-    if (!_store_store__WEBPACK_IMPORTED_MODULE_0__["store"].getters.loggedIn) {
+    if (!_store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.user) {
       next({
         path: '/login'
       });
@@ -36530,7 +36558,7 @@ router.beforeEach(function (to, from, next) {
   } else if (to.matched.some(function (record) {
     return record.meta.requiresVisitor;
   })) {
-    if (_store_store__WEBPACK_IMPORTED_MODULE_0__["store"].getters.loggedIn) {
+    if (_store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.user) {
       next({
         path: '/home'
       });
@@ -36544,15 +36572,14 @@ router.beforeEach(function (to, from, next) {
 var app = new Vue({
   router: router,
   store: _store_store__WEBPACK_IMPORTED_MODULE_0__["store"],
-  data: {}
-}).$mount('#app');
-/* harmony default export */ __webpack_exports__["default"] = ({
-  computed: {
-    loggedIn: function loggedIn() {
-      return $store.getters.loggedIn;
-    }
+  data: {},
+  created: function created() {
+    console.log('-----');
+    console.log(this.$store.state.user);
+    this.$store.commit('loadTokenAndUserFromSession');
+    console.log(this.$store.state.user);
   }
-});
+}).$mount('#app');
 
 /***/ }),
 
@@ -36826,62 +36853,54 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 /*jshint esversion: 6 */
-
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
-    token: localStorage.getItem('access_token') || null
-  },
-  getters: {
-    loggedIn: function loggedIn(state) {
-      return state.token != null;
-    }
+    token: "",
+    user: null
   },
   mutations: {
+    clearUserAndToken: function clearUserAndToken(state) {
+      state.user = null;
+      state.token = "";
+      sessionStorage.removeItem('user');
+      sessionStorage.removeItem('token');
+      axios.defaults.headers.common.Authorization = undefined;
+    },
+    clearUser: function clearUser(state) {
+      state.user = null;
+      sessionStorage.removeItem('user');
+    },
+    clearToken: function clearToken(state) {
+      state.token = "";
+      sessionStorage.removeItem('token');
+      axios.defaults.headers.common.Authorization = undefined;
+    },
+    setUser: function setUser(state, user) {
+      state.user = user;
+      sessionStorage.setItem('user', JSON.stringify(user));
+    },
     setToken: function setToken(state, token) {
       state.token = token;
+      sessionStorage.setItem('token', token);
+      axios.defaults.headers.common.Authorization = "Bearer " + token;
     },
-    deleteToken: function deleteToken(state) {
-      state.token = null;
-    }
-  },
-  actions: {
-    retrieveToken: function retrieveToken(context, credentials) {
-      return new Promise(function (resolve, reject) {
-        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('api/login', {
-          email: credentials.email,
-          password: credentials.password
-        }).then(function (response) {
-          var token = response.data.access_token;
-          localStorage.setItem('access_token', token);
-          context.commit('setToken', token);
-          resolve(response);
-        })["catch"](function (error) {
-          console.log(error);
-          reject(error);
-        });
-      });
-    },
-    destroyToken: function destroyToken(context) {
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token;
+    loadTokenAndUserFromSession: function loadTokenAndUserFromSession(state) {
+      state.token = "";
+      state.user = null;
+      var token = sessionStorage.getItem('token');
+      var user = sessionStorage.getItem('user');
 
-      if (context.getters.loggedIn) {
-        return new Promise(function (resolve, reject) {
-          axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('api/logout').then(function (response) {
-            localStorage.removeItem('access_token');
-            context.commit('deleteToken');
-            resolve(response);
-          })["catch"](function (error) {
-            localStorage.removeItem('access_token');
-            context.commit('deleteToken');
-            reject(error);
-          });
-        });
+      if (token) {
+        state.token = token;
+        axios.defaults.headers.common.Authorization = "Bearer " + token;
+      }
+
+      if (user) {
+        state.user = JSON.parse(user);
       }
     }
   }

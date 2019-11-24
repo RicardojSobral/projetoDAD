@@ -30,7 +30,7 @@ const logout = Vue.component('logout', LogoutComponent);
 
  router.beforeEach((to, from, next) =>{
     if(to.matched.some(record => record.meta.requiresAuth)){
-        if(!store.getters.loggedIn){
+        if(!store.state.user){
         next({
             path: '/login'
         });
@@ -38,7 +38,7 @@ const logout = Vue.component('logout', LogoutComponent);
             next();
         }
     } else if(to.matched.some(record => record.meta.requiresVisitor)){
-        if(store.getters.loggedIn){
+        if(store.state.user){
         next({
             path: '/home'
         });
@@ -55,13 +55,11 @@ const app = new Vue({
      store,
     data:{
 
+    },
+    created() {
+        console.log('-----');
+        console.log(this.$store.state.user);
+        this.$store.commit('loadTokenAndUserFromSession');
+        console.log(this.$store.state.user);
     }
 }).$mount('#app');
-
-export default {
-    computed: {
-        loggedIn(){
-            return $store.getters.loggedIn;
-        }
-    }
-};

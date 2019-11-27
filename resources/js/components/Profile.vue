@@ -10,7 +10,7 @@
 		</div>
 
         <div class="col-md-10 col-md-offset-1">            
-            <td><img v-bind:src="'/' + getActualPhoto()" style="width:150px; height:150px; border-radius:50%; margin-bottom:25px; margin-right:25px; float:left;"></td>
+            <td><img v-bind:src="'storage/fotos/' + getActualPhoto()" style="width:150px; height:150px; border-radius:50%; margin-bottom:25px; margin-right:25px; float:left;"></td>
         </div>
 
         <div class="form-group">
@@ -29,7 +29,7 @@
                 title="Name can only have letters and spaces">
 	    </div>
 
-        <div class="form-group" v-if="user.type == 'u'" :rules="rules_nif">
+        <div class="form-group" v-if="user.type == 'u'" >
 	        <label for="inputNIF">NIF:</label>
 	        <input
 	            type="integer" class="form-control" v-model="user.nif"
@@ -57,7 +57,7 @@
 		</div>
 
         <user-edit :user="user" @user-saved="savedUser" @user-canceled="cancelEdit" @pass-canceled="passCanceled"
-        @pass-same="passSame" @pass-empty="passEmpty" v-if="showPassword"></user-edit>	
+        @pass-same="passSame" @pass-empty="passEmpty" @oldpass-error="oldPassError" v-if="showPassword"></user-edit>	
 
     </div>
 </template>
@@ -75,14 +75,18 @@
                 showError: false,
                 successMessage: "",
                 actualPhoto: "",
+                photo_file: "",
             }
         },
         methods:{                
         
             save: function(){
-	            axios.put('api/users/'+this.user.id, this.user)
+	            axios.put('api/users/'+this.user.id,this.user /*{
+                    'user':  this.user,
+                    'photo_file': this.photo_file,
+                    }*/)
 	                .then(response=>{	 
-                        this.$store.commit('setUser',response.data.data);               	
+                        //this.$store.commit('setUser',response.data.data);               	
                         this.showSuccess = true;
 	                    this.successMessage = 'User Saved';
                     })
@@ -114,13 +118,18 @@
             },
             passEmpty: function(){
 	            this.showError = true;
-	            this.successMessage = 'All fields are reuired!';
+	            this.successMessage = 'All fields are required!';
+            },
+            oldPassError: function(){
+	            this.showError = true;
+	            this.successMessage = 'Old password incorrect!';
             },
             getActualPhoto: function(){                
                 return this.actualPhoto;
             },
             onPhotoSelected: function(event){
                 this.user.photo = event.target.files[0].name;
+                this.photo_file = event.target.files[0];    //nao funciona...
             }
         },
 

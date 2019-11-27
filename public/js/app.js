@@ -2051,16 +2051,21 @@ __webpack_require__.r(__webpack_exports__);
       showSuccess: false,
       showError: false,
       successMessage: "",
-      actualPhoto: ""
+      actualPhoto: "",
+      photo_file: ""
     };
   },
   methods: {
     save: function save() {
       var _this = this;
 
-      axios.put('api/users/' + this.user.id, this.user).then(function (response) {
-        _this.$store.commit('setUser', response.data.data);
-
+      axios.put('api/users/' + this.user.id, this.user
+      /*{
+      'user':  this.user,
+      'photo_file': this.photo_file,
+      }*/
+      ).then(function (response) {
+        //this.$store.commit('setUser',response.data.data);               	
         _this.showSuccess = true;
         _this.successMessage = 'User Saved';
       });
@@ -2093,13 +2098,18 @@ __webpack_require__.r(__webpack_exports__);
     },
     passEmpty: function passEmpty() {
       this.showError = true;
-      this.successMessage = 'All fields are reuired!';
+      this.successMessage = 'All fields are required!';
+    },
+    oldPassError: function oldPassError() {
+      this.showError = true;
+      this.successMessage = 'Old password incorrect!';
     },
     getActualPhoto: function getActualPhoto() {
       return this.actualPhoto;
     },
     onPhotoSelected: function onPhotoSelected(event) {
       this.user.photo = event.target.files[0].name;
+      this.photo_file = event.target.files[0]; //nao funciona...
     }
   },
   mounted: function mounted() {
@@ -2171,9 +2181,17 @@ module.exports = {
           'old_password': this.oldPassword,
           'userId': this.user.id
         }).then(function (response) {
-          _this.$store.commit('setUser', response.data.data);
+          console.log(response.data);
 
-          _this.$emit('user-saved');
+          if (response.data == "Old password incorrect") {
+            _this.$emit('oldpass-error');
+          } else {
+            _this.$store.commit('setUser', response.data.data);
+
+            _this.$emit('user-saved');
+          }
+        })["catch"](function (error) {
+          console.log(error);
         });
       } else if (this.password == "" || this.passwordConfirmation == "" || this.oldPassword == "") {
         //nova igual antiga
@@ -20668,7 +20686,7 @@ var render = function() {
               "margin-right": "25px",
               float: "left"
             },
-            attrs: { src: "/" + _vm.getActualPhoto() }
+            attrs: { src: "storage/fotos/" + _vm.getActualPhoto() }
           })
         ])
       ]),
@@ -20715,44 +20733,40 @@ var render = function() {
       ]),
       _vm._v(" "),
       _vm.user.type == "u"
-        ? _c(
-            "div",
-            { staticClass: "form-group", attrs: { rules: _vm.rules_nif } },
-            [
-              _c("label", { attrs: { for: "inputNIF" } }, [_vm._v("NIF:")]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.user.nif,
-                    expression: "user.nif"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "integer",
-                  name: "nif",
-                  id: "inputNIF",
-                  pattern: "^[0-9]+$",
-                  title: "NIF needs to have 9 numbers",
-                  max: "9",
-                  min: "9",
-                  required: ""
-                },
-                domProps: { value: _vm.user.nif },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.user, "nif", $event.target.value)
-                  }
+        ? _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "inputNIF" } }, [_vm._v("NIF:")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.user.nif,
+                  expression: "user.nif"
                 }
-              })
-            ]
-          )
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "integer",
+                name: "nif",
+                id: "inputNIF",
+                pattern: "^[0-9]+$",
+                title: "NIF needs to have 9 numbers",
+                max: "9",
+                min: "9",
+                required: ""
+              },
+              domProps: { value: _vm.user.nif },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.user, "nif", $event.target.value)
+                }
+              }
+            })
+          ])
         : _vm._e(),
       _vm._v(" "),
       _c("div", [
@@ -20836,7 +20850,8 @@ var render = function() {
               "user-canceled": _vm.cancelEdit,
               "pass-canceled": _vm.passCanceled,
               "pass-same": _vm.passSame,
-              "pass-empty": _vm.passEmpty
+              "pass-empty": _vm.passEmpty,
+              "oldpass-error": _vm.oldPassError
             }
           })
         : _vm._e()

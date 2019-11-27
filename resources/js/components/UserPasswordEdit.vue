@@ -52,9 +52,17 @@
 						'userId': this.user.id,
 					}) 
 	                .then(response=>{	
-	                	this.$store.commit('setUser',response.data.data);
-	                	this.$emit('user-saved');
-					});
+						console.log(response.data);
+						if(response.data == "Old password incorrect"){
+							this.$emit('oldpass-error');
+						}else{
+							this.$store.commit('setUser',response.data.data);
+	                		this.$emit('user-saved');
+						}	                	
+					})
+					.catch(error =>{
+						console.log(error);
+					})
 				}else if(this.password == "" || this.passwordConfirmation == "" || this.oldPassword == ""){
 					//nova igual antiga
 					this.$emit('pass-empty');

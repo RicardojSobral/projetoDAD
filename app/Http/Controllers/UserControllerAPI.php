@@ -47,30 +47,39 @@ class UserControllerAPI extends Controller
 
     public function update(Request $request, $id) {
         $user = User::findOrFail($id);
-        dd($request->photo);    //ta o original nao o novo...
-    
-        /*if($user->photo == $request->photo){
-            $request->validate([
-                'name'      => 'required|regex:/^[a-zA-Zà-Ú ]+$/',
-                'nif'       => 'integer|digits:9',
-            ]);
-        }else{
-            $request->validate([
-                'name'      => 'required|regex:/^[a-zA-Zà-Ú ]+$/',
-                'nif'       => 'integer|digits:9',
-                'photo' => 'image|mimes:jpeg,png,jpg,gif|max:1080',
-            ]);
-        }*/
-        
+        dd($request->all());
+            
         if($user->type == "u"){
-            $request->validate([
-                'name'      => 'required|regex:/^[a-zA-Zà-Ú ]+$/',
-                'nif'       => 'integer|digits:9',
-            ]);       
+            if($user->photo != $request->photo){                            //Foto nova
+                $request->validate([
+                    'name'      => 'required|regex:/^[a-zA-Zà-Ú ]+$/',
+                    'nif'       => 'integer|digits:9',
+                    'photo' => 'image|mimes:jpeg,png,jpg,gif|max:1080',
+                ]);
+
+                //Storage::disk('public')->putFileAs('fotos/', $file, $request->photo);
+
+            }else{
+                $request->validate([
+                    'name'      => 'required|regex:/^[a-zA-Zà-Ú ]+$/',
+                    'nif'       => 'integer|digits:9',
+                    
+                ]);
+            }    
         }else{
-            $request->validate([
-                'name'      => 'required|regex:/^[a-zA-Zà-Ú ]+$/',
-            ]);       
+            if($user->photo != $request->photo){                            //Foto nova
+                $request->validate([
+                    'name'      => 'required|regex:/^[a-zA-Zà-Ú ]+$/',
+                    'photo' => 'image|mimes:jpeg,png,jpg,gif|max:1080',
+                ]);
+
+                //Storage::disk('public')->putFileAs('fotos/', $file, $$request->photo);
+
+            }else{
+                $request->validate([
+                    'name'      => 'required|regex:/^[a-zA-Zà-Ú ]+$/',                    
+                ]);
+            }        
         }
         
 
@@ -123,8 +132,8 @@ class UserControllerAPI extends Controller
             $user->save();
             return new UserResource($user);
         }
-        dd($request->old_password);
-        return ;    //erro na palavra antiga 
+        //dd($request->old_password);
+        return response('Old password incorrect');    
     }
 
 }

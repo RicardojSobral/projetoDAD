@@ -27,7 +27,11 @@ Route::middleware('auth:api')->group(function (){
 Route::post('login', 'LoginControllerAPI@login');
 Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');
 
-Route::middleware('auth:api')->get('users/me', 'UserControllerAPI@myProfile');
 Route::get('home', 'WalletControllerAPI@countWallets');
+
+Route::middleware('auth:api')->get('users/cancel/{id}', 'UserControllerAPI@show');  //alterar rota
+Route::middleware('auth:api')->get('users/me', 'UserControllerAPI@myProfile');
+Route::middleware('auth:api')->put('users/{id}', 'UserControllerAPI@update');
+Route::middleware('auth:api')->patch('users/password', 'UserControllerAPI@alterarPassword');
 
 

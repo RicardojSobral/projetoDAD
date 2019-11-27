@@ -38,7 +38,7 @@ class UserControllerAPI extends Controller
         ]);
 
         $user = new User();
-        $user->fill($request-all());
+        $user->fill($request->all());
         $user->password = Hash::make($user->password);
         $user->save();
 
@@ -46,14 +46,34 @@ class UserControllerAPI extends Controller
     }
 
     public function update(Request $request, $id) {
-        $request->validate([
-            'name'      => 'required|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
-            'email'     => 'required|email|unique:users,email',
-            'nif'       => 'integer|min:9|max:9',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:1080',
-        ]);
-
         $user = User::findOrFail($id);
+        dd($request->photo);    //ta o original nao o novo...
+    
+        /*if($user->photo == $request->photo){
+            $request->validate([
+                'name'      => 'required|regex:/^[a-zA-Zà-Ú ]+$/',
+                'nif'       => 'integer|digits:9',
+            ]);
+        }else{
+            $request->validate([
+                'name'      => 'required|regex:/^[a-zA-Zà-Ú ]+$/',
+                'nif'       => 'integer|digits:9',
+                'photo' => 'image|mimes:jpeg,png,jpg,gif|max:1080',
+            ]);
+        }*/
+        
+        if($user->type == "u"){
+            $request->validate([
+                'name'      => 'required|regex:/^[a-zA-Zà-Ú ]+$/',
+                'nif'       => 'integer|digits:9',
+            ]);       
+        }else{
+            $request->validate([
+                'name'      => 'required|regex:/^[a-zA-Zà-Ú ]+$/',
+            ]);       
+        }
+        
+
         $user->update($request->all());
         return new UserResource($user);
     }
@@ -79,4 +99,32 @@ class UserControllerAPI extends Controller
     {
         return new UserResource($request->user());
     }
+
+    public function alterarPassword(Request $request){
+        $request->validate([
+            'old_password' => 'required|min:3',
+            'password' => 'required|min:3|confirmed',
+            'password_confirmation' => 'required|min:3' 
+        ],
+        [
+            'old_password.required' => 'É necessario inserir a password antiga',
+            'password.required' => 'É necessario inserir a nova password',
+            'password_confirmation.required' => 'É necessario confirmar a password',
+            'old_password.min' => 'A password antiga precisa no minimo de 8 caracteres',
+            'password.min' => 'A nova password precisa no minimo de 8 caracteres',
+            'password_confirmation.min' => 'A confirmacao da password precisa no minimo de 8 caracteres',
+            'password_confirmation.same' => 'A password da confirmacao tem de ser igual a password'
+        ]);
+        
+        $id = $request->userId;
+        $user = User::findOrFail($id);
+        if (Hash::check($request->old_password, $user->password)) {
+            $user->password = Hash::make($request->password);
+            $user->save();
+            return new UserResource($user);
+        }
+        dd($request->old_password);
+        return ;    //erro na palavra antiga 
+    }
+
 }

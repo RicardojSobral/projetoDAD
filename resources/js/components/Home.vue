@@ -3,7 +3,7 @@
         <div class="jumbotron">
                 <h1>{{ title }}</h1>               
         </div>
-         <h3>There are currently {{ wallets }} Virtual Wallets! {{ teste }}</h3>
+         <h3>There are currently {{ wallets }} Virtual Wallets!</h3>
     </div>
 </template>
 
@@ -13,9 +13,9 @@
             return{
                 title: 'Welcome To Virtual Wallet!',
                 wallets: 0,
-                teste: null
             }
         },
+
         mounted() {
             axios.get('api/home')
                 .then(response=>{

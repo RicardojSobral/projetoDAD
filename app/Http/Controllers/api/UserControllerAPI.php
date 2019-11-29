@@ -1,15 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\api;
 
-
+use Intervention\Image\Image;
 use Illuminate\Http\Request;
 use Laravel\Passport\HasApiTokens;
 use function GuzzleHttp\Promise\all;
-
 use App\Http\Controllers\Controller;
+
+use App\Http\Resources\User as UserResource;
+use App\Http\Resources\Wallet as WalletResource;
+
 use App\User;
+use App\Wallet;
 use Hash;
+use File;
 
 
 class UserControllerAPI extends Controller
@@ -28,18 +33,40 @@ class UserControllerAPI extends Controller
     }
 
     public function store(Request $request) {
-        $request->validate([
+        /*$request->validate([
             'name'      => 'required|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
             'email'     => 'required|email|unique:users,email',
             'password'  => 'min:3',
             'nif'       => 'integer|min:9|max:9',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:1080',
-        ]);
+            'photo'     => 'image|max:1080',
+        ]);*/
+
+        dd($request->get('photo')->name);
 
         $user = new User();
-        $user->fill($request-all());
+        $user->fill($request->all());
         $user->password = Hash::make($user->password);
+        $user->photo = $request->get('photo') ? $request->get('photo')->name : null;
         $user->save();
+
+        $wallet = new Wallet();
+        $wallet->fill(['id' => $user->id, 'email' => $user->email, 'balance' => 0]);
+        $wallet->save();
+
+        if($request->get('photoReader')) {
+            $photo = $request->get('photoReader');
+            $name = $user->id . '_' . $photo->name;
+            Image::make($request->get('photoReader'))->save(public_path('fotos/').$name);
+        }
+
+        /*$image= new FileUpload();
+        $image->image_name = $name;
+        $image->save();*/
+
+
+
+        /*$fileName = $user->id . '_' . $user->photo.name;
+        $request->file->move(public_path('fotos'), $fileName);*/
 
         return response()->json(new UserResource($user), 201);
     }

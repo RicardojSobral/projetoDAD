@@ -17,11 +17,15 @@ const login = Vue.component('login', LoginComponent);
 import LogoutComponent from './components/Logout.vue';
 const logout = Vue.component('logout', LogoutComponent);
 
+import ProfileComponent from './components/Profile.vue';
+const profile = Vue.component('profile', ProfileComponent);
+
  const routes = [
      { path: '/', redirect: '/home'},
      { path: '/home', component: home},
-     { path: '/login', component: login,  meta:{ requiresVisitor: true }},
+     { path: '/login', component: login,  meta:{ requiresVisitor: true } },
      { path: '/logout', component: logout, meta:{ requiresAuth: true } },
+     { path: '/profile', component: profile, meta:{ requiresAuth: true } },
  ];
 
  const router = new VueRouter({
@@ -30,7 +34,7 @@ const logout = Vue.component('logout', LogoutComponent);
 
  router.beforeEach((to, from, next) =>{
     if(to.matched.some(record => record.meta.requiresAuth)){
-        if(!store.state.user){
+        if(!sessionStorage.getItem('user')){
         next({
             path: '/login'
         });

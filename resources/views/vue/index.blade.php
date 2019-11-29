@@ -6,6 +6,8 @@
 
     <ul class="nav">
         <li><router-link to="/home">Home</router-link></li>
+
+        <li ><router-link to="/profile" v-show="this.$store.state.user">Profile</router-link></li>
         
         <li ><router-link to="/login" v-show="!this.$store.state.user">Login</router-link></li>
        

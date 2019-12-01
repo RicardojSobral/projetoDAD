@@ -34,4 +34,6 @@ Route::middleware('auth:api')->get('users/me', 'UserControllerAPI@myProfile');
 Route::middleware('auth:api')->put('users/{id}', 'UserControllerAPI@update');
 Route::middleware('auth:api')->patch('users/password', 'UserControllerAPI@alterarPassword');
 
+Route::middleware('auth:api')->post('movements/credit', 'MovementControllerAPI@createCredit');
+
 

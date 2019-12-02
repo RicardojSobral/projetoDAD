@@ -4,17 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Wallet extends Model
+class Category extends Model
 {
     protected $fillable = [
-        'email', 
-        'balance'
+        'type', 
+        'name'
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
     public function movement()
     {

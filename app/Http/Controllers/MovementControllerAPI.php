@@ -57,4 +57,15 @@ class MovementControllerAPI extends Controller
 
         return new MovementResource($movement);
     }
+
+    public function getUserMovements($id){ //id do user == id da wallet == wallet_id movements
+        //dd($id);
+
+        //return UserResource::collection(User::paginate(5));
+        $movements = DB::table('movements')->select('*')->where('wallet_id', $id)->orderBy('date', 'desc')->paginate(20);
+        //dd($movements);
+
+        //return UserResource::collection(User::paginate(5));
+        return $movements;
+    }
 }

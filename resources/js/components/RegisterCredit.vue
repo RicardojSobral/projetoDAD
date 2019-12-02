@@ -23,7 +23,7 @@
                 <option disabled selected> -- select an option -- </option>
                 <option value="c">Cash</option>
                 <option value="bt">Bank Transfer</option>
-                <option value="nb">MB Payment</option>
+                <option value="mb">MB Payment</option>
             </select>
 	    </div>
 

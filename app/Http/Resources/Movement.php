@@ -19,10 +19,10 @@ class Movement extends JsonResource
             'wallet_id'=> $this->wallet->id,
             'type'=> $this->type,
             'transfer'=> $this->transfer,
-            'transfer_movement_id' => $this->id, //???
+            'transfer_movement_id' => $this->transfer_movement_id, //quando tranferencia-> ser o id do movimento que lhe faz par!
             'transfer_wallet_id' => $this->wallet->id,
             'type_payment' => $this->type_payment,
-            'category_id' => $this->category->id,   //Da erro 'Trying to get property 'id' of non-object'
+            'category_id' => $this->category ? $this->category->id : null,   
             'iban' => $this->iban,
             'mb_entity_code'=> $this->mb_entity_code,
             'mb_payment_reference'=> $this->mb_payment_reference,

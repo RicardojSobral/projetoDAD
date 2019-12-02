@@ -21248,7 +21248,7 @@ var render = function() {
           _vm._v(" "),
           _c("option", { attrs: { value: "bt" } }, [_vm._v("Bank Transfer")]),
           _vm._v(" "),
-          _c("option", { attrs: { value: "nb" } }, [_vm._v("MB Payment")])
+          _c("option", { attrs: { value: "mb" } }, [_vm._v("MB Payment")])
         ]
       )
     ]),

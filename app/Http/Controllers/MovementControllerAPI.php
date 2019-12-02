@@ -17,16 +17,16 @@ class MovementControllerAPI extends Controller
         if($request->type_payment == 'bt'){
             $request->validate([
                 'email' => 'required|email',
-                'value' => 'required',
-                'type_payment' => 'required',
-                'iban' => 'required',
+                'value' => 'required|between:0,5000',
+                'type_payment' => 'required|in:c,bt,mb',
+                'iban' => 'required|regex:^[A-Z]{2}\d{23}$^',
                 'source_description' => 'required',
             ]);
         }else{
             $request->validate([
                 'email' => 'required|email',
-                'value' => 'required',
-                'type_payment' => 'required',
+                'value' => 'required|between:0,5000',
+                'type_payment' => 'required|in:c,bt,mb',
             ]);
         };     
 
@@ -43,7 +43,7 @@ class MovementControllerAPI extends Controller
         $wallet->save();
 
         //Date/Time presente
-        $date = Carbon::now();;
+        $date = Carbon::now();
        
         $movement = new Movement();
         $movement->fill($request->all());

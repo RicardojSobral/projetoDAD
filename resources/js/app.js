@@ -8,6 +8,9 @@ import { store } from './store/store';
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
+import PaginationComponent from 'laravel-vue-pagination';
+Vue.component('pagination', PaginationComponent);
+
 import HomeComponent from './components/Home.vue';
 const home = Vue.component('home', HomeComponent);
 

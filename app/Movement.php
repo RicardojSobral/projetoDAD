@@ -33,4 +33,5 @@ class Movement extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
 }

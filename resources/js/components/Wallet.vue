@@ -1,57 +1,66 @@
 <template>
     <div>
         <div class="jumbotron">
-                <h1>{{ title }}</h1>               
+                <h1>Balance: {{ balance }}€</h1>               
         </div>
       
-        <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Type</th>
-                <th>Transfer E-mail</th>
-                <th>Type Of Payment</th>
-                <th>Category</th>
-                <th>Date</th>
-                <th>Start Balance</th>
-                <th>End Balance</th>
-                <th>Value</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="movement in movements"  :key="movement.id" :class="{active: selectedMovement === movement}">
-                <td>{{ movement.id }}</td>
-                <td>{{ movement.type }}</td>
-                                                <td>{{ movement.transfer_wallet_id }}</td>
-                <td>{{ movement.type_payment }}</td>
-                                                <td>{{ movement.category_id }}</td>
-                <td>{{ movement.date }}</td>
-                <td>{{ movement.start_balance }}</td>
-                <td>{{ movement.end_balance }}</td>
-                <td>{{ movement.value }}</td>
-                <td>                    
-                    <a class="btn btn-sm btn-primary" v-on:click="movementDetais(movement)">Details</a>
-                </td>
-            </tr>
-            
-        </tbody>
-    </table>
+        <div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Type</th>
+                        <th>Transfer E-mail</th>
+                        <th>Type Of Payment</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                        <th>Start Balance</th>
+                        <th>End Balance</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="movement in movements.data"  :key="movement.id" :class="{active: selectedMovement === movement}">
+                        <td>{{ movement.id }}</td>
+                        <td>{{ movement.type }}</td>
+                            <td v-if="movement.transfer_wallet_id != null">{{ movement.transfer_wallet_id.email }}</td>
+                            <td v-if="movement.transfer_wallet_id == null"> </td>
+                        <td>{{ movement.type_payment }}</td>
+                            <td v-if="movement.category">{{ movement.category.name }}</td>
+                            <td v-if="!movement.category"> </td>
+                        <td>{{ movement.date }}</td>
+                        <td>{{ movement.start_balance }}</td>
+                        <td>{{ movement.end_balance }}</td>
+                        <td>{{ movement.value }}</td>
+                        <td>                    
+                            <button type="button" class="btn btn-sm btn-primary" v-on:click="movementDetais(movement)">Details</button>
+                        </td>
+                    </tr>            
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <pagination :data="movements" :limit=4 @pagination-change-page="getResults"></pagination>
+        </div>
 
+        <movement-details :movement="selectedMovement" @details-canceled="cancelMovementDetails" v-if="selectedMovement"></movement-details>
     </div>
 
 
 </template>
 
 <script>
+    import MovementDetailsComponent from "./MovementDetails.vue";
 
     export default {
         data: function(){
             return{
-                title: 'Wallet!',
+                title: 'Balance: ',
                 user: this.$store.state.user,
-                movements: [],
+                movements: {},
                 selectedMovement: null,
                 pagination: [],
+                balance: "",
             }            
         },
 
@@ -59,21 +68,41 @@
            getMovements: function(){
                 axios.get('api/movements/'+this.user.id)
                     .then(response=>{
-                        this.movements = response.data.data;
+                        this.movements = response.data;
                     })
                     .catch(error => {                        
                         console.log(error);
                     })
             },
-            movementDetais: function(user){
-
+            getBalance: function(){
+                axios.get('api/wallet/'+this.user.id+'/balance')
+                    .then(response=>{
+                        this.balance = response.data;
+                    })
+                    .catch(error => {                        
+                        console.log(error);
+                    })
             },
-            makePagination:function(data){
+            getResults:function(page = 1){
+                axios.get('api/movements/' + this.user.id + "?page=" + page)
+                    .then(response=>{
+                        this.movements = response.data;
+                    })
+            },
+            movementDetais: function(movement){
+                this.selectedMovement = movement;
+            },           
+            cancelMovementDetails: function(){
+                this.selectedMovement = null;
+            },
+        },
 
-            }
-        },   
+        components: {
+            "movement-details": MovementDetailsComponent,
+        },
         
-         mounted() {
+        mounted() {
+            this.getBalance();
             this.getMovements();
         }
     }

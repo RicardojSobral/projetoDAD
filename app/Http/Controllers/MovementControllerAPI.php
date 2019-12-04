@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\Movement as MovementResource;
 
 use Carbon\Carbon;
+use App\Category;
 use App\Wallet;
 use App\Movement;
 use Illuminate\Http\Request;
@@ -58,14 +59,16 @@ class MovementControllerAPI extends Controller
         return new MovementResource($movement);
     }
 
-    public function getUserMovements($id){ //id do user == id da wallet == wallet_id movements
-        //dd($id);
+    public function getUserMovements($id){
 
-        //return UserResource::collection(User::paginate(5));
-        $movements = DB::table('movements')->select('*')->where('wallet_id', $id)->orderBy('date', 'desc')->paginate(20);
-        //dd($movements);
+        //$movements = DB::table('movements')->select('*')->where('wallet_id', $id)->orderBy('date', 'desc')->paginate(20);//tirar paginate paginate(20)
+        $movements = Movement::with('category', 'wallet')->select('*')->where('wallet_id', $id)->orderBy('date', 'desc')->paginate(10);
 
-        //return UserResource::collection(User::paginate(5));
         return $movements;
+    }
+
+    public function getTransferEmail($id){
+        $email = DB::table('wallets')->select('email')->where('id', $id)->get();
+        return $email[0]->email;
     }
 }

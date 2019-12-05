@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\api;
 
-use Intervention\Image\Image;
+use Faker\Provider\Image;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageServiceProvider;
 use Illuminate\Http\Request;
 use Laravel\Passport\HasApiTokens;
 use function GuzzleHttp\Promise\all;
@@ -41,32 +44,29 @@ class UserControllerAPI extends Controller
             'photo'     => 'image|max:1080',
         ]);*/
 
-        dd($request->get('photo')->name);
-
         $user = new User();
         $user->fill($request->all());
         $user->password = Hash::make($user->password);
-        $user->photo = $request->get('photo') ? $request->get('photo')->name : null;
+        $user->photo = $request->photo ? $user->id . '_' . $request->photo['name'] : null;
         $user->save();
 
         $wallet = new Wallet();
         $wallet->fill(['id' => $user->id, 'email' => $user->email, 'balance' => 0]);
         $wallet->save();
 
-        if($request->get('photoReader')) {
-            $photo = $request->get('photoReader');
-            $name = $user->id . '_' . $photo->name;
-            Image::make($request->get('photoReader'))->save(public_path('fotos/').$name);
+        if($request->photo) {
+            $photo = $request->photo;
+
+            $base64_string = explode(',', $photo['base64']);
+            $imageBin = base64_decode($base64_string[1]);
+
+            //$fileName = $user->id . '_' . $photo['name'];
+            $fileName = random_int(0, 10000) . '_' . $photo['name'];
+
+            if (!Storage::disk('public')->exists('fotos/' . $fileName)) {
+                Storage::disk('public')->put('fotos/' . $fileName, $imageBin);
+            }
         }
-
-        /*$image= new FileUpload();
-        $image->image_name = $name;
-        $image->save();*/
-
-
-
-        /*$fileName = $user->id . '_' . $user->photo.name;
-        $request->file->move(public_path('fotos'), $fileName);*/
 
         return response()->json(new UserResource($user), 201);
     }

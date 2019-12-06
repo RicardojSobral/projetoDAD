@@ -20,7 +20,7 @@ class Movement extends JsonResource
             'type'=> $this->type,
             'transfer'=> $this->transfer,
             'transfer_movement_id' => $this->transfer_movement_id, //quando tranferencia-> ser o id do movimento que lhe faz par!
-            'transfer_wallet_id' => $this->wallet->id,
+            'transfer_wallet_id' => $this->transfer_wallet ? $this->transfer_wallet->id : null,
             'type_payment' => $this->type_payment,
             'category_id' => $this->category ? $this->category->id : null,   
             'iban' => $this->iban,

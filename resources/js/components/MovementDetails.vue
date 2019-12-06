@@ -4,6 +4,15 @@
 
         <br>
 
+        <div class="form-group" v-if="movement.transfer_wallet">
+            <div class="col-md-10 col-md-offset-1" v-if="movement.transfer_wallet.user.photo">            
+                <td><img v-bind:src="'storage/fotos/' + movement.transfer_wallet.user.photo" style="width:150px; height:150px; border-radius:50%; margin-bottom:25px; margin-right:25px; float:left;"></td>
+            </div>
+            <div class="col-md-10 col-md-offset-1" v-if="!movement.transfer_wallet.user.photo">            
+                <td><img v-bind:src="'storage/fotos/unknown.jpg'" style="width:150px; height:150px; border-radius:50%; margin-bottom:25px; margin-right:25px; float:left;"></td>
+            </div>
+        </div>
+
         <div class="form-group">
 	        <label v-if="movement.description">Description:   {{ movement.description}}</label>
 	        <label v-if="!movement.description">Description:   Empty</label>

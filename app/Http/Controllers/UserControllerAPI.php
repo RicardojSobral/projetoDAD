@@ -47,7 +47,7 @@ class UserControllerAPI extends Controller
 
     public function update(Request $request, $id) {
         $user = User::findOrFail($id);
-        dd($request->all());
+        //dd($request->all());
             
         if($user->type == "u"){
             if($user->photo != $request->photo){                            //Foto nova

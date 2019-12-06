@@ -20,10 +20,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="movement in movements.data"  :key="movement.id" :class="{active: selectedMovement === movement}">
+                    <tr v-for="movement in movements.data"  :key="movement.id" :class="{activerow: selectedMovement === movement}">
                         <td>{{ movement.id }}</td>
                         <td>{{ movement.type }}</td>
-                            <td v-if="movement.transfer_wallet_id != null">{{ movement.transfer_wallet_id.email }}</td>
+                            <td v-if="movement.transfer_wallet_id != undefined">{{ movement.transfer_wallet.email }}</td>
                             <td v-if="movement.transfer_wallet_id == null"> </td>
                         <td>{{ movement.type_payment }}</td>
                             <td v-if="movement.category">{{ movement.category.name }}</td>
@@ -108,5 +108,8 @@
     }
 </script>
 <style scoped>
-
+tr.activerow {
+  background: #123456 !important;
+  color: #fff !important;
+}
 </style>

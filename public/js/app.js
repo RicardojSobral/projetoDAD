@@ -2066,6 +2066,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['movement'],
   methods: {
@@ -2153,15 +2162,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      title: 'User Profile',
       user: this.$store.state.user,
       showPassword: null,
       showSuccess: false,
@@ -2175,15 +2179,23 @@ __webpack_require__.r(__webpack_exports__);
     save: function save() {
       var _this = this;
 
-      axios.put('api/users/' + this.user.id, this.user
-      /*{
-      'user':  this.user,
-      'photo_file': this.photo_file,
-      }*/
-      ).then(function (response) {
+      axios.put('api/users/' + this.user.id, this.user).then(function (response) {
         //this.$store.commit('setUser',response.data.data);               	
         _this.showSuccess = true;
         _this.successMessage = 'User Saved';
+      })["catch"](function (error) {
+        console.error(error);
+
+        if (error.response.data.errors.name) {
+          _this.successMessage = error.response.data.errors.name[0];
+          _this.showError = true;
+        } else if (error.response.data.errors.nif) {
+          _this.successMessage = error.response.data.errors.nif[0];
+          _this.showError = true;
+        } else if (error.response.data.errors.photo) {
+          _this.successMessage = error.response.data.errors.photo[0];
+          _this.showError = true;
+        }
       });
     },
     cancel: function cancel() {
@@ -2302,6 +2314,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2309,7 +2330,9 @@ __webpack_require__.r(__webpack_exports__);
       value: "",
       type_payment: "",
       iban: null,
-      source_description: null
+      source_description: null,
+      showError: false,
+      successMessage: ""
     };
   },
   methods: {
@@ -2329,7 +2352,29 @@ __webpack_require__.r(__webpack_exports__);
           _this.$emit('credit-created');
         }
       })["catch"](function (error) {
-        console.log(error);
+        console.error(error);
+
+        if (error.response.data.errors) {
+          if (error.response.data.errors.email) {
+            _this.successMessage = error.response.data.errors.email[0];
+            _this.showError = true;
+          } else if (error.response.data.errors.value) {
+            _this.successMessage = error.response.data.errors.value[0];
+            _this.showError = true;
+          } else if (error.response.data.errors.type_payment) {
+            _this.successMessage = error.response.data.errors.type_payment[0];
+            _this.showError = true;
+          } else if (error.response.data.errors.iban) {
+            _this.successMessage = error.response.data.errors.iban[0];
+            _this.showError = true;
+          } else if (error.response.data.errors.source_description) {
+            _this.successMessage = error.response.data.errors.source_description[0];
+            _this.showError = true;
+          }
+        } else {
+          _this.successMessage = 'Value must be a numeric value between 0.1 and 5000';
+          _this.showError = true;
+        }
       });
     },
     cancelCredit: function cancelCredit() {
@@ -2347,6 +2392,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports) {
 
+//
 //
 //
 //
@@ -2561,6 +2607,25 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 // module
 exports.push([module.i, ".label1 {\n  display: block;\n  margin-bottom: 4px;\n}\n.login-heading1 {\n  margin-bottom: 16px;\n}\n.form-control1 {\n  margin-bottom: 24px;\n}\n.login-form1 {\n  max-width: 500px;\n  margin: auto;\n}\n.login-input1 {\n  width: 100%;\n  font-size: 16px;\n  padding: 12px 16px;\n  outline: 0;\n  border-radius: 3px;\n  border: 1px solid lightgrey;\n}\n.btn-submit1 {\n  width: 100%;\n  padding: 14px 12px;\n  font-size: 18px;\n  font-weight: bold;\n  background: #60BD4F;\n  color: white;\n  border-radius: 3px;\n  cursor: pointer;\n}\n.btn-submit1:hover {\n  background: #4a9e3b;\n}", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Wallet.vue?vue&type=style&index=0&id=0d955da4&scoped=true&lang=css&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Wallet.vue?vue&type=style&index=0&id=0d955da4&scoped=true&lang=css& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\ntr.activerow[data-v-0d955da4] {\r\n  background: #123456 !important;\r\n  color: #fff !important;\n}\r\n", ""]);
 
 // exports
 
@@ -20808,6 +20873,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Wallet.vue?vue&type=style&index=0&id=0d955da4&scoped=true&lang=css&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Wallet.vue?vue&type=style&index=0&id=0d955da4&scoped=true&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./Wallet.vue?vue&type=style&index=0&id=0d955da4&scoped=true&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Wallet.vue?vue&type=style&index=0&id=0d955da4&scoped=true&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/lib/addStyles.js":
 /*!****************************************************!*\
   !*** ./node_modules/style-loader/lib/addStyles.js ***!
@@ -21678,6 +21773,50 @@ var render = function() {
     _vm._v(" "),
     _c("br"),
     _vm._v(" "),
+    _vm.movement.transfer_wallet
+      ? _c("div", { staticClass: "form-group" }, [
+          _vm.movement.transfer_wallet.user.photo
+            ? _c("div", { staticClass: "col-md-10 col-md-offset-1" }, [
+                _c("td", [
+                  _c("img", {
+                    staticStyle: {
+                      width: "150px",
+                      height: "150px",
+                      "border-radius": "50%",
+                      "margin-bottom": "25px",
+                      "margin-right": "25px",
+                      float: "left"
+                    },
+                    attrs: {
+                      src:
+                        "storage/fotos/" +
+                        _vm.movement.transfer_wallet.user.photo
+                    }
+                  })
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          !_vm.movement.transfer_wallet.user.photo
+            ? _c("div", { staticClass: "col-md-10 col-md-offset-1" }, [
+                _c("td", [
+                  _c("img", {
+                    staticStyle: {
+                      width: "150px",
+                      height: "150px",
+                      "border-radius": "50%",
+                      "margin-bottom": "25px",
+                      "margin-right": "25px",
+                      float: "left"
+                    },
+                    attrs: { src: "storage/fotos/unknown.jpg" }
+                  })
+                ])
+              ])
+            : _vm._e()
+        ])
+      : _vm._e(),
+    _vm._v(" "),
     _c("div", { staticClass: "form-group" }, [
       _vm.movement.description
         ? _c("label", [
@@ -21780,10 +21919,6 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("div", { staticClass: "jumbotron" }, [
-        _c("h1", [_vm._v(_vm._s(_vm.title))])
-      ]),
-      _vm._v(" "),
       _vm.showSuccess
         ? _c("div", { staticClass: "alert alert-success" }, [
             _c(
@@ -22013,6 +22148,26 @@ var render = function() {
   return _c("div", { staticClass: "jumbotron" }, [
     _c("h2", [_vm._v("Register Credit")]),
     _vm._v(" "),
+    _vm.showError
+      ? _c("div", { staticClass: "alert alert-danger" }, [
+          _c(
+            "button",
+            {
+              staticClass: "close-btn",
+              attrs: { type: "button" },
+              on: {
+                click: function($event) {
+                  _vm.showError = false
+                }
+              }
+            },
+            [_vm._v("×")]
+          ),
+          _vm._v(" "),
+          _c("strong", [_vm._v(_vm._s(_vm.successMessage))])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
     _c("div", { staticClass: "form-group" }, [
       _c("label", { attrs: { for: "inputEmail" } }, [
         _vm._v("Email To Credit:")
@@ -22033,7 +22188,8 @@ var render = function() {
           name: "email",
           id: "inputEmail",
           placeholder: "Insert email of the account to receive the money",
-          required: ""
+          required: "",
+          title: "Email must be a valid user email"
         },
         domProps: { value: _vm.email },
         on: {
@@ -22067,7 +22223,8 @@ var render = function() {
           name: "value",
           id: "inputValue",
           placeholder: "Insert value to credit",
-          required: ""
+          required: "",
+          title: "Value needs to be between 0.1 and 5000"
         },
         domProps: { value: _vm.value },
         on: {
@@ -22149,7 +22306,8 @@ var render = function() {
                 name: "iban",
                 id: "inputIBAN",
                 placeholder: "Insert IBAN",
-                required: ""
+                required: "",
+                title: "INAN must be 2 upper letters followed by 23 numbers"
               },
               domProps: { value: _vm.iban },
               on: {
@@ -22276,7 +22434,8 @@ var render = function() {
           id: "inputPassword",
           placeholder: "Insert new password",
           required: "",
-          min: "3"
+          min: "3",
+          title: "New password must be 3 characters and diferent from old."
         },
         domProps: { value: _vm.password },
         on: {
@@ -22429,17 +22588,15 @@ var render = function() {
                 "tr",
                 {
                   key: movement.id,
-                  class: { active: _vm.selectedMovement === movement }
+                  class: { activerow: _vm.selectedMovement === movement }
                 },
                 [
                   _c("td", [_vm._v(_vm._s(movement.id))]),
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(movement.type))]),
                   _vm._v(" "),
-                  movement.transfer_wallet_id != null
-                    ? _c("td", [
-                        _vm._v(_vm._s(movement.transfer_wallet_id.email))
-                      ])
+                  movement.transfer_wallet_id != undefined
+                    ? _c("td", [_vm._v(_vm._s(movement.transfer_wallet.email))])
                     : _vm._e(),
                   _vm._v(" "),
                   movement.transfer_wallet_id == null ? _c("td") : _vm._e(),
@@ -39297,7 +39454,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Wallet_vue_vue_type_template_id_0d955da4_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Wallet.vue?vue&type=template&id=0d955da4&scoped=true& */ "./resources/js/components/Wallet.vue?vue&type=template&id=0d955da4&scoped=true&");
 /* harmony import */ var _Wallet_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Wallet.vue?vue&type=script&lang=js& */ "./resources/js/components/Wallet.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _Wallet_vue_vue_type_style_index_0_id_0d955da4_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Wallet.vue?vue&type=style&index=0&id=0d955da4&scoped=true&lang=css& */ "./resources/js/components/Wallet.vue?vue&type=style&index=0&id=0d955da4&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -39305,7 +39464,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _Wallet_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _Wallet_vue_vue_type_template_id_0d955da4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
   _Wallet_vue_vue_type_template_id_0d955da4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -39334,6 +39493,22 @@ component.options.__file = "resources/js/components/Wallet.vue"
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Wallet_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Wallet.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Wallet.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Wallet_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Wallet.vue?vue&type=style&index=0&id=0d955da4&scoped=true&lang=css&":
+/*!*****************************************************************************************************!*\
+  !*** ./resources/js/components/Wallet.vue?vue&type=style&index=0&id=0d955da4&scoped=true&lang=css& ***!
+  \*****************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Wallet_vue_vue_type_style_index_0_id_0d955da4_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./Wallet.vue?vue&type=style&index=0&id=0d955da4&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Wallet.vue?vue&type=style&index=0&id=0d955da4&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Wallet_vue_vue_type_style_index_0_id_0d955da4_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Wallet_vue_vue_type_style_index_0_id_0d955da4_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Wallet_vue_vue_type_style_index_0_id_0d955da4_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Wallet_vue_vue_type_style_index_0_id_0d955da4_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Wallet_vue_vue_type_style_index_0_id_0d955da4_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 

@@ -1,9 +1,5 @@
 <template>
     <div>
-        <div class="jumbotron">
-                <h1>{{ title }}</h1>               
-        </div>
-
         <div class="alert alert-success" v-if="showSuccess">			 
 			<button type="button" class="close-btn" v-on:click="showSuccess=false">&times;</button>
 			<strong>{{ successMessage }}</strong>
@@ -17,7 +13,7 @@
             <input
                 type="file" class="form-control"
                 name="photo" id="inputPhoto" @change="onPhotoSelected"
-                />            
+                />           
         </div>
 
         <div class="form-group">
@@ -68,7 +64,6 @@
     export default {
         data: function(){
             return{
-                title: 'User Profile',
                 user: this.$store.state.user,
                 showPassword: null,
                 showSuccess: false,
@@ -81,14 +76,24 @@
         methods:{                
         
             save: function(){
-	            axios.put('api/users/'+this.user.id,this.user /*{
-                    'user':  this.user,
-                    'photo_file': this.photo_file,
-                    }*/)
+	            axios.put('api/users/'+this.user.id, this.user)
 	                .then(response=>{	 
                         //this.$store.commit('setUser',response.data.data);               	
                         this.showSuccess = true;
 	                    this.successMessage = 'User Saved';
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        if(error.response.data.errors.name){
+                            this.successMessage = error.response.data.errors.name[0];
+                            this.showError = true;
+                        }else if(error.response.data.errors.nif){
+                            this.successMessage = error.response.data.errors.nif[0];
+                            this.showError = true;
+                        }else if (error.response.data.errors.photo){
+                            this.successMessage = error.response.data.errors.photo[0];
+                            this.showError = true;
+                        }
                     })
             },
             cancel: function(){

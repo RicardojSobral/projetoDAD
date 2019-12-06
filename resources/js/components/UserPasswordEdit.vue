@@ -6,7 +6,8 @@
 	        <input
 	            type="password" class="form-control" v-model="password"
 	            name="password" id="inputPassword" 
-	            placeholder="Insert new password" required min="3"/>
+	            placeholder="Insert new password" required min="3"
+				title="New password must be 3 characters and diferent from old."/>
 	    </div>
 	    <div class="form-group">
 	        <label for="inputNewPasswordC">Password Confirmation:</label>

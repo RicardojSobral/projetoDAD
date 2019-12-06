@@ -18,7 +18,7 @@ class MovementControllerAPI extends Controller
         if($request->type_payment == 'bt'){
             $request->validate([
                 'email' => 'required|email',
-                'value' => 'required|between:0,5000',
+                'value' => 'required|numeric|between:0.01,5000.00',
                 'type_payment' => 'required|in:c,bt,mb',
                 'iban' => 'required|regex:^[A-Z]{2}\d{23}$^',
                 'source_description' => 'required',
@@ -26,7 +26,7 @@ class MovementControllerAPI extends Controller
         }else{
             $request->validate([
                 'email' => 'required|email',
-                'value' => 'required|between:0,5000',
+                'value' => 'required|numeric|between:0.01,5000.00',
                 'type_payment' => 'required|in:c,bt,mb',
             ]);
         };     
@@ -62,13 +62,13 @@ class MovementControllerAPI extends Controller
     public function getUserMovements($id){
 
         //$movements = DB::table('movements')->select('*')->where('wallet_id', $id)->orderBy('date', 'desc')->paginate(20);//tirar paginate paginate(20)
-        $movements = Movement::with('category', 'wallet')->select('*')->where('wallet_id', $id)->orderBy('date', 'desc')->paginate(10);
+        //$wallet = Wallet::findOrFail($id);       
+        //return $wallet->movements()->orderBy('date', 'desc')->paginate(10);
+
+        $movements = Movement::with('category', 'transfer_wallet', 'transfer_wallet.user')->select('*')->where('wallet_id', $id)->orderBy('date', 'desc')->paginate(10);
 
         return $movements;
     }
 
-    public function getTransferEmail($id){
-        $email = DB::table('wallets')->select('email')->where('id', $id)->get();
-        return $email[0]->email;
-    }
+
 }

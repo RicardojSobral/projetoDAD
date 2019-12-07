@@ -2166,13 +2166,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      user: this.$store.state.user,
+      user: {
+        id: this.$store.state.user.id,
+        name: this.$store.state.user.name,
+        nif: this.$store.state.user.nif,
+        type: this.$store.state.user.type,
+        photo: this.$store.state.user.photo,
+        photoBase64: ''
+      },
       showPassword: null,
       showSuccess: false,
       showError: false,
       successMessage: "",
-      actualPhoto: "",
-      photo_file: ""
+      actualPhoto: ""
     };
   },
   methods: {
@@ -2180,7 +2186,12 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.put('api/users/' + this.user.id, this.user).then(function (response) {
-        //this.$store.commit('setUser',response.data.data);               	
+        _this.$store.commit('setUser', response.data.data);
+
+        _this.actualPhoto = _this.user.photo;
+
+        _this.getActualPhoto();
+
         _this.showSuccess = true;
         _this.successMessage = 'User Saved';
       })["catch"](function (error) {
@@ -2233,11 +2244,27 @@ __webpack_require__.r(__webpack_exports__);
       this.successMessage = 'Old password incorrect!';
     },
     getActualPhoto: function getActualPhoto() {
+      if (this.actualPhoto == null) {
+        return "unknown.jpg";
+      }
+
       return this.actualPhoto;
     },
-    onPhotoSelected: function onPhotoSelected(event) {
-      this.user.photo = event.target.files[0].name;
-      this.photo_file = event.target.files[0]; //nao funciona...
+    onImageChange: function onImageChange(event) {
+      var image = event.target.files[0];
+      this.user.photo = image.name;
+      this.createImage(image);
+    },
+    createImage: function createImage(file) {
+      var _this3 = this;
+
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        _this3.user.photoBase64 = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
     }
   },
   mounted: function mounted() {
@@ -21955,13 +21982,22 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
+      _c("div", { staticClass: "custom-file" }, [
         _c("input", {
-          staticClass: "form-control",
-          attrs: { type: "file", name: "photo", id: "inputPhoto" },
-          on: { change: _vm.onPhotoSelected }
-        })
+          ref: "fileInput",
+          staticClass: "custom-file-input",
+          attrs: { type: "file", id: "inputPhoto" },
+          on: { change: _vm.onImageChange }
+        }),
+        _vm._v(" "),
+        _c(
+          "label",
+          { staticClass: "custom-file-label", attrs: { for: "inputPhoto" } },
+          [_vm._v(_vm._s(_vm.user.photo))]
+        )
       ]),
+      _vm._v(" "),
+      _c("br"),
       _vm._v(" "),
       _c("div", { staticClass: "form-group" }, [
         _c("label", { attrs: { for: "inputName" } }, [_vm._v("Name:")]),

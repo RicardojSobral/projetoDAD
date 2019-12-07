@@ -9,12 +9,12 @@
             <td><img v-bind:src="'storage/fotos/' + getActualPhoto()" style="width:150px; height:150px; border-radius:50%; margin-bottom:25px; margin-right:25px; float:left;"></td>
         </div>
 
-        <div class="form-group">
-            <input
-                type="file" class="form-control"
-                name="photo" id="inputPhoto" @change="onPhotoSelected"
-                />           
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="inputPhoto" v-on:change="onImageChange" ref="fileInput">
+            <label class="custom-file-label" for="inputPhoto">{{ user.photo }}</label>
         </div>
+
+        <br>
 
         <div class="form-group">
 	        <label for="inputName">Name:</label>
@@ -64,21 +64,29 @@
     export default {
         data: function(){
             return{
-                user: this.$store.state.user,
+                user: {
+                        id: this.$store.state.user.id,
+                        name: this.$store.state.user.name,
+                        nif: this.$store.state.user.nif,
+                        type: this.$store.state.user.type,
+                        photo: this.$store.state.user.photo,
+                        photoBase64: '',
+                    },
                 showPassword: null,
                 showSuccess: false,
                 showError: false,
                 successMessage: "",
                 actualPhoto: "",
-                photo_file: "",
             }
         },
         methods:{                
         
             save: function(){
-	            axios.put('api/users/'+this.user.id, this.user)
+                axios.put('api/users/'+this.user.id, this.user)
 	                .then(response=>{	 
-                        //this.$store.commit('setUser',response.data.data);               	
+                        this.$store.commit('setUser', response.data.data);   
+                        this.actualPhoto = this.user.photo; 
+                        this.getActualPhoto();           	
                         this.showSuccess = true;
 	                    this.successMessage = 'User Saved';
                     })
@@ -129,12 +137,23 @@
 	            this.showError = true;
 	            this.successMessage = 'Old password incorrect!';
             },
-            getActualPhoto: function(){                
+            getActualPhoto: function(){  
+                if (this.actualPhoto == null){
+                    return "unknown.jpg";
+                }              
                 return this.actualPhoto;
             },
-            onPhotoSelected: function(event){
-                this.user.photo = event.target.files[0].name;
-                this.photo_file = event.target.files[0];    //nao funciona...
+            onImageChange: function(event){
+                let image = event.target.files[0];
+                this.user.photo = image.name;
+                this.createImage(image);
+            },
+            createImage: function(file){
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                    this.user.photoBase64 = e.target.result;
+                };
+                reader.readAsDataURL(file);
             }
         },
 

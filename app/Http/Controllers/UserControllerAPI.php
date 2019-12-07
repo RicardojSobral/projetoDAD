@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
-
+use Faker\Provider\Image;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageServiceProvider;
 use Illuminate\Http\Request;
 use Laravel\Passport\HasApiTokens;
 use function GuzzleHttp\Promise\all;
+use App\Http\Controllers\Controller;
+
 use App\Http\Resources\User as UserResource;
 
-use App\Http\Controllers\Controller;
 use App\User;
 use Hash;
 
@@ -47,18 +51,22 @@ class UserControllerAPI extends Controller
 
     public function update(Request $request, $id) {
         $user = User::findOrFail($id);
-        //dd($request->all());
             
         if($user->type == "u"){
-            if($user->photo != $request->photo){                            //Foto nova
+            if($request->photoBase64){                            //Foto nova
                 $request->validate([
                     'name'      => 'required|regex:/^[a-zA-Zà-Ú ]+$/',
                     'nif'       => 'integer|digits:9',
-                    'photo' => 'image|mimes:jpeg,png,jpg,gif|max:1080',
+                    //'photo' => 'image|mimes:jpeg,png,jpg,gif|max:1080',
                 ]);
-
-                //Storage::disk('public')->putFileAs('fotos/', $file, $request->photo);
-
+                
+                $base64_string = explode(',', $request->photoBase64);
+                $imageBin = base64_decode($base64_string[1]);    
+                if (!Storage::disk('public')->exists('fotos/' . $request->photo)) {
+                    Storage::disk('public')->delete('fotos/' . $user->photo);
+                    Storage::disk('public')->put('fotos/' . $request->photo, $imageBin);
+                }     
+                
             }else{
                 $request->validate([
                     'name'      => 'required|regex:/^[a-zA-Zà-Ú ]+$/',
@@ -67,13 +75,18 @@ class UserControllerAPI extends Controller
                 ]);
             }    
         }else{
-            if($user->photo != $request->photo){                            //Foto nova
+            if($request->photoBase64){                            //Foto nova
                 $request->validate([
                     'name'      => 'required|regex:/^[a-zA-Zà-Ú ]+$/',
-                    'photo' => 'image|mimes:jpeg,png,jpg,gif|max:1080',
+                    //'photo' => 'image|mimes:jpeg,png,jpg,gif|max:1080',
                 ]);
-
-                //Storage::disk('public')->putFileAs('fotos/', $file, $$request->photo);
+                
+                $base64_string = explode(',', $request->photoBase64);
+                $imageBin = base64_decode($base64_string[1]);    
+                if (!Storage::disk('public')->exists('fotos/' . $request->photo)) {
+                    Storage::disk('public')->delete('fotos/' . $user->photo);
+                    Storage::disk('public')->put('fotos/' . $request->photo, $imageBin);
+                }     
 
             }else{
                 $request->validate([
@@ -81,9 +94,8 @@ class UserControllerAPI extends Controller
                 ]);
             }        
         }
-        
 
-        $user->update($request->all());
+        $user->update($request->except('photoBase64'));
         return new UserResource($user);
     }
 

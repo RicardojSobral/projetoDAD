@@ -29,8 +29,14 @@ class Movement extends Model
         return $this->belongsTo(Wallet::class);
     }
 
+    public function transfer_wallet() //atenção ao create credit!
+    {
+        return $this->hasOne(Wallet::class,  'id', 'transfer_wallet_id');
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
+
 }

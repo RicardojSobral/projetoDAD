@@ -8,6 +8,9 @@ import { store } from './store/store';
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
+import PaginationComponent from 'laravel-vue-pagination';
+Vue.component('pagination', PaginationComponent);
+
 import HomeComponent from './components/Home.vue';
 const home = Vue.component('home', HomeComponent);
 
@@ -20,12 +23,16 @@ const logout = Vue.component('logout', LogoutComponent);
 import ProfileComponent from './components/Profile.vue';
 const profile = Vue.component('profile', ProfileComponent);
 
+import WalletComponent from './components/Wallet.vue';
+const wallet = Vue.component('wallet', WalletComponent);
+
  const routes = [
      { path: '/', redirect: '/home'},
      { path: '/home', component: home},
      { path: '/login', component: login,  meta:{ requiresVisitor: true } },
      { path: '/logout', component: logout, meta:{ requiresAuth: true } },
      { path: '/profile', component: profile, meta:{ requiresAuth: true } },
+     { path: '/wallet', component: wallet, meta:{ requiresAuth: true } },
  ];
 
  const router = new VueRouter({

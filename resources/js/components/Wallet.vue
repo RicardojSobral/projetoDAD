@@ -50,6 +50,11 @@
 			<button type="button" class="close-btn" v-on:click="showError=false">&times;</button>
 			<strong>{{ successMessage }}</strong>
 		</div>
+
+        <div class="alert alert-success" v-if="showSuccess">			 
+			<button type="button" class="close-btn" v-on:click="showSuccess=false">&times;</button>
+			<strong>{{ successMessage }}</strong>
+		</div>
       
         <div>
             <table class="table table-striped">
@@ -67,7 +72,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="movement in movements.data"  :key="movement.id" :class="{activerow: selectedMovement === movement}">
+                    <tr v-for="movement in movements.data"  :key="movement.id" :class="{activerow: selectedMovement === movement || selectedMovementEdit === movement}">
                         <td>{{ movement.id }}</td>
                         <td>{{ movement.type }}</td>
                             <td v-if="movement.transfer_wallet_id != undefined">{{ movement.transfer_wallet.email }}</td>
@@ -81,6 +86,7 @@
                         <td>{{ movement.value }}</td>
                         <td>                    
                             <button type="button" class="btn btn-sm btn-primary" v-on:click="movementDetais(movement)">Details</button>
+                            <button type="button" class="btn btn-sm btn-secondary" v-on:click="movementEdit(movement)">Edit</button>
                         </td>
                     </tr>            
                 </tbody>
@@ -90,7 +96,14 @@
             <pagination :data="movements" :limit=4 @pagination-change-page="getResults"></pagination>
         </div>
 
+        <div class="alert alert-danger" v-if="showErrorEdit">			 
+			<button type="button" class="close-btn" v-on:click="showErrorEdit=false">&times;</button>
+			<strong>{{ errorMessageEdit }}</strong>
+		</div>
+
         <movement-details :movement="selectedMovement" @details-canceled="cancelMovementDetails" v-if="selectedMovement"></movement-details>
+        <movement-edit :movement="selectedMovementEdit" @edit-canceled="cancelMovementEdit" @save-edit="saveMovementEdit" 
+        @category-error="showCategoryError" v-if="selectedMovementEdit"> </movement-edit>
     </div>
 
 
@@ -98,6 +111,7 @@
 
 <script>
     import MovementDetailsComponent from "./MovementDetails.vue";
+    import MovementEditComponent from "./MovementEdit.vue";
 
     export default {
         data: function(){
@@ -106,6 +120,7 @@
                 user: this.$store.state.user,
                 movements: {},
                 selectedMovement: null,
+                selectedMovementEdit: null,
                 pagination: [],
                 balance: "",
                 search:{
@@ -119,8 +134,11 @@
                     data_sup: '',
                 },
                 showError: false,
-                showSuccess: '',
-    
+                showSuccess: false, 
+                successMessage: '',
+                errorMessageEdit: '',
+                showErrorEdit: false
+                
             }            
         },
 
@@ -158,15 +176,33 @@
                     })
             },
             movementDetais: function(movement){
+                this.selectedMovementEdit = null;
                 this.selectedMovement = movement;
             },           
             cancelMovementDetails: function(){
                 this.selectedMovement = null;
             },
+            movementEdit: function(movement){
+                this.selectedMovement = null;
+                this.selectedMovementEdit = movement;
+            },
+            cancelMovementEdit: function(){
+                this.selectedMovementEdit = null;
+            },
+            saveMovementEdit: function(){
+                this.selectedMovementEdit = null;
+                this.showSuccess = true;
+                this.successMessage = 'Movement edit successfully!'
+            },
+            showCategoryError: function(){
+                this.showErrorEdit = true;
+                this.errorMessageEdit = 'Category does not exist for this type of movement';
+            }
         },
 
         components: {
             "movement-details": MovementDetailsComponent,
+            "movement-edit": MovementEditComponent,
         },
         
         mounted() {

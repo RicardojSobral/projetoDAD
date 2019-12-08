@@ -104,5 +104,21 @@ class MovementControllerAPI extends Controller
         return $movements;
     }
 
+    public function update(Request $request, $id){
+        $movement = Movement::findOrFail($id);
+
+        $category_name = $request->category['name'];
+        $category =  DB::table('categories')->select('id')->where('name', $category_name)->where('type', $movement->type)->get();
+        if($category->isEmpty()){
+            return 'Category does not exist for this type of movement';
+        }
+
+        $movement->category_id = $category[0]->id;
+        $movement->description = $request->description;        
+
+        $movement->save();
+        return new MovementResource($movement);
+    }
+
 
 }

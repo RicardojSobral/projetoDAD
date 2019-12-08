@@ -59,13 +59,47 @@ class MovementControllerAPI extends Controller
         return new MovementResource($movement);
     }
 
-    public function getUserMovements($id){
+    public function getFilteredMovements(Request $request){
 
-        //$movements = DB::table('movements')->select('*')->where('wallet_id', $id)->orderBy('date', 'desc')->paginate(20);//tirar paginate paginate(20)
-        //$wallet = Wallet::findOrFail($id);       
-        //return $wallet->movements()->orderBy('date', 'desc')->paginate(10);
+        if(!is_null($request->id) || !is_null($request->type) || !is_null($request->category) || !is_null($request->type_payment) || !is_null($request->transfer_email) || !is_null($request->data_inf) || !is_null($request->data_sup)){
+            
+            $movements = Movement::with('category', 'transfer_wallet', 'transfer_wallet.user')->select('*')->where('wallet_id', $request->user_id);
 
-        $movements = Movement::with('category', 'transfer_wallet', 'transfer_wallet.user')->select('*')->where('wallet_id', $id)->orderBy('date', 'desc')->paginate(10);
+            if (!is_null($request->id)){
+                $movements = $movements->where('id', 'like', $request->id . '%');
+            }
+            if (!is_null($request->type)){
+                $movements = $movements->where('type', $request->type);
+            }
+            if (!is_null($request->category)){
+                $category = DB::table('categories')->select('id')->where('name', $request->category)->get();
+                if($category->isEmpty()){
+                    return 'Category does not exist!';
+                }
+                $movements = $movements->where('category_id', $category[0]->id);
+            }
+            if (!is_null($request->type_payment)){
+                $movements = $movements->where('type_payment', $request->type_payment);
+            }
+            if (!is_null($request->transfer_email)){
+                $transfer_email = DB::table('wallets')->select('id')->where('email', $request->transfer_email)->get();
+                if($transfer_email->isEmpty()){
+                    return 'Transfer e-mail does not exist!';
+                }
+                $movements = $movements->where('transfer_wallet_id', $transfer_email[0]->id);  
+            }
+            if (!is_null($request->data_sup)){
+                $movements = $movements->where('date', '>=', $request->data_sup);
+            }
+            if (!is_null($request->data_inf)){
+                $movements = $movements->where('date', '<=', $request->data_inf);
+            }
+
+            $movements = $movements->orderBy('date', 'desc')->paginate(10);
+            
+        }else{
+            $movements = Movement::with('category', 'transfer_wallet', 'transfer_wallet.user')->select('*')->where('wallet_id', $request->user_id)->orderBy('date', 'desc')->paginate(10);
+        }
 
         return $movements;
     }

@@ -49,12 +49,6 @@
         methods: {
             cancelDetails: function(){
                 this.$emit('details-canceled'); 
-                /*
-                <label v-if="movement.wallet.user.photo">Tranfer To/From User:</label>
-                <div class="col-md-10 col-md-offset-1" v-if="movement.wallet.user.photo">            
-                    <td><img v-bind:src="'storage/fotos/' + movement.photo" style="width:150px; height:150px; border-radius:50%; margin-bottom:25px; margin-right:25px; float:left;"></td>
-                </div>
-                */
             },
            
         },

@@ -2080,12 +2080,6 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     cancelDetails: function cancelDetails() {
       this.$emit('details-canceled');
-      /*
-      <label v-if="movement.wallet.user.photo">Tranfer To/From User:</label>
-      <div class="col-md-10 col-md-offset-1" v-if="movement.wallet.user.photo">            
-          <td><img v-bind:src="'storage/fotos/' + movement.photo" style="width:150px; height:150px; border-radius:50%; margin-bottom:25px; margin-right:25px; float:left;"></td>
-      </div>
-      */
     }
   }
 });
@@ -2564,6 +2558,53 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2573,15 +2614,35 @@ __webpack_require__.r(__webpack_exports__);
       movements: {},
       selectedMovement: null,
       pagination: [],
-      balance: ""
+      balance: "",
+      search: {
+        user_id: this.$store.state.user.id,
+        id: '',
+        type: '',
+        category: '',
+        type_payment: '',
+        transfer_email: '',
+        data_inf: '',
+        data_sup: ''
+      },
+      showError: false,
+      showSuccess: ''
     };
   },
   methods: {
-    getMovements: function getMovements() {
+    getFilteredMovements: function getFilteredMovements() {
       var _this = this;
 
-      axios.get('api/movements/' + this.user.id).then(function (response) {
-        _this.movements = response.data;
+      axios.post('api/movements/filter', this.search).then(function (response) {
+        if (response.data == 'E-mail does not exist!') {
+          _this.showError = true;
+          _this.successMessage = response.data;
+        } else if (response.data == 'Category does not exist!') {
+          _this.showError = true;
+          _this.successMessage = response.data;
+        } else {
+          _this.movements = response.data;
+        }
       })["catch"](function (error) {
         console.log(error);
       });
@@ -2599,7 +2660,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      axios.get('api/movements/' + this.user.id + "?page=" + page).then(function (response) {
+      axios.post('api/movements/filter?page=' + page, this.search).then(function (response) {
         _this3.movements = response.data;
       });
     },
@@ -2615,7 +2676,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.getBalance();
-    this.getMovements();
+    this.getFilteredMovements();
   }
 });
 
@@ -22612,6 +22673,282 @@ var render = function() {
       _c("div", { staticClass: "jumbotron" }, [
         _c("h1", [_vm._v("Balance: " + _vm._s(_vm.balance) + "€")])
       ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-3" }, [
+          _c("div", { staticClass: "form-group" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search.id,
+                  expression: "search.id"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                name: "id",
+                placeholder: "Search by movement ID"
+              },
+              domProps: { value: _vm.search.id },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.search, "id", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.search.type,
+                    expression: "search.type"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { name: "type" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.search,
+                      "type",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  }
+                }
+              },
+              [
+                _c("option", { attrs: { value: "", selected: "" } }, [
+                  _vm._v(" -- Type Of Movement -- ")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "e" } }, [_vm._v("Expense")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "i" } }, [_vm._v("Income")])
+              ]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-3" }, [
+          _c("div", { staticClass: "form-group" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search.category,
+                  expression: "search.category"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                name: "category",
+                placeholder: "Search Category"
+              },
+              domProps: { value: _vm.search.category },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.search, "category", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.search.type_payment,
+                    expression: "search.type_payment"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { name: "type_payment" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.search,
+                      "type_payment",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  }
+                }
+              },
+              [
+                _c("option", { attrs: { value: "", selected: "" } }, [
+                  _vm._v(" -- Type Of Payment -- ")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "c" } }, [_vm._v("Cash")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "bt" } }, [
+                  _vm._v("Bank Transfer")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "mb" } }, [_vm._v("MB Payment")])
+              ]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.search.transfer_email,
+                expression: "search.transfer_email"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              type: "text",
+              name: "transfer_email",
+              placeholder: "Search Transfer e-mail"
+            },
+            domProps: { value: _vm.search.transfer_email },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.search, "transfer_email", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-3" }, [
+          _c("div", { staticClass: "form-group" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search.data_sup,
+                  expression: "search.data_sup"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                name: "data_sup",
+                placeholder: "Date Superior To (yyyy-mm-dd)"
+              },
+              domProps: { value: _vm.search.data_sup },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.search, "data_sup", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search.data_inf,
+                  expression: "search.data_inf"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                name: "data_inf",
+                placeholder: "Date Inferior To (yyyy-mm-dd)"
+              },
+              domProps: { value: _vm.search.data_inf },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.search, "data_inf", $event.target.value)
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "form-group-btn" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary",
+              attrs: { type: "submit" },
+              on: {
+                click: function($event) {
+                  return _vm.getFilteredMovements()
+                }
+              }
+            },
+            [_vm._v("Search")]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _vm.showError
+        ? _c("div", { staticClass: "alert alert-danger" }, [
+            _c(
+              "button",
+              {
+                staticClass: "close-btn",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    _vm.showError = false
+                  }
+                }
+              },
+              [_vm._v("×")]
+            ),
+            _vm._v(" "),
+            _c("strong", [_vm._v(_vm._s(_vm.successMessage))])
+          ])
+        : _vm._e(),
       _vm._v(" "),
       _c("div", [
         _c("table", { staticClass: "table table-striped" }, [

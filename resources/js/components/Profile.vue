@@ -121,11 +121,11 @@
 	        cancelEdit: function(){
 	            this.showPassword = false;
             },
-            passCanceled: function(){
+            passCanceled: function(){       //ERRORS METHODS
 	            this.showError = true;
 	            this.successMessage = 'Invalid password credentials';
             },
-            passSame: function(){
+            passSame: function(){   
 	            this.showError = true;
 	            this.successMessage = 'New password cannot be the same as old!';
             },
@@ -137,7 +137,8 @@
 	            this.showError = true;
 	            this.successMessage = 'Old password incorrect!';
             },
-            getActualPhoto: function(){  
+
+            getActualPhoto: function(){     //IMAGE UPLOAD/DISPLAY METHODS
                 if (this.actualPhoto == null){
                     return "unknown.jpg";
                 }              

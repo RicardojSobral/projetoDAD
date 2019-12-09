@@ -8,8 +8,14 @@
         <br>
 
         <div v-if="this.$store.state.user != null">
-            <div v-show="this.$store.state.user.type == 'o'">
+            <div v-if="this.$store.state.user.type == 'o'">
                 <button type="button" class="btn btn-primary" v-on:click.prevent="registerCredit()">Register Credit</button>
+            </div>
+        </div>
+
+        <div v-if="this.$store.state.user != null">
+            <div v-if="this.$store.state.user.type == 'a'">
+                <button type="button" class="btn btn-primary" v-on:click.prevent="createAdminOp()">Create Admin/Operator</button>
             </div>
         </div>
 
@@ -29,7 +35,7 @@
 
         <register-credit @credit-canceled="cancelCredit" @email-error="emailError" @credit-created="creditCreated" v-if="showRegisterCredit"></register-credit>
         
-        
+        <create-admin @create-canceled="cancelCreateAdmin" @admin-created="adminCreated" v-if="showCreateAdmin"></create-admin>
 
     </div>
 
@@ -38,6 +44,7 @@
 
 <script>
     import RegisterCredit from './RegisterCredit.vue';
+    import CreateAdmin from './CreateUserAdmin.vue';
 
     export default {
         data: function(){
@@ -48,11 +55,12 @@
                 showSuccess: false,
                 showError: false,
                 successMessage: "",
+                showCreateAdmin: false,
             }
         },
 
         methods: {
-            registerCredit: function(){
+            registerCredit: function(){ //CREATE CREDIT METHODS
                 this.showRegisterCredit = true;
             },
             cancelCredit: function(){
@@ -66,6 +74,18 @@
                 this.showSuccess = true;
                 this.successMessage = "Credit created with success";
                 this.showRegisterCredit = false;
+            },
+
+            createAdminOp: function(){  // CREATE ADMIN/OPERATOR METHODS
+                this.showCreateAdmin = true;
+            },
+            cancelCreateAdmin: function(){
+                this.showCreateAdmin = false;
+            },
+            adminCreated: function(){
+                this.showSuccess = true;
+                this.successMessage = "Admin/Operator created with success";
+                this.showCreateAdmin = false;
             }
         },
 
@@ -77,7 +97,8 @@
         },
 
          components: {
-	    	'register-credit': RegisterCredit
+            'register-credit': RegisterCredit,
+            'create-admin': CreateAdmin
 	    },       
     }
 </script>

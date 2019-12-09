@@ -34,19 +34,25 @@ class UserControllerAPI extends Controller
 
     public function store(Request $request) {
         $request->validate([
-            'name'      => 'required|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
+            'name'      => 'required|regex:/^[a-zA-Zà-Ú ]+$/',
             'email'     => 'required|email|unique:users,email',
             'password'  => 'min:3',
-            'nif'       => 'integer|min:9|max:9',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:1080',
+            'type' => 'required|in:a,o,u',
+            'photo' => 'required',//|image|mimes:jpeg,png,jpg,gif|max:1080
         ]);
+
+        $base64_string = explode(',', $request->photoBase64);
+        $imageBin = base64_decode($base64_string[1]);    
+        if (!Storage::disk('public')->exists('fotos/' . $request->photo)) {
+            Storage::disk('public')->put('fotos/' . $request->photo, $imageBin);
+        }     
 
         $user = new User();
         $user->fill($request->all());
         $user->password = Hash::make($user->password);
         $user->save();
 
-        return response()->json(new UserResource($user), 201);
+        return new UserResource($user);
     }
 
     public function update(Request $request, $id) {

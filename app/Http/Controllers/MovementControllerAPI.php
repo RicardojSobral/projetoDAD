@@ -29,14 +29,14 @@ class MovementControllerAPI extends Controller
                 'value' => 'required|numeric|between:0.01,5000.00',
                 'type_payment' => 'required|in:c,bt,mb',
             ]);
-        };     
+        };
 
-        $walletId = DB::table('wallets')->select('id')->where('email', $request->email)->get(); 
+        $walletId = DB::table('wallets')->select('id')->where('email', $request->email)->get();
         if($walletId->isEmpty()){
             return response('Email is not valid!');
         }
 
-        $balance = DB::table('wallets')->select('balance')->where('email', $request->email)->get(); 
+        $balance = DB::table('wallets')->select('balance')->where('email', $request->email)->get();
 
         //Alterar balance da wallet destino
         $wallet = Wallet::findOrFail($walletId[0]->id);
@@ -45,7 +45,7 @@ class MovementControllerAPI extends Controller
 
         //Date/Time presente
         $date = Carbon::now();
-       
+
         $movement = new Movement();
         $movement->fill($request->all());
         $movement->wallet_id = $walletId[0]->id;
@@ -59,10 +59,14 @@ class MovementControllerAPI extends Controller
         return new MovementResource($movement);
     }
 
+    public function createDebit(Request $request) {
+
+    }
+
     public function getFilteredMovements(Request $request){
 
         if(!is_null($request->id) || !is_null($request->type) || !is_null($request->category) || !is_null($request->type_payment) || !is_null($request->transfer_email) || !is_null($request->data_inf) || !is_null($request->data_sup)){
-            
+
             $movements = Movement::with('category', 'transfer_wallet', 'transfer_wallet.user')->select('*')->where('wallet_id', $request->user_id);
 
             if (!is_null($request->id)){
@@ -86,7 +90,7 @@ class MovementControllerAPI extends Controller
                 if($transfer_email->isEmpty()){
                     return 'Transfer e-mail does not exist!';
                 }
-                $movements = $movements->where('transfer_wallet_id', $transfer_email[0]->id);  
+                $movements = $movements->where('transfer_wallet_id', $transfer_email[0]->id);
             }
             if (!is_null($request->data_sup)){
                 $movements = $movements->where('date', '>=', $request->data_sup);
@@ -96,7 +100,7 @@ class MovementControllerAPI extends Controller
             }
 
             $movements = $movements->orderBy('date', 'desc')->paginate(10);
-            
+
         }else{
             $movements = Movement::with('category', 'transfer_wallet', 'transfer_wallet.user')->select('*')->where('wallet_id', $request->user_id)->orderBy('date', 'desc')->paginate(10);
         }
@@ -114,7 +118,7 @@ class MovementControllerAPI extends Controller
         }
 
         $movement->category_id = $category[0]->id;
-        $movement->description = $request->description;        
+        $movement->description = $request->description;
 
         $movement->save();
         return new MovementResource($movement);

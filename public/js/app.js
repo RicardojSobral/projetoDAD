@@ -1871,20 +1871,64 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       user: {
         name: '',
-        nif: '',
         type: '',
+        email: '',
         photo: '',
         photoBase64: ''
-      }
+      },
+      showError: false,
+      successMessage: ''
     };
   },
   methods: {
-    createUserAdmin: function createUserAdmin() {},
+    createUserAdmin: function createUserAdmin() {
+      var _this = this;
+
+      axios.post('api/users/create', this.user).then(function (response) {
+        console.log(response);
+
+        _this.$emit('admin-created');
+      })["catch"](function (error) {
+        console.error(error);
+
+        if (error.response.data.errors.name) {
+          _this.successMessage = error.response.data.errors.name[0];
+          _this.showError = true;
+        } else if (error.response.data.errors.email) {
+          _this.successMessage = error.response.data.errors.email[0];
+          _this.showError = true;
+        } else if (error.response.data.errors.password) {
+          _this.successMessage = error.response.data.errors.password[0];
+          _this.showError = true;
+        } else if (error.response.data.errors.type) {
+          _this.successMessage = error.response.data.errors.type[0];
+          _this.showError = true;
+        } else if (error.response.data.errors.photo) {
+          _this.successMessage = error.response.data.errors.photo[0];
+          _this.showError = true;
+        }
+      });
+    },
     cancelCreate: function cancelCreate() {
       this.$emit('create-canceled');
     },
@@ -1895,12 +1939,12 @@ __webpack_require__.r(__webpack_exports__);
       this.createImage(image);
     },
     createImage: function createImage(file) {
-      var _this = this;
+      var _this2 = this;
 
       var reader = new FileReader();
 
       reader.onload = function (e) {
-        _this.user.photoBase64 = e.target.result;
+        _this2.user.photoBase64 = e.target.result;
       };
 
       reader.readAsDataURL(file);
@@ -21791,6 +21835,26 @@ var render = function() {
   return _c("div", { staticClass: "jumbotron" }, [
     _c("h2", [_vm._v("Create Admin/Operator")]),
     _vm._v(" "),
+    _vm.showError
+      ? _c("div", { staticClass: "alert alert-danger" }, [
+          _c(
+            "button",
+            {
+              staticClass: "close-btn",
+              attrs: { type: "button" },
+              on: {
+                click: function($event) {
+                  _vm.showError = false
+                }
+              }
+            },
+            [_vm._v("×")]
+          ),
+          _vm._v(" "),
+          _c("strong", [_vm._v(_vm._s(_vm.successMessage))])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
     _c("div", { staticClass: "accountCreate-form" }, [
       _c("div", { staticClass: "form-group" }, [
         _c("label", { attrs: { for: "inputName" } }, [_vm._v("Name: ")]),
@@ -21837,7 +21901,7 @@ var render = function() {
           ],
           staticClass: "form-control",
           attrs: {
-            type: "text",
+            type: "email",
             id: "inputEmail",
             placeholder: "Email",
             required: ""
@@ -21852,6 +21916,52 @@ var render = function() {
             }
           }
         })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "type" } }, [_vm._v("Type:")]),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.user.type,
+                expression: "user.type"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { name: "type", id: "type", required: "" },
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.$set(
+                  _vm.user,
+                  "type",
+                  $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                )
+              }
+            }
+          },
+          [
+            _c("option", { attrs: { disabled: "", selected: "" } }, [
+              _vm._v(" -- select an option -- ")
+            ]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "a" } }, [_vm._v("Administrator")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "o" } }, [_vm._v("Operator")])
+          ]
+        )
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "form-group" }, [

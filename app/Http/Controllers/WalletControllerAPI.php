@@ -20,4 +20,10 @@ class WalletControllerAPI extends Controller
         $count = DB::table('wallets')->count();
         return $count;
     }
+
+    public function getBalance($id)
+    {
+        $balance = DB::table('wallets')->select('balance')->where('id', $id)->get();
+        return $balance[0]->balance;
+    }
 }

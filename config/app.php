@@ -123,6 +123,20 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+
+    /*
+    |-------------------------------------------------------------------------
+    | Custom config variables
+    |-----------
+    |
+    */
+
+
+    'server_url' => env('YOUR_SERVER_URL'),
+    'client_id' => env('CLIENT_ID'),
+    'client_secret' => env('CLIENT_SECRET'),
+
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

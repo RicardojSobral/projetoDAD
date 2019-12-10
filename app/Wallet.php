@@ -13,7 +13,7 @@ class Wallet extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id', 'id');
+        return $this->belongsTo(User::class,  'id', 'id');
     }
 
     public function movements()
@@ -21,7 +21,7 @@ class Wallet extends Model
         return $this->hasMany(Movement::class, 'wallet_id');
     }
 
-    public function transfer_movement()//adicionei este
+    public function transfer_movement()
     {
         return $this->belongsToMany(Movement::class, 'transfer_wallet_id', 'id');
     }

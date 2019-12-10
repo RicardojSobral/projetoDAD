@@ -25,4 +25,5 @@ class User extends JsonResource
             'nif' => $this->nif,
         ];
     }
+
 }

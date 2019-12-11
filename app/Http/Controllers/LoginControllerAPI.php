@@ -9,7 +9,7 @@ class LoginControllerAPI extends Controller{
     public function login(Request $request)
     {
         $http = new Client();
-        $response = $http->post(config('app.server_url').'/oauth/token', [
+        $response = $http->post(config('app.server_url') . '/oauth/token', [
             'form_params' => [
                 'grant_type' => 'password',
                 'client_id' => config('app.client_id'),

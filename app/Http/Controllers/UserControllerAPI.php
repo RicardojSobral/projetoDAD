@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\User as UserResource;
 
 use App\User;
+use App\Wallet;
 use Hash;
 
 
@@ -28,25 +29,62 @@ class UserControllerAPI extends Controller
         }
     }
 
+    public function getFilteredUsers(Request $request){
+
+        if(!is_null($request->name) || !is_null($request->type) || !is_null($request->email) || !is_null($request->active)){
+        
+            $users = User::with('wallet')->select('*');
+
+            if(!is_null($request->name)){
+                $users = $users->where('name', 'like', $request->name . '%');
+            }
+            if(!is_null($request->type)){
+                $users = $users->where('type', $request->type);
+            }
+            if(!is_null($request->email)){
+                $users = $users->where('email', 'like', $request->email . '%');
+            }
+            if(!is_null($request->active)){
+                if($request->type == null || $request->type == 'u'){
+                    $users = $users->where('active', $request->active);
+                }else{
+                    return "Can't search by status and type if type is different form 'Platform User'!";
+                }
+            }
+
+            $users = $users->paginate(10);
+
+        }else{
+            $users = User::with('wallet')->select('*')->paginate(10);
+        }
+        return $users;
+    }
+
     public function show($id) {
         return new UserResource(User::find($id));
     }
 
     public function store(Request $request) {
         $request->validate([
-            'name'      => 'required|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
+            'name'      => 'required|regex:/^[a-zA-Zà-Ú ]+$/',
             'email'     => 'required|email|unique:users,email',
             'password'  => 'min:3',
-            'nif'       => 'integer|min:9|max:9',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:1080',
+            'type' => 'required|in:a,o,u',
+            'photo' => 'required',//|image|mimes:jpeg,png,jpg,gif|max:1080
         ]);
+
+        $base64_string = explode(',', $request->photoBase64);
+        $imageBin = base64_decode($base64_string[1]);    
+        if (!Storage::disk('public')->exists('fotos/' . $request->photo)) {
+            Storage::disk('public')->put('fotos/' . $request->photo, $imageBin);
+        }     
 
         $user = new User();
         $user->fill($request->all());
         $user->password = Hash::make($user->password);
         $user->save();
 
-        return response()->json(new UserResource($user), 201);
+        return new UserResource($user);
     }
 
     public function update(Request $request, $id) {
@@ -144,8 +182,26 @@ class UserControllerAPI extends Controller
             $user->save();
             return new UserResource($user);
         }
-        //dd($request->old_password);
         return response('Old password incorrect');    
+    }
+
+    public function deactivateUser($id){
+        $user = User::findOrFail($id);
+        $balance = DB::table('wallets')->select('balance')->where('id', $id)->get();
+        if($balance[0]->balance == 0){
+            $user->active = 0;
+            $user->save();
+        }else{
+            return "Wallet Balance must be 0.00 to deactivate a user!";
+        }
+        return new UserResource($user);
+    }
+
+    public function activateUser($id){
+        $user = User::findOrFail($id);
+        $user->active = 1;
+        $user->save();
+        return new UserResource($user);
     }
 
 }

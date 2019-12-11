@@ -34,6 +34,11 @@ Route::middleware('auth:api')->get('users/cancel/{id}', 'UserControllerAPI@show'
 Route::middleware('auth:api')->get('users/me', 'UserControllerAPI@myProfile');
 Route::middleware('auth:api')->put('users/{id}', 'UserControllerAPI@update');
 Route::middleware('auth:api')->patch('users/password', 'UserControllerAPI@alterarPassword');
+Route::middleware('auth:api')->post('users/create', 'UserControllerAPI@store');
+Route::middleware('auth:api')->post('users/filter', 'UserControllerAPI@getFilteredUsers');
+Route::middleware('auth:api')->put('users/deactivate/{id}', 'UserControllerAPI@deactivateUser');
+Route::middleware('auth:api')->put('users/activate/{id}', 'UserControllerAPI@activateUser');
+Route::middleware('auth:api')->delete('users/{id}', 'UserControllerAPI@destroy');
 
 Route::middleware('auth:api')->post('movements/credit', 'MovementControllerAPI@createCredit');
 Route::middleware('auth:api')->post('movements/debit', 'MovementControllerAPI@createDebit');

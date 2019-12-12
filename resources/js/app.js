@@ -40,7 +40,7 @@ const movementDebit = Vue.component('movementDebit', MovementDebitComponent);
      { path: '/profile', component: profile, meta:{ requiresAuth: true } },
      { path: '/wallet', component: wallet, meta:{ requiresAuth: true } },
      { path: '/accounts', component: accounts, meta:{ requiresAuth: true } },
-     { path: '/movements/credit', component: movementDebit, meta: { requiresAuth: true }    },
+     { path: '/movements/debit', component: movementDebit, meta: { requiresAuth: true }    },
  ];
 
  const router = new VueRouter({

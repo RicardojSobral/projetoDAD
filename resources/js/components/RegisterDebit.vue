@@ -12,7 +12,7 @@
             <input
                 type="email" class="form-control" v-model="email"
                 name="email" id="inputEmail"
-                placeholder="Insert email of the account to receive the money" required
+                placeholder="Insert email of the account to send the money" required
                 title="Email must be a valid user email"/>
         </div>
 
@@ -55,8 +55,8 @@
         </div>
 
         <div class="form-group">
-            <a class="btn btn-success" v-on:click.prevent="createCredit()">Create Credit</a>
-            <a class="btn btn-light" v-on:click.prevent="cancelCredit()">Cancel</a>
+            <a class="btn btn-success" v-on:click.prevent="createDebit()">Register Movement</a>
+            <a class="btn btn-light" v-on:click.prevent="cancelDebit()">Cancel</a>
         </div>
 
     </div>

@@ -29,6 +29,9 @@ const wallet = Vue.component('wallet', WalletComponent);
 import ListAccountsComponent from './components/ListAccounts.vue';
 const accounts = Vue.component('accounts', ListAccountsComponent);
 
+import MovementDebitComponent from './components/RegisterDebit.vue';
+const movementDebit = Vue.component('movementDebit', MovementDebitComponent);
+
  const routes = [
      { path: '/', redirect: '/home'},
      { path: '/home', component: home},
@@ -37,6 +40,7 @@ const accounts = Vue.component('accounts', ListAccountsComponent);
      { path: '/profile', component: profile, meta:{ requiresAuth: true } },
      { path: '/wallet', component: wallet, meta:{ requiresAuth: true } },
      { path: '/accounts', component: accounts, meta:{ requiresAuth: true } },
+     { path: '/movements/credit', component: movementDebit, meta: { requiresAuth: true }    },
  ];
 
  const router = new VueRouter({

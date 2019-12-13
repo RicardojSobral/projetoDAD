@@ -17,8 +17,11 @@
                     <input type="password" name="password" id="password" class="login-input1" required v-model="user.password">
                 </div>
 
-                <div class="form-control1">
+                <div class="form-control1" v-if="!loggingIn">
                     <button type="submit" class="btn-submit1" v-on:click.prevent="login">Login</button>
+                </div>
+                <div class="form-control1" v-if="loggingIn">
+                    <button :disabled="true" class="btn-submit2">Login In</button>
                 </div>
         </div>
 </template>
@@ -35,10 +38,12 @@
             typeofmsg: "alert-success",
             showMessage: false,
             message: "",
+            loggingIn: false,
         }
     },
     methods: {
       login(){
+        this.loggingIn = true;
         axios.post('api/login', this.user)
             .then(response => {
                 this.$store.commit('setToken',response.data.access_token);
@@ -46,13 +51,16 @@
             })
             .then(response => {
                 this.$store.commit('setUser',response.data.data);
-                this.$router.push('/')
+                this.$socket.emit("user_enter", response.data.data);
+                this.$router.push('/');
+                this.loggingIn = true;
             })
             .catch(error => {
                 this.$store.commit('clearUserAndToken');
                 this.typeofmsg = "alert-danger";
                 this.message = "Invalid credentials";
                 this.showMessage = true;
+                this.loggingIn = false;
                 console.log(error);
             })
       }
@@ -93,6 +101,19 @@
     cursor: pointer;
     &:hover {
       background: darken(#60BD4F, 10%);
+    }
+  }
+  .btn-submit2 {
+    width: 100%;
+    padding: 14px 12px;
+    font-size: 18px;
+    font-weight: bold;
+    background: lightgrey;
+    color: white;
+    border-radius: 3px;
+    cursor: pointer;
+    &:hover {
+      background: darken(lightgrey, 10%);
     }
   }
   

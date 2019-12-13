@@ -89,6 +89,7 @@
                         if(response.data == "Email is not valid!"){
 							this.$emit('email-error');
 						}else{
+                            this.$socket.emit("user_changed_income", this.value, response.data);
                             this.$emit('credit-created');
                         }
                     })                    

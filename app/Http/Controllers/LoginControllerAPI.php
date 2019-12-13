@@ -4,21 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-define('YOUR_SERVER_URL', 'http://dad.projeto.test/');
-// Check "oauth_clients" table for next 2 values:
-define('CLIENT_ID', '2');
-define('CLIENT_SECRET','vktsYm2csGZhTspkk5rQj2Lp9L2ISTTZK7Sz765h');
+
 
 class LoginControllerAPI extends Controller
 {
     public function login(Request $request)
     {
         $http = new \GuzzleHttp\Client;
-        $response = $http->post(YOUR_SERVER_URL.'/oauth/token', [
+        $response = $http->post(env('PASSPORT_SERVER_URL').'/oauth/token', [
             'form_params' => [
                 'grant_type' => 'password',
-                'client_id' => CLIENT_ID,
-                'client_secret' => CLIENT_SECRET,
+                'client_id' => env('PASSPORT_CLIENT_ID', 2),
+                'client_secret' => env('PASSPORT_CLIENT_SECRET'),
                 'username' => $request->email,
                 'password' => $request->password,
                 'scope' => ''

@@ -1,8 +1,8 @@
 /* jshint esversion: 6 */
 
-//var app = require("http").createServer();
+var app = require("http").createServer();
 
- var app = require('http').createServer(function(req,res){
+ /*var app = require('http').createServer(function(req,res){
   res.setHeader('Access-Control-Allow-Origin', 'http://dad.projeto.test');
   res.setHeader('Access-Control-Request-Method', '*');
   res.setHeader('Access-Control-Allow-Methods', 'UPGRADE, OPTIONS, GET');
@@ -13,7 +13,7 @@
       res.end();
       return;
   }
- });
+ });*/
 
 
 var io = require("socket.io")(app);
@@ -43,7 +43,6 @@ io.on("connection", function(socket) {
 
     socket.on("user_changed_income", function(msg, destUser) {
         let userInfo = loggedUsers.userInfoByID(destUser.id);
-        console.log(userInfo);
         let socket_id = userInfo !== undefined ? userInfo.socketID : null;
         if (socket_id === null) {
           //socket.emit("privateMessage_unavailable", destUser); //enviar mail

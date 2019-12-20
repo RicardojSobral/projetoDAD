@@ -10,28 +10,27 @@
         <div class="form-group">
             <label for="type_movement">Type Of Movement:</label>
             <select name="type_movement" id="type_movement" class="form-control" v-model="type_movement" required>
-                <option disabled selected> -- select an option -- </option>
-                <option value="payment">Payment</option>
-                <option value="transfer">Transfer</option>
+                <option selected value=""> -- select an option -- </option>
+                <option value="0">Payment</option>
+                <option value="1">Transfer</option>
             </select>
         </div>
 
         <div class="form-group">
             <label for="inputValue">Value:</label>
-            <input
-                type="number" class="form-control" v-model="value"
-                name="value" id="inputValue"
-                placeholder="Insert email of the account to send the money" required
+            <input type="number" class="form-control" v-model="value" name="value" id="inputValue"
+                placeholder="Insert the amount to send" required
                 title="You must enter a valid value"/>
         </div>
 
         <div class="form-group">
             <label for="inputCategory">Category of expense:</label>
-            <input
-                type="email" class="form-control" v-model="category"
-                name="email" id="inputCategory"
-                placeholder="Insert email of the account to send the money" required
-                title="Email must be a valid user email"/>
+            <select name="category" id="inputCategory" class="form-control" v-model="category" required>
+                <option disabled> -- select an option -- </option>
+                <option v-for="category in categories" v-bind:value="category.id">
+                    {{ category.name }}
+                </option>
+            </select>
         </div>
 
         <div class="form-group">
@@ -42,11 +41,11 @@
                 placeholder="Insert a description of the movement"/>
         </div>
 
-        <div v-if="type_movement === 'payment'">
+        <div v-if="type_movement === '0'">
             <div class="form-group">
                 <label for="type_payment">Type Of Payment:</label>
                 <select name="type_payment" id="type_payment" class="form-control" v-model="type_payment" required>
-                    <option disabled selected> -- select an option -- </option>
+                    <option selected value=""> -- select an option -- </option>
                     <option value="bt">Bank Transfer</option>
                     <option value="mb">MB Payment</option>
                 </select>
@@ -83,13 +82,13 @@
             </div>
         </div>
 
-        <div v-if="type_movement === 'transfer'">
+        <div v-if="type_movement === '1'">
             <div class="form-group">
                 <label for="inputEmail">Email of the destination wallet:</label>
                 <input
                     type="email" class="form-control" v-model="email"
                     name="email" id="inputEmail"
-                    placeholder="Insert email of the wallet to send the money" required
+                    placeholder="Insert email of the destination wallet" required
                     title="Email must be a valid user email"/>
             </div>
             <div class="form-group">
@@ -111,8 +110,8 @@
 
 <script>
     export default {
-        data: function(){
-            return{
+        data: function() {
+            return {
                 type_movement: '',
                 value: '',
                 category: '',
@@ -122,13 +121,28 @@
                 MBEntity: '',
                 MBReference:'',
                 email: '',
-                source_description: ''
+                source_description: '',
+                categories: '',
+                showError: false,
             }
         },
 
         methods: {
-            createDebit: function(){
-                axios.post('api/movements/debit', this)
+            createDebit: function() {
+                console.log()
+                axios.post('api/movements/debit', {
+                    transfer: this.type_movement,
+                    type: 'e',
+                    type_payment: this.type_payment,
+                    category_id: this.category,
+                    iban: this.iban,
+                    mb_entity_code: this.MBEntity,
+                    mb_payment_reference: this.MBReference,
+                    description: this.description,
+                    source_description: this.source_description,
+                    email: this.email,
+                    value: this.value
+                })
                     .then(response => {
                         if(response.data == "Email is not valid!"){
                             this.$emit('email-error');
@@ -137,8 +151,8 @@
                         }
                     })
                     .catch(error => {
-                        console.error(error);
-                        if (error.response.data.errors){
+                        console.error(error)
+                        /*if (error.response.data.errors){
                             if(error.response.data.errors.email){
                                 this.successMessage = error.response.data.errors.email[0];
                                 this.showError = true;
@@ -158,13 +172,23 @@
                         }else {
                             this.successMessage = 'Value must be a numeric value between 0.1 and 5000';
                             this.showError = true;
-                        }
+                        }*/
                     })
             },
 
-            cancelDebit: function(){
-                this.$emit('credit-canceled');
+            getCategories: function() {
+                axios.get('api/categories/e').then(response => {
+                    this.categories = response.data
+                })
             },
+
+            cancelDebit: function(){
+                this.$emit('debit-canceled');
+            },
+        },
+
+        mounted() {
+            this.getCategories();
         }
 
     }

@@ -2915,7 +2915,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2928,14 +2927,29 @@ __webpack_require__.r(__webpack_exports__);
       MBEntity: '',
       MBReference: '',
       email: '',
-      source_description: ''
+      source_description: '',
+      categories: '',
+      showError: false
     };
   },
   methods: {
     createDebit: function createDebit() {
       var _this = this;
 
-      axios.post('api/movements/debit', this).then(function (response) {
+      console.log();
+      axios.post('api/movements/debit', {
+        transfer: this.type_movement,
+        type: 'e',
+        type_payment: this.type_payment,
+        category_id: this.category,
+        iban: this.iban,
+        mb_entity_code: this.MBEntity,
+        mb_payment_reference: this.MBReference,
+        description: this.description,
+        source_description: this.source_description,
+        email: this.email,
+        value: this.value
+      }).then(function (response) {
         if (response.data == "Email is not valid!") {
           _this.$emit('email-error');
         } else {
@@ -2943,33 +2957,42 @@ __webpack_require__.r(__webpack_exports__);
         }
       })["catch"](function (error) {
         console.error(error);
+        /*if (error.response.data.errors){
+            if(error.response.data.errors.email){
+                this.successMessage = error.response.data.errors.email[0];
+                this.showError = true;
+            }else if (error.response.data.errors.value){
+                this.successMessage = error.response.data.errors.value[0];
+                this.showError = true;
+            }else if (error.response.data.errors.type_payment){
+                this.successMessage = error.response.data.errors.type_payment[0];
+                this.showError = true;
+            }else if (error.response.data.errors.iban){
+                this.successMessage = error.response.data.errors.iban[0];
+                this.showError = true;
+            }else if (error.response.data.errors.source_description){
+                this.successMessage = error.response.data.errors.source_description[0];
+                this.showError = true;
+            }
+        }else {
+            this.successMessage = 'Value must be a numeric value between 0.1 and 5000';
+            this.showError = true;
+        }*/
+      });
+    },
+    getCategories: function getCategories() {
+      var _this2 = this;
 
-        if (error.response.data.errors) {
-          if (error.response.data.errors.email) {
-            _this.successMessage = error.response.data.errors.email[0];
-            _this.showError = true;
-          } else if (error.response.data.errors.value) {
-            _this.successMessage = error.response.data.errors.value[0];
-            _this.showError = true;
-          } else if (error.response.data.errors.type_payment) {
-            _this.successMessage = error.response.data.errors.type_payment[0];
-            _this.showError = true;
-          } else if (error.response.data.errors.iban) {
-            _this.successMessage = error.response.data.errors.iban[0];
-            _this.showError = true;
-          } else if (error.response.data.errors.source_description) {
-            _this.successMessage = error.response.data.errors.source_description[0];
-            _this.showError = true;
-          }
-        } else {
-          _this.successMessage = 'Value must be a numeric value between 0.1 and 5000';
-          _this.showError = true;
-        }
+      axios.get('api/categories/e').then(function (response) {
+        _this2.categories = response.data;
       });
     },
     cancelDebit: function cancelDebit() {
-      this.$emit('credit-canceled');
+      this.$emit('debit-canceled');
     }
+  },
+  mounted: function mounted() {
+    this.getCategories();
   }
 });
 
@@ -23921,13 +23944,13 @@ var render = function() {
           }
         },
         [
-          _c("option", { attrs: { disabled: "", selected: "" } }, [
+          _c("option", { attrs: { selected: "", value: "" } }, [
             _vm._v(" -- select an option -- ")
           ]),
           _vm._v(" "),
-          _c("option", { attrs: { value: "payment" } }, [_vm._v("Payment")]),
+          _c("option", { attrs: { value: "0" } }, [_vm._v("Payment")]),
           _vm._v(" "),
-          _c("option", { attrs: { value: "transfer" } }, [_vm._v("Transfer")])
+          _c("option", { attrs: { value: "1" } }, [_vm._v("Transfer")])
         ]
       )
     ]),
@@ -23949,7 +23972,7 @@ var render = function() {
           type: "number",
           name: "value",
           id: "inputValue",
-          placeholder: "Insert email of the account to send the money",
+          placeholder: "Insert the amount to send",
           required: "",
           title: "You must enter a valid value"
         },
@@ -23970,34 +23993,50 @@ var render = function() {
         _vm._v("Category of expense:")
       ]),
       _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.category,
-            expression: "category"
-          }
-        ],
-        staticClass: "form-control",
-        attrs: {
-          type: "email",
-          name: "email",
-          id: "inputCategory",
-          placeholder: "Insert email of the account to send the money",
-          required: "",
-          title: "Email must be a valid user email"
-        },
-        domProps: { value: _vm.category },
-        on: {
-          input: function($event) {
-            if ($event.target.composing) {
-              return
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.category,
+              expression: "category"
             }
-            _vm.category = $event.target.value
+          ],
+          staticClass: "form-control",
+          attrs: { name: "category", id: "inputCategory", required: "" },
+          on: {
+            change: function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.category = $event.target.multiple
+                ? $$selectedVal
+                : $$selectedVal[0]
+            }
           }
-        }
-      })
+        },
+        [
+          _c("option", { attrs: { disabled: "" } }, [
+            _vm._v(" -- select an option -- ")
+          ]),
+          _vm._v(" "),
+          _vm._l(_vm.categories, function(category) {
+            return _c("option", { domProps: { value: category.id } }, [
+              _vm._v(
+                "\n                " + _vm._s(category.name) + "\n            "
+              )
+            ])
+          })
+        ],
+        2
+      )
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "form-group" }, [
@@ -24033,7 +24072,7 @@ var render = function() {
       })
     ]),
     _vm._v(" "),
-    _vm.type_movement === "payment"
+    _vm.type_movement === "0"
       ? _c("div", [
           _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "type_payment" } }, [
@@ -24074,7 +24113,7 @@ var render = function() {
                 }
               },
               [
-                _c("option", { attrs: { disabled: "", selected: "" } }, [
+                _c("option", { attrs: { selected: "", value: "" } }, [
                   _vm._v(" -- select an option -- ")
                 ]),
                 _vm._v(" "),
@@ -24203,7 +24242,7 @@ var render = function() {
         ])
       : _vm._e(),
     _vm._v(" "),
-    _vm.type_movement === "transfer"
+    _vm.type_movement === "1"
       ? _c("div", [
           _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "inputEmail" } }, [
@@ -24224,7 +24263,7 @@ var render = function() {
                 type: "email",
                 name: "email",
                 id: "inputEmail",
-                placeholder: "Insert email of the wallet to send the money",
+                placeholder: "Insert email of the destination wallet",
                 required: "",
                 title: "Email must be a valid user email"
               },

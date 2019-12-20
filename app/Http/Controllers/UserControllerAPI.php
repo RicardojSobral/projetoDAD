@@ -32,7 +32,7 @@ class UserControllerAPI extends Controller
     public function getFilteredUsers(Request $request){
 
         if(!is_null($request->name) || !is_null($request->type) || !is_null($request->email) || !is_null($request->active)){
-        
+
             $users = User::with('wallet')->select('*');
 
             if(!is_null($request->name)){
@@ -74,11 +74,11 @@ class UserControllerAPI extends Controller
         ]);
 
         $base64_string = explode(',', $request->photoBase64);
-        $imageBin = base64_decode($base64_string[1]);    
+        $imageBin = base64_decode($base64_string[1]);
         if (!Storage::disk('public')->exists('fotos/' . $request->photo)) {
             Storage::disk('public')->put('fotos/' . $request->photo, $imageBin);
-        }     
-
+        }
+        
         $user = new User();
         $user->fill($request->all());
         $user->password = Hash::make($user->password);
@@ -89,7 +89,7 @@ class UserControllerAPI extends Controller
 
     public function update(Request $request, $id) {
         $user = User::findOrFail($id);
-            
+
         if($user->type == "u"){
             if($request->photoBase64){                            //Foto nova
                 $request->validate([
@@ -97,40 +97,40 @@ class UserControllerAPI extends Controller
                     'nif'       => 'integer|digits:9',
                     //'photo' => 'image|mimes:jpeg,png,jpg,gif|max:1080',
                 ]);
-                
+
                 $base64_string = explode(',', $request->photoBase64);
-                $imageBin = base64_decode($base64_string[1]);    
+                $imageBin = base64_decode($base64_string[1]);
                 if (!Storage::disk('public')->exists('fotos/' . $request->photo)) {
                     Storage::disk('public')->delete('fotos/' . $user->photo);
                     Storage::disk('public')->put('fotos/' . $request->photo, $imageBin);
-                }     
-                
+                }
+
             }else{
                 $request->validate([
                     'name'      => 'required|regex:/^[a-zA-Zà-Ú ]+$/',
                     'nif'       => 'integer|digits:9',
-                    
+
                 ]);
-            }    
+            }
         }else{
             if($request->photoBase64){                            //Foto nova
                 $request->validate([
                     'name'      => 'required|regex:/^[a-zA-Zà-Ú ]+$/',
                     //'photo' => 'image|mimes:jpeg,png,jpg,gif|max:1080',
                 ]);
-                
+
                 $base64_string = explode(',', $request->photoBase64);
-                $imageBin = base64_decode($base64_string[1]);    
+                $imageBin = base64_decode($base64_string[1]);
                 if (!Storage::disk('public')->exists('fotos/' . $request->photo)) {
                     Storage::disk('public')->delete('fotos/' . $user->photo);
                     Storage::disk('public')->put('fotos/' . $request->photo, $imageBin);
-                }     
+                }
 
             }else{
                 $request->validate([
-                    'name'      => 'required|regex:/^[a-zA-Zà-Ú ]+$/',                    
+                    'name'      => 'required|regex:/^[a-zA-Zà-Ú ]+$/',
                 ]);
-            }        
+            }
         }
 
         $user->update($request->except('photoBase64'));
@@ -163,7 +163,7 @@ class UserControllerAPI extends Controller
         $request->validate([
             'old_password' => 'required|min:3',
             'password' => 'required|min:3|confirmed',
-            'password_confirmation' => 'required|min:3' 
+            'password_confirmation' => 'required|min:3'
         ],
         [
             'old_password.required' => 'É necessario inserir a password antiga',
@@ -174,7 +174,7 @@ class UserControllerAPI extends Controller
             'password_confirmation.min' => 'A confirmacao da password precisa no minimo de 8 caracteres',
             'password_confirmation.same' => 'A password da confirmacao tem de ser igual a password'
         ]);
-        
+
         $id = $request->userId;
         $user = User::findOrFail($id);
         if (Hash::check($request->old_password, $user->password)) {
@@ -182,7 +182,7 @@ class UserControllerAPI extends Controller
             $user->save();
             return new UserResource($user);
         }
-        return response('Old password incorrect');    
+        return response('Old password incorrect');
     }
 
     public function deactivateUser($id){

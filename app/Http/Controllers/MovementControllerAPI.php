@@ -9,6 +9,7 @@ use App\Category;
 use App\Wallet;
 use App\Movement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class MovementControllerAPI extends Controller
@@ -61,6 +62,64 @@ class MovementControllerAPI extends Controller
 
     public function createDebit(Request $request) {
 
+        $destinationWallet = null;
+
+        if ($request->transfer == 0) {
+            if($request->type_payment == 'bt') {
+                $request->validate([
+                    'value'        => 'required|numeric|between:0.01,5000.00',
+                    'category_id'  => 'required',
+                    'description'  => 'required',
+                    'type_payment' => 'required|in:c,bt,mb',
+                    'iban'         => 'required|regex:^[A-Z]{2}\d{23}$^',
+                ]);
+            } elseif ($request->type_payment == 'mb') {
+                $request->validate([
+                    'value'                => 'required|numeric|between:0.01,5000.00',
+                    'category_id'          => 'required',
+                    'description'          => 'required',
+                    'type_payment'         => 'required|in:c,bt,mb',
+                    'mb_entity_code'       => 'required|digits:5',
+                    'mb_payment_reference' => 'required|digits:9'
+                ]);
+            }
+        }elseif ($request->transfer == 1) {
+            $request->validate([
+                'value'              => 'required|numeric|between:0.01,5000.00',
+                'category_id'        => 'required',
+                'description'        => 'required',
+                'email'              => 'required|email',
+                'source_description' => 'required'
+            ]);
+
+            $destinationWallet = DB::table('wallets')->select('id')->where('email', $request->email)->get();
+            if($destinationWallet->isEmpty()){
+                return response('Email is not valid!');
+            }
+        }
+
+        $userBalance = DB::table('wallets')->where('id', Auth::id())->value('balance');
+
+        /*if ($userBalance - $request->value < 0) {
+            return response('Your balance must be higher than the value!');
+        }*/
+
+        //get date
+        $date = Carbon::now();
+
+        $movement = new Movement();
+        $movement->fill($request->all());
+        $movement->wallet_id = Auth::id();
+        $movement->type = 'e';
+        if (!empty($destinationWallet)) {
+            $movement->transfer_wallet_id = $destinationWallet;
+        }
+        $movement->start_balance = $userBalance;
+        $movement->end_balance = $userBalance - $request->value;
+        $movement->date = $date->toDateTimeString();
+        $movement->save();
+
+        return new MovementResource($movement);
     }
 
     public function getFilteredMovements(Request $request){

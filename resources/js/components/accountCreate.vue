@@ -5,6 +5,11 @@
             <strong>{{ successMessage }}</strong>
         </div>
 
+        <div class="alert alert-danger" v-if="showError">
+            <button type="button" class="close-btn" v-on:click="showError=false">&times;</button>
+            <strong>{{ successMessage }}</strong>
+        </div>
+
         <div class="accountCreate-form">
             <div class="form-group">
                 <label for="inputName">Name: </label>
@@ -55,6 +60,7 @@
         data: function () {
             return {
                 showSuccess: false,
+                showError: false,
                 successMessage: '',
                 user: {
                     name: '',
@@ -87,30 +93,33 @@
                 reader.readAsDataURL(file);
             },
             createUser() {
-                axios.post('api/users/', this.user)
+                axios.post('api/users/create', this.user)
                     .then(response => {
                         this.showSuccess = true;
                         this.successMessage = 'User Created';
                         this.currentUser = null;
+                        this.$router.push('/login')
                     })
                     .catch(error => {
                         console.error(error)
-                        /*switch (error.response.data.errors) {
-                            case 'name': this.invalidName = name;
-                            case 'email': this.invalidEmail = email;
-                            case 'password': this.invalidPassword = password;
-                            case 'nif': this.invalidNif = nif;
-                            case 'photo': this.invalidPhoto = photo;
-                        }*/
+                         if(error.response.data.errors.name){
+                            this.successMessage = error.response.data.errors.name[0];
+                            this.showError = true;
+                        }else if(error.response.data.errors.email){
+                            this.successMessage = error.response.data.errors.email[0];
+                            this.showError = true;
+                        }else if(error.response.data.errors.password){
+                            this.successMessage = error.response.data.errors.password[0];
+                            this.showError = true;
+                        }else if(error.response.data.errors.nif){
+                            this.successMessage = error.response.data.errors.nif[0];
+                            this.showError = true;
+                        }else if (error.response.data.errors.photo){
+                            this.successMessage = error.response.data.errors.photo[0];
+                            this.showError = true;
+                        }
                     })
             }
-
-            /*createUser() {
-                this.$emit("create-user");
-            },
-            cancelForm() {
-                this.$emit("cancel-form");
-            }*/
         }
     }
 </script>

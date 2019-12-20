@@ -202,9 +202,11 @@
         sockets: {
             user_changed_income (newMovement) {
                 this.getFilteredMovements();
+                this.getBalance();
             },
             user_changed_income (newMovement) {
                 this.getFilteredMovements();
+                this.getBalance();
             }
         },
 

@@ -48,8 +48,7 @@ const accountCreate = Vue.component('accountCreate', AccountComponent);
  const routes = [
      { path: '/', redirect: '/home'},
      { path: '/home', component: home },
-     { path: '/accountcreate', component: accountCreate}
-     { path: '/home', component: home},
+     { path: '/accountcreate', component: accountCreate},
      { path: '/login', component: login,  meta:{ requiresVisitor: true } },
      { path: '/logout', component: logout, meta:{ requiresAuth: true } },
      { path: '/profile', component: profile, meta:{ requiresAuth: true } },
@@ -89,13 +88,14 @@ const app = new Vue({
     sockets:{
         user_changed_income(dataFromServer) {
             this.$toasted.show(
-                'An income movement of ' + dataFromServer[0] + '€ was added to your wallet by an operator!'
+                'An income movement of ' + dataFromServer + '€ was added to your wallet by an operator!'
             );
         },
         user_changed_transfer(dataFromServer) {
+            console.log(dataFromServer);
             let name = dataFromServer[1] === null ? "Unknown" : dataFromServer[1].name;
             this.$toasted.show(
-                '"' + name + '" transfered' + dataFromServer[0] + 'to your wallet!'
+                '"' + name + '" transfered' + dataFromServer + 'to your wallet!'
             );
         }
     },
@@ -107,7 +107,6 @@ const app = new Vue({
             this.$socket.emit("user_enter", this.$store.state.user);
         }
         console.log(this.$store.state.user);
-         }*/
     }
 
 }).$mount('#app');

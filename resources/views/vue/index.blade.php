@@ -14,6 +14,8 @@
         <li ><router-link to="/profile" v-show="this.$store.state.user">Profile</router-link></li>
         
         <li ><router-link to="/login" v-show="!this.$store.state.user">Login</router-link></li>
+
+        <li ><router-link to="/accountcreate" v-show="!this.$store.state.user">Create Account</router-link></li>
        
         <li ><router-link to="/logout" v-show="this.$store.state.user">Logout</router-link></li>
        

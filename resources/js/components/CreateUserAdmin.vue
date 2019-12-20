@@ -63,7 +63,7 @@
         },
         methods: {
             createUserAdmin: function() {
-                axios.post('api/users/create', this.user)
+                axios.post('api/users/createOpAdmin', this.user)
                 .then(response => {
                     console.log(response);
                     this.$emit('admin-created');

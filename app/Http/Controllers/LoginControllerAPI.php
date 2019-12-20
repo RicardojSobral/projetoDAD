@@ -6,10 +6,6 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
 class LoginControllerAPI extends Controller{
-
-
-class LoginControllerAPI extends Controller
-{
     public function login(Request $request)
     {
         $http = new \GuzzleHttp\Client;

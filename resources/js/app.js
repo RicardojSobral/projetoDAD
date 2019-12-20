@@ -3,6 +3,19 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+import VueSocketIO from "vue-socket.io";
+Vue.use(new VueSocketIO({
+    debug: true,
+    connection: 'http://192.168.10.10:8080'
+})); 
+
+import Toasted from "vue-toasted";
+Vue.use(Toasted, {
+    position: "bottom-center",
+    duration: 5000,
+    type: "info"
+});
+
 import { store } from './store/store';
 
 import VueRouter from 'vue-router';
@@ -66,15 +79,28 @@ const accounts = Vue.component('accounts', ListAccountsComponent);
  });
 
 const app = new Vue({
-     router,
-     store,
-    data:{
-
+    router,
+    store,
+    sockets:{
+        user_changed_income(dataFromServer) {
+            this.$toasted.show(
+                'An income movement of ' + dataFromServer[0] + '€ was added to your wallet by an operator!'
+            );
+        },
+        user_changed_transfer(dataFromServer) {
+            let name = dataFromServer[1] === null ? "Unknown" : dataFromServer[1].name;
+            this.$toasted.show(
+                '"' + name + '" transfered' + dataFromServer[0] + 'to your wallet!'
+            );
+        }
     },
     created() {
         console.log('-----');
         console.log(this.$store.state.user);
         this.$store.commit('loadTokenAndUserFromSession');
+        if(this.$store.state.user){
+            this.$socket.emit("user_enter", this.$store.state.user);
+        }
         console.log(this.$store.state.user);
     }
 }).$mount('#app');

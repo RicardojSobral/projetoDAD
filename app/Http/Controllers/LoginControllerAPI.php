@@ -6,14 +6,18 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
 class LoginControllerAPI extends Controller{
+
+
+class LoginControllerAPI extends Controller
+{
     public function login(Request $request)
     {
-        $http = new Client();
-        $response = $http->post(config('app.server_url') . '/oauth/token', [
+        $http = new \GuzzleHttp\Client;
+        $response = $http->post(env('PASSPORT_SERVER_URL').'/oauth/token', [
             'form_params' => [
                 'grant_type' => 'password',
-                'client_id' => config('app.client_id'),
-                'client_secret' => config('app.client_secret'),
+                'client_id' => env('PASSPORT_CLIENT_ID', 2),
+                'client_secret' => env('PASSPORT_CLIENT_SECRET'),
                 'username' => $request->email,
                 'password' => $request->password,
                 'scope' => ''

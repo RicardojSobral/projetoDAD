@@ -2912,6 +2912,8 @@ module.exports = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _MovementDetails_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MovementDetails.vue */ "./resources/js/components/MovementDetails.vue");
 /* harmony import */ var _MovementEdit_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MovementEdit.vue */ "./resources/js/components/MovementEdit.vue");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -3111,6 +3113,13 @@ __webpack_require__.r(__webpack_exports__);
       this.errorMessageEdit = 'Category does not exist for this type of movement';
     }
   },
+  sockets: _defineProperty({
+    user_changed_income: function user_changed_income(newMovement) {
+      this.getFilteredMovements();
+    }
+  }, "user_changed_income", function user_changed_income(newMovement) {
+    this.getFilteredMovements();
+  }),
   components: {
     "movement-details": _MovementDetails_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     "movement-edit": _MovementEdit_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
@@ -40609,6 +40618,11 @@ var app = new Vue({
     console.log('-----');
     console.log(this.$store.state.user);
     this.$store.commit('loadTokenAndUserFromSession');
+
+    if (this.$store.state.user) {
+      this.$socket.emit("user_enter", this.$store.state.user);
+    }
+
     console.log(this.$store.state.user);
   }
 }).$mount('#app');

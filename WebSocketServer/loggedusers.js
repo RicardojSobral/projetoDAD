@@ -43,16 +43,6 @@ class LoggedUsers {
       this.users.delete(userInfo.user.id);
       return cloneUserInfo;
     }
-  
-    getUsersInfoOfDepartment(departmentID) {
-      let usersInfo = [];
-      for (var [userID, userInfo] of this.users) {
-        if (userInfo.user.department_id == departmentID) {
-          usersInfo.push(userInfo);
-        }
-      }
-      return usersInfo;
-    }
   }
   
   module.exports = LoggedUsers;

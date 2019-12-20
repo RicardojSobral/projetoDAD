@@ -28,16 +28,30 @@ let loggedUsers = new LoggedUsers();
 
 io.on("connection", function(socket) {
     console.log("client has connected (socket ID = " + socket.id + ")");
+    //console.log(loggedUsers);
+
+    socket.on('disconnect', (reason) => {
+        if (reason === 'io server disconnect') {
+          socket.connect();
+        }
+        console.log('Disconnected');
+        loggedUsers.removeUserInfoBySocketID(socket.id);
+        //console.log(loggedUsers);
+    });
 
     socket.on("user_enter", function(user) {
         if (user) {
-          loggedUsers.addUserInfo(user, socket.id);
+            loggedUsers.addUserInfo(user, socket.id);
+            console.log('User ' + user.id + (' added to loggedUsers'));
+            //console.log(loggedUsers);
         }
-      });
+    });
 
     socket.on("user_exit", function(user) {
         if (user) {
             loggedUsers.removeUserInfoByID(user.id);
+            console.log('User ' + user.id + (' removed from loggedUsers'));
+            //console.log(loggedUsers);
         }
     });
 
@@ -48,7 +62,6 @@ io.on("connection", function(socket) {
           //socket.emit("privateMessage_unavailable", destUser); //enviar mail
         } else {
           io.to(socket_id).emit("user_changed_income", msg);
-          //socket.emit("privateMessage_sent", msg, destUser);
         }
     });
 
@@ -59,7 +72,7 @@ io.on("connection", function(socket) {
             //socket.emit("privateMessage_unavailable", destUser); //enviar mail
         } else {
             io.to(socket_id).emit("user_changed_transfer", msg, sourceUser); 
-            //socket.emit("user_changed_transfer", msg, destUser);
+            //socket.emit("user_transfer_sent", msg, destUser);
         }
     });
 

@@ -98,6 +98,9 @@ const app = new Vue({
         console.log('-----');
         console.log(this.$store.state.user);
         this.$store.commit('loadTokenAndUserFromSession');
+        if(this.$store.state.user){
+            this.$socket.emit("user_enter", this.$store.state.user);
+        }
         console.log(this.$store.state.user);
     }
 }).$mount('#app');

@@ -199,6 +199,14 @@
                 this.errorMessageEdit = 'Category does not exist for this type of movement';
             }
         },
+        sockets: {
+            user_changed_income (newMovement) {
+                this.getFilteredMovements();
+            },
+            user_changed_income (newMovement) {
+                this.getFilteredMovements();
+            }
+        },
 
         components: {
             "movement-details": MovementDetailsComponent,

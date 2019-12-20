@@ -7,6 +7,7 @@ use App\Http\Resources\Movement as MovementResource;
 use Carbon\Carbon;
 use App\Category;
 use App\Wallet;
+use App\User;
 use App\Movement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -56,7 +57,11 @@ class MovementControllerAPI extends Controller
         $movement->date = $date->toDateTimeString();
         $movement->save();
 
-        return new MovementResource($movement);
+        //Retornar o user dest para a toast msg
+        $user = User::findOrFail($wallet->id);
+        return $user;
+
+        //return new MovementResource($movement);       
     }
 
     public function createDebit(Request $request) {

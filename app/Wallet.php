@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Wallet extends Model
 {
     protected $fillable = [
-        'email', 
+        'id',
+        'email',
         'balance'
     ];
 

@@ -40522,6 +40522,7 @@ router.beforeEach(function (to, from, next) {
   }
 });
 var app = new Vue({
+  el: '#app',
   router: router,
   store: _store_store__WEBPACK_IMPORTED_MODULE_0__["store"],
   data: {},

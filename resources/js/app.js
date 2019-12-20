@@ -29,8 +29,13 @@ const wallet = Vue.component('wallet', WalletComponent);
 import ListAccountsComponent from './components/ListAccounts.vue';
 const accounts = Vue.component('accounts', ListAccountsComponent);
 
+import AccountComponent from './components/accountCreate.vue';
+const accountCreate = Vue.component('accountCreate', AccountComponent);
+
  const routes = [
      { path: '/', redirect: '/home'},
+     { path: '/home', component: home },
+     { path: '/accountcreate', component: accountCreate}
      { path: '/home', component: home},
      { path: '/login', component: login,  meta:{ requiresVisitor: true } },
      { path: '/logout', component: logout, meta:{ requiresAuth: true } },
@@ -69,6 +74,18 @@ const app = new Vue({
      router,
      store,
     data:{
+        currentUser: null,
+    },
+    methods: {
+         /*createUser: function () {
+            axios.post('api/users/', this.currentUser)
+                .then(response => {
+                    this.showSuccess = true;
+                    this.successMessage = 'User Registed';
+                    this.currentUser = null;
+                })
+         },*/
+         /*cancelForm: function () {
 
     },
     created() {
@@ -76,5 +93,7 @@ const app = new Vue({
         console.log(this.$store.state.user);
         this.$store.commit('loadTokenAndUserFromSession');
         console.log(this.$store.state.user);
+         }*/
     }
+
 }).$mount('#app');

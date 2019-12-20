@@ -24,11 +24,11 @@ Route::middleware('auth:api')->group(function (){
 
 });
 
-Route::post('login', 'LoginControllerAPI@login');
 Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');
 
 Route::get('home', 'WalletControllerAPI@countWallets');
 Route::get('wallet/{id}/balance', 'WalletControllerAPI@getBalance');
+Route::get('users/emailavailable', 'api\UserControllerAPI@emailAvailable');
 
 Route::middleware('auth:api')->get('users/cancel/{id}', 'UserControllerAPI@show');  //alterar rota
 Route::middleware('auth:api')->get('users/me', 'UserControllerAPI@myProfile');

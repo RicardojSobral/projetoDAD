@@ -64,28 +64,6 @@ class UserControllerAPI extends Controller
         return new UserResource(User::find($id));
     }
 
-    public function store(Request $request) {
-        $request->validate([
-            'name'      => 'required|regex:/^[a-zA-Zà-Ú ]+$/',
-            'email'     => 'required|email|unique:users,email',
-            'password'  => 'min:3',
-            'type' => 'required|in:a,o,u',
-            'photo' => 'required',//|image|mimes:jpeg,png,jpg,gif|max:1080
-        ]);
-
-        $base64_string = explode(',', $request->photoBase64);
-        $imageBin = base64_decode($base64_string[1]);    
-        if (!Storage::disk('public')->exists('fotos/' . $request->photo)) {
-            Storage::disk('public')->put('fotos/' . $request->photo, $imageBin);
-        }     
-
-        $user = new User();
-        $user->fill($request->all());
-        $user->password = Hash::make($user->password);
-        $user->save();
-
-        return new UserResource($user);
-    }
 
     public function update(Request $request, $id) {
         $user = User::findOrFail($id);
@@ -205,3 +183,38 @@ class UserControllerAPI extends Controller
     }
 
 }
+    public function store(Request $request) {
+        /*$request->validate([
+            'name'      => 'required|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
+            'email'     => 'required|email|unique:users,email',
+            'password'  => 'min:3',
+            'nif'       => 'integer|min:9|max:9',
+            'photo'     => 'image|max:1080',
+        ]);*/
+
+        $user = new User();
+        $user->fill($request->all());
+        $user->password = Hash::make($user->password);
+        $user->photo = $request->photo ? $user->id . '_' . $request->photo['name'] : null;
+        $user->save();
+
+        $wallet = new Wallet();
+        $wallet->fill(['id' => $user->id, 'email' => $user->email, 'balance' => 0]);
+        $wallet->save();
+
+        if($request->photo) {
+            $photo = $request->photo;
+
+            $base64_string = explode(',', $photo['base64']);
+            $imageBin = base64_decode($base64_string[1]);
+
+            //$fileName = $user->id . '_' . $photo['name'];
+            $fileName = random_int(0, 10000) . '_' . $photo['name'];
+
+            if (!Storage::disk('public')->exists('fotos/' . $fileName)) {
+                Storage::disk('public')->put('fotos/' . $fileName, $imageBin);
+            }
+        }
+
+        return response()->json(new UserResource($user), 201);
+    }

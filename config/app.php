@@ -188,11 +188,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
-        /*
-         * Image Service Providers...
-         */
-        Intervention\Image\ImageServiceProvider::class,
     ],
 
     /*

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Faker\Provider\Image;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageServiceProvider;
 use Illuminate\Http\Request;
 use Laravel\Passport\HasApiTokens;
 use function GuzzleHttp\Promise\all;

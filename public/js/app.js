@@ -3306,7 +3306,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\ntr.activerow[data-v-0d955da4] {\r\n  background: #123456 !important;\r\n  color: #fff !important;\n}\r\n", ""]);
+exports.push([module.i, "\ntr.activerow[data-v-0d955da4] {\n  background: #123456 !important;\n  color: #fff !important;\n}\n", ""]);
 
 // exports
 
@@ -42030,8 +42030,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\rjoao\ainet\dadAulas\projetoDAD\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\rjoao\ainet\dadAulas\projetoDAD\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/vieira/DEVELOPING/projetoDAD/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/vieira/DEVELOPING/projetoDAD/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

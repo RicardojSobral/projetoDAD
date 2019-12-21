@@ -7,7 +7,7 @@ import VueSocketIO from "vue-socket.io";
 Vue.use(new VueSocketIO({
     debug: true,
     connection: 'http://192.168.10.10:8080'
-})); 
+}));
 
 import Toasted from "vue-toasted";
 Vue.use(Toasted, {
@@ -108,5 +108,4 @@ const app = new Vue({
         }
         console.log(this.$store.state.user);
     }
-
 }).$mount('#app');

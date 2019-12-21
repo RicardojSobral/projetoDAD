@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bbd8ca5c-8656-481f-b74d-f18c19ed8955" name="Default Changelist" comment="">
+    <list default="true" id="bbd8ca5c-8656-481f-b74d-f18c19ed8955" name="Default Changelist" comment="Update store">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/UserControllerAPI.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserControllerAPI.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/LoginControllerAPI.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/LoginControllerAPI.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/app.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -149,7 +150,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ProjetoDAE/Nuxt/sports-management" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="Docker" />
   </component>
@@ -197,9 +198,9 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="PHPUnit.phpunit.xml" />
-      <item itemvalue="PHP Built-in Web Server.Serve" />
       <item itemvalue="Docker.docker-compose.yml.image: Compose Deployment" />
+      <item itemvalue="PHP Built-in Web Server.Serve" />
+      <item itemvalue="PHPUnit.phpunit.xml" />
     </list>
     <recent_temporary>
       <list>
@@ -243,6 +244,7 @@
       <workItem from="1575996900451" duration="9952000" />
       <workItem from="1576020283935" duration="1093000" />
       <workItem from="1576078600994" duration="7128000" />
+      <workItem from="1576855164408" duration="42000" />
     </task>
     <task id="LOCAL-00001" summary="Created controller for User API">
       <created>1574474614845</created>
@@ -258,7 +260,21 @@
       <option name="project" value="LOCAL" />
       <updated>1576086273676</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Update store">
+      <created>1576854371100</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1576854371100</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Removed image library">
+      <created>1576854621143</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1576854621143</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -281,6 +297,9 @@
     <MESSAGE value="Created controller for User API" />
     <MESSAGE value="Updated loginController to use .env file" />
     <MESSAGE value="Update gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update gitignore" />
+    <MESSAGE value="Update stroe" />
+    <MESSAGE value="Update store" />
+    <MESSAGE value="Removed image library" />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed image library" />
   </component>
 </project>

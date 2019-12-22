@@ -7,9 +7,13 @@
             <strong>{{ successMessage }}</strong>
         </div>
 
+        <div class="alert" :class="typeofmsg" v-if="showMessage">
+            <strong>{{ message }}</strong>
+        </div>
+
         <div class="form-group">
             <label for="type_movement">Type Of Movement:</label>
-            <select name="type_movement" id="type_movement" class="form-control" v-model="type_movement" required>
+            <select name="type_movement" id="type_movement" class="form-control" v-model="movement.type_movement" required>
                 <option selected value=""> -- select an option -- </option>
                 <option value="0">Payment</option>
                 <option value="1">Transfer</option>
@@ -18,14 +22,14 @@
 
         <div class="form-group">
             <label for="inputValue">Value:</label>
-            <input type="number" class="form-control" v-model="value" name="value" id="inputValue"
+            <input type="number" class="form-control" v-model="movement.value" name="value" id="inputValue"
                 placeholder="Insert the amount to send" required
                 title="You must enter a valid value"/>
         </div>
 
         <div class="form-group">
             <label for="inputCategory">Category of expense:</label>
-            <select name="category" id="inputCategory" class="form-control" v-model="category" required>
+            <select name="category" id="inputCategory" class="form-control" v-model="movement.category" required>
                 <option disabled> -- select an option -- </option>
                 <option v-for="category in categories" v-bind:value="category.id">
                     {{ category.name }}
@@ -36,7 +40,7 @@
         <div class="form-group">
             <label for="inputDescription">Description:</label>
             <input
-                type="text" class="form-control" v-model="description"
+                type="text" class="form-control" v-model="movement.description"
                 name="description" id="inputDescription"
                 placeholder="Insert a description of the movement"/>
         </div>
@@ -44,7 +48,7 @@
         <div v-if="type_movement === '0'">
             <div class="form-group">
                 <label for="type_payment">Type Of Payment:</label>
-                <select name="type_payment" id="type_payment" class="form-control" v-model="type_payment" required>
+                <select name="type_payment" id="type_payment" class="form-control" v-model="movement.type_payment" required>
                     <option selected value=""> -- select an option -- </option>
                     <option value="bt">Bank Transfer</option>
                     <option value="mb">MB Payment</option>
@@ -55,7 +59,7 @@
                 <div class="form-group">
                     <label for="inputIBAN">IBAN:</label>
                     <input
-                        type="text" class="form-control" v-model="iban"
+                        type="text" class="form-control" v-model="movement.iban"
                         name="iban" id="inputIBAN"
                         placeholder="Insert IBAN" required
                         title="INAN must be 2 upper letters followed by 23 numbers"/>
@@ -66,7 +70,7 @@
                 <div class="form-group">
                     <label for="inputMBEntity">MB Entity Code:</label>
                     <input
-                        type="text" class="form-control" v-model="MBEntity"
+                        type="text" class="form-control" v-model="movement.MBEntity"
                         name="mbentity" id="inputMBEntity"
                         placeholder="Insert MB Entity Code" required
                         title="Entity code must have 5 numbers"/>
@@ -74,7 +78,7 @@
                 <div class="form-group">
                     <label for="inputMBReference">MB Payment Reference:</label>
                     <input
-                        type="text" class="form-control" v-model="MBReference"
+                        type="text" class="form-control" v-model="movement.MBReference"
                         name="mbreference" id="inputMBReference"
                         placeholder="Insert MB Payment Reference" required
                         title="Payment Reference must have 9 numbers"/>
@@ -86,7 +90,7 @@
             <div class="form-group">
                 <label for="inputEmail">Email of the destination wallet:</label>
                 <input
-                    type="email" class="form-control" v-model="email"
+                    type="email" class="form-control" v-model="movement.email"
                     name="email" id="inputEmail"
                     placeholder="Insert email of the destination wallet" required
                     title="Email must be a valid user email"/>
@@ -94,7 +98,7 @@
             <div class="form-group">
                 <label for="inputSourceDescription">Source Description:</label>
                 <input
-                    type="text" class="form-control" v-model="source_description"
+                    type="text" class="form-control" v-model="movement.source_description"
                     name="source_description" id="inputSourceDescription"
                     placeholder="Insert a source description" required/>
             </div>
@@ -112,18 +116,22 @@
     export default {
         data: function() {
             return {
-                type_movement: '',
-                value: '',
-                category: '',
-                description: '',
-                type_payment: '',
-                iban: '',
-                MBEntity: '',
-                MBReference:'',
-                email: '',
-                source_description: '',
-                categories: '',
-                showError: false,
+                movement: {
+                    type_movement: '',
+                    value: '',
+                    category: '',
+                    description: '',
+                    type_payment: '',
+                    iban: '',
+                    MBEntity: '',
+                    MBReference:'',
+                    email: '',
+                    source_description: '',
+                    categories: '',
+                },
+                typeofmsg: "alert-success",
+                showMessage: false,
+                message: "",
             }
         },
 
@@ -131,17 +139,16 @@
             createDebit: function() {
                 console.log()
                 axios.post('api/movements/debit', {
-                    transfer: this.type_movement,
-                    type: 'e',
-                    type_payment: this.type_payment,
-                    category_id: this.category,
-                    iban: this.iban,
-                    mb_entity_code: this.MBEntity,
-                    mb_payment_reference: this.MBReference,
-                    description: this.description,
-                    source_description: this.source_description,
-                    email: this.email,
-                    value: this.value
+                    transfer: this.movement.type_movement,
+                    type_payment: this.movement.type_payment,
+                    category_id: this.movement.category,
+                    iban: this.movement.iban,
+                    mb_entity_code: this.movement.MBEntity,
+                    mb_payment_reference: this.movement.MBReference,
+                    description: this.movement.description,
+                    source_description: this.movement.source_description,
+                    email: this.movement.email,
+                    value: this.movement.value
                 })
                     .then(response => {
                         if(response.data == "Email is not valid!"){

@@ -8,11 +8,15 @@ class Movement extends Model
 {
 
     public $timestamps = false;
-    
+
     protected $fillable = [
-        'type', 
+        'wallet_id',
+        'type',
         'transfer',
+        'transfer_movement_id',
+        'transfer_wallet_id',
         'type_payment',
+        'category_id',
         'iban',
         'mb_entity_code',
         'mb_payment_reference',

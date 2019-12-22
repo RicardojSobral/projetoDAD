@@ -11,6 +11,7 @@ use App\Movement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Validator;
 
 class MovementControllerAPI extends Controller
 {
@@ -63,6 +64,7 @@ class MovementControllerAPI extends Controller
     public function createDebit(Request $request) {
 
         $destinationWallet = null;
+        $wallet_id = Auth::id();
 
         if ($request->transfer == 0) {
             if($request->type_payment == 'bt') {
@@ -92,34 +94,74 @@ class MovementControllerAPI extends Controller
                 'source_description' => 'required'
             ]);
 
-            $destinationWallet = DB::table('wallets')->select('id')->where('email', $request->email)->get();
-            if($destinationWallet->isEmpty()){
-                return response('Email is not valid!');
+            $destinationWallet = DB::table('wallets')->where('email', $request->email)->value('id');
+            if(empty($destinationWallet)){
+                return response('Email is not valid or user does not have a wallet!');
             }
         }
 
-        $userBalance = DB::table('wallets')->where('id', Auth::id())->value('balance');
+        $wallet = new WalletControllerAPI();
+        $currentBalance = $wallet->getBalance($wallet_id);
 
-        /*if ($userBalance - $request->value < 0) {
-            return response('Your balance must be higher than the value!');
-        }*/
+        if ($currentBalance - $request->value < 0) {
+            return response()->json(['msg'=>'Your wallet balance must be higher than the value'], 406);
+        }
+
+        $endBalance = $currentBalance - $request->value;
+
+        $wallet->updateBalance($wallet_id, $endBalance);
+        $wallet->updateBalance($destinationWallet, $currentBalance + $request->value);
 
         //get date
         $date = Carbon::now();
 
         $movement = new Movement();
         $movement->fill($request->all());
-        $movement->wallet_id = Auth::id();
+        $movement->wallet_id = $wallet_id;
         $movement->type = 'e';
         if (!empty($destinationWallet)) {
             $movement->transfer_wallet_id = $destinationWallet;
         }
-        $movement->start_balance = $userBalance;
-        $movement->end_balance = $userBalance - $request->value;
+        $movement->start_balance = $currentBalance;
+        $movement->end_balance = $endBalance;
         $movement->date = $date->toDateTimeString();
         $movement->save();
 
+        if ($request->transfer == 1) {
+            $data = [
+                'wallet_id'             => $destinationWallet,
+                'transfer'              => 1,
+                'type'                  => 'i',
+                'transfer_movement_id'  => $movement->id,
+                'transfer_wallet_id'    => $wallet_id,
+                'description'           => $request->description,
+                'source_description'    => $request->source_description,
+                'date'                  => $date->toDateTimeString(),
+                'value'                 => $request->value
+            ];
+            $transfer_movement_id = $this->createTransferIncome($data);
+            if (!empty($transfer_movement_id)) {
+                $this->updateTransferMovementId($movement->id, $transfer_movement_id);
+            }
+        }
+
         return new MovementResource($movement);
+    }
+
+    public function createTransferIncome($data) {
+        $current_balance = DB::table('wallets')->where('id', $data['wallet_id'])->value('balance');
+
+        $movement = new Movement();
+        $movement->fill($data);
+        $movement->start_balance = $current_balance;
+        $movement->end_balance = $current_balance + $data['value'];
+        $movement->save();
+
+        return $movement->id;
+    }
+
+    public function updateTransferMovementId($id, $movement_id) {
+        DB::table('movements')->where('id', $id)->update(['transfer_movement_id' => $movement_id]);
     }
 
     public function getFilteredMovements(Request $request){

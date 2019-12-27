@@ -1964,7 +1964,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _RegisterCredit_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RegisterCredit.vue */ "./resources/js/components/RegisterCredit.vue");
-/* harmony import */ var _CreateUserAdmin_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateUserAdmin.vue */ "./resources/js/components/CreateUserAdmin.vue");
+/* harmony import */ var _RegisterDebit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RegisterDebit */ "./resources/js/components/RegisterDebit.vue");
+/* harmony import */ var _CreateUserAdmin_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CreateUserAdmin.vue */ "./resources/js/components/CreateUserAdmin.vue");
 //
 //
 //
@@ -2009,6 +2010,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2017,6 +2026,7 @@ __webpack_require__.r(__webpack_exports__);
       title: 'Welcome To Virtual Wallet!',
       wallets: 0,
       showRegisterCredit: false,
+      showRegisterDebit: false,
       showSuccess: false,
       showError: false,
       successMessage: "",
@@ -2031,6 +2041,13 @@ __webpack_require__.r(__webpack_exports__);
     cancelCredit: function cancelCredit() {
       this.showRegisterCredit = false;
     },
+    registerDebit: function registerDebit() {
+      //CREATE DEBIT METHODS
+      this.showRegisterDebit = true;
+    },
+    cancelDebit: function cancelDebit() {
+      this.showRegisterDebit = false;
+    },
     emailError: function emailError() {
       this.showError = true;
       this.successMessage = "Email does not exist!";
@@ -2039,6 +2056,11 @@ __webpack_require__.r(__webpack_exports__);
       this.showSuccess = true;
       this.successMessage = "Credit created with success";
       this.showRegisterCredit = false;
+    },
+    debitCreated: function debitCreated() {
+      this.showSuccess = true;
+      this.successMessage = "Debit created with success";
+      this.showRegisterDebit = false;
     },
     createAdminOp: function createAdminOp() {
       // CREATE ADMIN/OPERATOR METHODS
@@ -2062,7 +2084,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   components: {
     'register-credit': _RegisterCredit_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    'create-admin': _CreateUserAdmin_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    'register-debit': _RegisterDebit__WEBPACK_IMPORTED_MODULE_1__["default"],
+    'create-admin': _CreateUserAdmin_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   }
 });
 
@@ -2915,20 +2938,71 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      type_movement: '',
-      value: '',
-      category: '',
-      description: '',
-      type_payment: '',
-      iban: '',
-      MBEntity: '',
-      MBReference: '',
-      email: '',
-      source_description: '',
-      categories: '',
+      movement: {
+        type_movement: '',
+        value: '',
+        category: '',
+        description: '',
+        type_payment: '',
+        iban: '',
+        MBEntity: '',
+        MBReference: '',
+        email: '',
+        source_description: '',
+        categories: ''
+      },
+      errors: {
+        type_movement: '',
+        value: '',
+        category_id: '',
+        description: '',
+        type_payment: '',
+        iban: '',
+        mb_entity_code: '',
+        mb_payment_reference: '',
+        email: '',
+        source_description: ''
+      },
+      typeofmsg: "alert-success",
+      showMessage: false,
+      message: "",
       showError: false
     };
   },
@@ -2936,55 +3010,110 @@ __webpack_require__.r(__webpack_exports__);
     createDebit: function createDebit() {
       var _this = this;
 
-      console.log();
       axios.post('api/movements/debit', {
-        transfer: this.type_movement,
-        type: 'e',
-        type_payment: this.type_payment,
-        category_id: this.category,
-        iban: this.iban,
-        mb_entity_code: this.MBEntity,
-        mb_payment_reference: this.MBReference,
-        description: this.description,
-        source_description: this.source_description,
-        email: this.email,
-        value: this.value
+        transfer: this.movement.type_movement,
+        type_payment: this.movement.type_payment,
+        category_id: this.movement.category,
+        iban: this.movement.iban,
+        mb_entity_code: this.movement.MBEntity,
+        mb_payment_reference: this.movement.MBReference,
+        description: this.movement.description,
+        source_description: this.movement.source_description,
+        email: this.movement.email,
+        value: this.movement.value
       }).then(function (response) {
         if (response.data == "Email is not valid!") {
           _this.$emit('email-error');
         } else {
-          _this.$emit('credit-created');
+          _this.$emit('debit-created');
         }
       })["catch"](function (error) {
-        console.error(error);
-        /*if (error.response.data.errors){
-            if(error.response.data.errors.email){
-                this.successMessage = error.response.data.errors.email[0];
-                this.showError = true;
-            }else if (error.response.data.errors.value){
-                this.successMessage = error.response.data.errors.value[0];
-                this.showError = true;
-            }else if (error.response.data.errors.type_payment){
-                this.successMessage = error.response.data.errors.type_payment[0];
-                this.showError = true;
-            }else if (error.response.data.errors.iban){
-                this.successMessage = error.response.data.errors.iban[0];
-                this.showError = true;
-            }else if (error.response.data.errors.source_description){
-                this.successMessage = error.response.data.errors.source_description[0];
-                this.showError = true;
+        if (error.response.data.errors) {
+          var formError = error.response.data.errors;
+
+          if (formError.type_movement) {
+            _this.errors.type_movement = formError.type_movement[0];
+            document.querySelector('#inputType_movement').classList.add('is-invalid');
+          } else {
+            document.querySelector('#inputType_movement').classList.remove('is-invalid');
+          }
+
+          if (formError.value) {
+            _this.errors.value = formError.value[0];
+            document.querySelector('#inputValue').classList.add('is-invalid');
+          } else {
+            document.querySelector('#inputValue').classList.remove('is-invalid');
+          }
+
+          if (formError.category_id) {
+            _this.errors.category_id = formError.category_id[0];
+            document.querySelector('#inputCategory').classList.add('is-invalid');
+          } else {
+            document.querySelector('#inputCategory').classList.remove('is-invalid');
+          }
+
+          if (formError.description) {
+            _this.errors.description = formError.description[0];
+            document.querySelector('#inputDescription').classList.add('is-invalid');
+          } else {
+            document.querySelector('#inputDescription').classList.remove('is-invalid');
+          }
+
+          if (_this.movement.type_movement === '0') {
+            if (formError.type_payment) {
+              _this.errors.type_payment = formError.type_payment[0];
+              document.querySelector('#inputType_payment').classList.add('is-invalid');
+            } else {
+              document.querySelector('#inputType_payment').classList.remove('is-invalid');
             }
-        }else {
-            this.successMessage = 'Value must be a numeric value between 0.1 and 5000';
-            this.showError = true;
-        }*/
+
+            if (_this.movement.type_payment === 'bt') {
+              if (formError.iban) {
+                _this.errors.iban = formError.iban[0];
+                document.querySelector('#inputIBAN').classList.add('is-invalid');
+              } else {
+                document.querySelector('#inputIBAN').classList.remove('is-invalid');
+              }
+            } else if (_this.movement.type_payment === 'mb') {
+              if (formError.mb_entity_code) {
+                _this.errors.mb_entity_code = formError.mb_entity_code[0];
+                document.querySelector('#inputMBEntity').classList.add('is-invalid');
+              } else {
+                document.querySelector('#inputMBEntity').classList.remove('is-invalid');
+              }
+
+              if (formError.mb_payment_reference) {
+                _this.errors.mb_payment_reference = formError.mb_payment_reference[0];
+                document.querySelector('#inputMBReference').classList.add('is-invalid');
+              } else {
+                document.querySelector('#inputMBReference').classList.remove('is-invalid');
+              }
+            }
+          }
+
+          if (_this.movement.type_movement === '1') {
+            if (formError.email) {
+              _this.errors.email = formError.email[0];
+              document.querySelector('#inputEmail').classList.add('is-invalid');
+            } else {
+              document.querySelector('#inputEmail').classList.remove('is-invalid');
+            }
+
+            if (formError.source_description) {
+              _this.errors.source_description = formError.source_description[0];
+              document.querySelector('#inputSourceDescription').classList.add('is-invalid');
+            } else {
+              document.querySelector('#inputSourceDescription').classList.remove('is-invalid');
+            }
+          }
+        }
       });
     },
     getCategories: function getCategories() {
       var _this2 = this;
 
       axios.get('api/categories/e').then(function (response) {
-        _this2.categories = response.data;
+        _this2.movement.categories = response.data;
       });
     },
     cancelDebit: function cancelDebit() {
@@ -22495,6 +22624,29 @@ var render = function() {
       _vm._v(" "),
       this.$store.state.user != null
         ? _c("div", [
+            this.$store.state.user.type == "o"
+              ? _c("div", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.registerDebit()
+                        }
+                      }
+                    },
+                    [_vm._v("Register Debit")]
+                  )
+                ])
+              : _vm._e()
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      this.$store.state.user != null
+        ? _c("div", [
             this.$store.state.user.type == "a"
               ? _c("div", [
                   _c(
@@ -22570,10 +22722,20 @@ var render = function() {
           })
         : _vm._e(),
       _vm._v(" "),
+      _vm.showRegisterDebit
+        ? _c("register-debit", {
+            on: {
+              "debit-canceled": _vm.cancelDebit,
+              "email-error": _vm.emailError,
+              "debit-created": _vm.debitCreated
+            }
+          })
+        : _vm._e(),
+      _vm._v(" "),
       _vm.showCreateAdmin
         ? _c("create-admin", {
             on: {
-              "create-canceled": _vm.cancelCreateAdmin,
+              "create-canceled": _vm.cancelAdmin,
               "admin-created": _vm.adminCreated
             }
           })
@@ -23909,8 +24071,14 @@ var render = function() {
         ])
       : _vm._e(),
     _vm._v(" "),
+    _vm.showMessage
+      ? _c("div", { staticClass: "alert", class: _vm.typeofmsg }, [
+          _c("strong", [_vm._v(_vm._s(_vm.message))])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
     _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "type_movement" } }, [
+      _c("label", { attrs: { for: "inputType_movement" } }, [
         _vm._v("Type Of Movement:")
       ]),
       _vm._v(" "),
@@ -23921,12 +24089,16 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.type_movement,
-              expression: "type_movement"
+              value: _vm.movement.type_movement,
+              expression: "movement.type_movement"
             }
           ],
           staticClass: "form-control",
-          attrs: { name: "type_movement", id: "type_movement", required: "" },
+          attrs: {
+            name: "type_movement",
+            id: "inputType_movement",
+            required: ""
+          },
           on: {
             change: function($event) {
               var $$selectedVal = Array.prototype.filter
@@ -23937,9 +24109,11 @@ var render = function() {
                   var val = "_value" in o ? o._value : o.value
                   return val
                 })
-              _vm.type_movement = $event.target.multiple
-                ? $$selectedVal
-                : $$selectedVal[0]
+              _vm.$set(
+                _vm.movement,
+                "type_movement",
+                $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+              )
             }
           }
         },
@@ -23952,7 +24126,13 @@ var render = function() {
           _vm._v(" "),
           _c("option", { attrs: { value: "1" } }, [_vm._v("Transfer")])
         ]
-      )
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "invalid-feedback" }, [
+        _vm._v(
+          "\n            " + _vm._s(_vm.errors.type_movement) + "\n        "
+        )
+      ])
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "form-group" }, [
@@ -23963,8 +24143,8 @@ var render = function() {
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.value,
-            expression: "value"
+            value: _vm.movement.value,
+            expression: "movement.value"
           }
         ],
         staticClass: "form-control",
@@ -23976,16 +24156,20 @@ var render = function() {
           required: "",
           title: "You must enter a valid value"
         },
-        domProps: { value: _vm.value },
+        domProps: { value: _vm.movement.value },
         on: {
           input: function($event) {
             if ($event.target.composing) {
               return
             }
-            _vm.value = $event.target.value
+            _vm.$set(_vm.movement, "value", $event.target.value)
           }
         }
-      })
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "invalid-feedback" }, [
+        _vm._v("\n            " + _vm._s(_vm.errors.value) + "\n        ")
+      ])
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "form-group" }, [
@@ -24000,8 +24184,8 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.category,
-              expression: "category"
+              value: _vm.movement.category,
+              expression: "movement.category"
             }
           ],
           staticClass: "form-control",
@@ -24016,18 +24200,20 @@ var render = function() {
                   var val = "_value" in o ? o._value : o.value
                   return val
                 })
-              _vm.category = $event.target.multiple
-                ? $$selectedVal
-                : $$selectedVal[0]
+              _vm.$set(
+                _vm.movement,
+                "category",
+                $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+              )
             }
           }
         },
         [
-          _c("option", { attrs: { disabled: "" } }, [
+          _c("option", { attrs: { selected: "", value: "" } }, [
             _vm._v(" -- select an option -- ")
           ]),
           _vm._v(" "),
-          _vm._l(_vm.categories, function(category) {
+          _vm._l(_vm.movement.categories, function(category) {
             return _c("option", { domProps: { value: category.id } }, [
               _vm._v(
                 "\n                " + _vm._s(category.name) + "\n            "
@@ -24036,7 +24222,11 @@ var render = function() {
           })
         ],
         2
-      )
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "invalid-feedback" }, [
+        _vm._v("\n            " + _vm._s(_vm.errors.category_id) + "\n        ")
+      ])
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "form-group" }, [
@@ -24049,8 +24239,8 @@ var render = function() {
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.description,
-            expression: "description"
+            value: _vm.movement.description,
+            expression: "movement.description"
           }
         ],
         staticClass: "form-control",
@@ -24060,22 +24250,26 @@ var render = function() {
           id: "inputDescription",
           placeholder: "Insert a description of the movement"
         },
-        domProps: { value: _vm.description },
+        domProps: { value: _vm.movement.description },
         on: {
           input: function($event) {
             if ($event.target.composing) {
               return
             }
-            _vm.description = $event.target.value
+            _vm.$set(_vm.movement, "description", $event.target.value)
           }
         }
-      })
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "invalid-feedback" }, [
+        _vm._v("\n            " + _vm._s(_vm.errors.description) + "\n        ")
+      ])
     ]),
     _vm._v(" "),
-    _vm.type_movement === "0"
+    _vm.movement.type_movement === "0"
       ? _c("div", [
           _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "type_payment" } }, [
+            _c("label", { attrs: { for: "inputType_payment" } }, [
               _vm._v("Type Of Payment:")
             ]),
             _vm._v(" "),
@@ -24086,14 +24280,14 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.type_payment,
-                    expression: "type_payment"
+                    value: _vm.movement.type_payment,
+                    expression: "movement.type_payment"
                   }
                 ],
                 staticClass: "form-control",
                 attrs: {
                   name: "type_payment",
-                  id: "type_payment",
+                  id: "inputType_payment",
                   required: ""
                 },
                 on: {
@@ -24106,9 +24300,11 @@ var render = function() {
                         var val = "_value" in o ? o._value : o.value
                         return val
                       })
-                    _vm.type_payment = $event.target.multiple
-                      ? $$selectedVal
-                      : $$selectedVal[0]
+                    _vm.$set(
+                      _vm.movement,
+                      "type_payment",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
                   }
                 }
               },
@@ -24123,10 +24319,18 @@ var render = function() {
                 _vm._v(" "),
                 _c("option", { attrs: { value: "mb" } }, [_vm._v("MB Payment")])
               ]
-            )
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "invalid-feedback" }, [
+              _vm._v(
+                "\n                " +
+                  _vm._s(_vm.errors.type_payment) +
+                  "\n            "
+              )
+            ])
           ]),
           _vm._v(" "),
-          _vm.type_payment === "bt"
+          _vm.movement.type_payment === "bt"
             ? _c("div", [
                 _c("div", { staticClass: "form-group" }, [
                   _c("label", { attrs: { for: "inputIBAN" } }, [
@@ -24138,8 +24342,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.iban,
-                        expression: "iban"
+                        value: _vm.movement.iban,
+                        expression: "movement.iban"
                       }
                     ],
                     staticClass: "form-control",
@@ -24152,21 +24356,29 @@ var render = function() {
                       title:
                         "INAN must be 2 upper letters followed by 23 numbers"
                     },
-                    domProps: { value: _vm.iban },
+                    domProps: { value: _vm.movement.iban },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.iban = $event.target.value
+                        _vm.$set(_vm.movement, "iban", $event.target.value)
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(_vm.errors.iban) +
+                        "\n                "
+                    )
+                  ])
                 ])
               ])
             : _vm._e(),
           _vm._v(" "),
-          _vm.type_payment === "mb"
+          _vm.movement.type_payment === "mb"
             ? _c("div", [
                 _c("div", { staticClass: "form-group" }, [
                   _c("label", { attrs: { for: "inputMBEntity" } }, [
@@ -24178,8 +24390,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.MBEntity,
-                        expression: "MBEntity"
+                        value: _vm.movement.MBEntity,
+                        expression: "movement.MBEntity"
                       }
                     ],
                     staticClass: "form-control",
@@ -24191,16 +24403,24 @@ var render = function() {
                       required: "",
                       title: "Entity code must have 5 numbers"
                     },
-                    domProps: { value: _vm.MBEntity },
+                    domProps: { value: _vm.movement.MBEntity },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.MBEntity = $event.target.value
+                        _vm.$set(_vm.movement, "MBEntity", $event.target.value)
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(_vm.errors.mb_entity_code) +
+                        "\n                "
+                    )
+                  ])
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
@@ -24213,8 +24433,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.MBReference,
-                        expression: "MBReference"
+                        value: _vm.movement.MBReference,
+                        expression: "movement.MBReference"
                       }
                     ],
                     staticClass: "form-control",
@@ -24226,23 +24446,35 @@ var render = function() {
                       required: "",
                       title: "Payment Reference must have 9 numbers"
                     },
-                    domProps: { value: _vm.MBReference },
+                    domProps: { value: _vm.movement.MBReference },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.MBReference = $event.target.value
+                        _vm.$set(
+                          _vm.movement,
+                          "MBReference",
+                          $event.target.value
+                        )
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(_vm.errors.mb_payment_reference) +
+                        "\n                "
+                    )
+                  ])
                 ])
               ])
             : _vm._e()
         ])
       : _vm._e(),
     _vm._v(" "),
-    _vm.type_movement === "1"
+    _vm.movement.type_movement === "1"
       ? _c("div", [
           _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "inputEmail" } }, [
@@ -24254,8 +24486,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.email,
-                  expression: "email"
+                  value: _vm.movement.email,
+                  expression: "movement.email"
                 }
               ],
               staticClass: "form-control",
@@ -24267,16 +24499,24 @@ var render = function() {
                 required: "",
                 title: "Email must be a valid user email"
               },
-              domProps: { value: _vm.email },
+              domProps: { value: _vm.movement.email },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.email = $event.target.value
+                  _vm.$set(_vm.movement, "email", $event.target.value)
                 }
               }
-            })
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "invalid-feedback" }, [
+              _vm._v(
+                "\n                " +
+                  _vm._s(_vm.errors.email) +
+                  "\n            "
+              )
+            ])
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
@@ -24289,8 +24529,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.source_description,
-                  expression: "source_description"
+                  value: _vm.movement.source_description,
+                  expression: "movement.source_description"
                 }
               ],
               staticClass: "form-control",
@@ -24301,16 +24541,28 @@ var render = function() {
                 placeholder: "Insert a source description",
                 required: ""
               },
-              domProps: { value: _vm.source_description },
+              domProps: { value: _vm.movement.source_description },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.source_description = $event.target.value
+                  _vm.$set(
+                    _vm.movement,
+                    "source_description",
+                    $event.target.value
+                  )
                 }
               }
-            })
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "invalid-feedback" }, [
+              _vm._v(
+                "\n                " +
+                  _vm._s(_vm.errors.source_description) +
+                  "\n            "
+              )
+            ])
           ])
         ])
       : _vm._e(),

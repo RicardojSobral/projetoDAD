@@ -66,37 +66,50 @@ class MovementControllerAPI extends Controller
         $destinationWallet = null;
         $wallet_id = Auth::id();
 
-        if ($request->transfer == 0) {
+
+        if ($request->transfer === '0') {
             if($request->type_payment == 'bt') {
                 $request->validate([
-                    'value'        => 'required|numeric|between:0.01,5000.00',
-                    'category_id'  => 'required',
-                    'description'  => 'required',
-                    'type_payment' => 'required|in:c,bt,mb',
-                    'iban'         => 'required|regex:^[A-Z]{2}\d{23}$^',
+                    //'type_movement' => 'required',
+                    'value'         => 'required|numeric|between:0.01,5000.00',
+                    'category_id'   => 'required',
+                    'description'   => 'required',
+                    'iban'          => 'required|regex:^[A-Z]{2}\d{23}$^'
                 ]);
             } elseif ($request->type_payment == 'mb') {
                 $request->validate([
-                    'value'                => 'required|numeric|between:0.01,5000.00',
-                    'category_id'          => 'required',
-                    'description'          => 'required',
-                    'type_payment'         => 'required|in:c,bt,mb',
-                    'mb_entity_code'       => 'required|digits:5',
-                    'mb_payment_reference' => 'required|digits:9'
+                    //'type_movement'         => 'required',
+                    'value'                 => 'required|numeric|between:0.01,5000.00',
+                    'category_id'           => 'required',
+                    'description'           => 'required',
+                    'mb_entity_code'        => 'required|digits:5',
+                    'mb_payment_reference'  => 'required|digits:9'
+                ]);
+            } else {
+                $request->validate([
+                    //'type_movement' => 'required',
+                    'value'         => 'required|numeric|between:0.01,5000.00',
+                    'category_id'   => 'required',
+                    'description'   => 'required',
+                    'type_payment'  => 'required|in:bt,mb'
                 ]);
             }
-        }elseif ($request->transfer == 1) {
+
+        } elseif ($request->transfer === '1') {
             $request->validate([
-                'value'              => 'required|numeric|between:0.01,5000.00',
-                'category_id'        => 'required',
-                'description'        => 'required',
-                'email'              => 'required|email',
-                'source_description' => 'required'
+                //'type_movement'         => 'required',
+                'value'                 => 'required|numeric|between:0.01,5000.00',
+                'category_id'           => 'required',
+                'description'           => 'required',
+                'email'                 => 'required|email',
+                'source_description'    => 'required'
             ]);
 
-            $destinationWallet = DB::table('wallets')->where('email', $request->email)->value('id');
-            if(empty($destinationWallet)){
-                return response('Email is not valid or user does not have a wallet!');
+            if (!empty($request->email)) {
+                $destinationWallet = DB::table('wallets')->where('email', $request->email)->value('id');
+                if(empty($destinationWallet)){
+                    return response()->json([msg=>'Email is not valid or user does not have a wallet!'], 422);
+                }
             }
         }
 

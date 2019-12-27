@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="jumbotron">
-                <h1>{{ title }}</h1>               
+                <h1>{{ title }}</h1>
         </div>
         <h3>There are currently {{ wallets }} Virtual Wallets!</h3>
 
@@ -14,6 +14,12 @@
         </div>
 
         <div v-if="this.$store.state.user != null">
+            <div v-if="this.$store.state.user.type == 'o'">
+                <button type="button" class="btn btn-primary" v-on:click.prevent="registerDebit()">Register Debit</button>
+            </div>
+        </div>
+
+        <div v-if="this.$store.state.user != null">
             <div v-if="this.$store.state.user.type == 'a'">
                 <button type="button" class="btn btn-primary" v-on:click.prevent="createAdminOp()">Create Admin/Operator</button>
             </div>
@@ -21,12 +27,12 @@
 
         <br>
 
-        <div class="alert alert-success" v-if="showSuccess">			 
+        <div class="alert alert-success" v-if="showSuccess">
 			<button type="button" class="close-btn" v-on:click="showSuccess=false">&times;</button>
 			<strong>{{ successMessage }}</strong>
 		</div>
 
-        <div class="alert alert-danger" v-if="showError">			 
+        <div class="alert alert-danger" v-if="showError">
 			<button type="button" class="close-btn" v-on:click="showError=false">&times;</button>
 			<strong>{{ successMessage }}</strong>
 		</div>
@@ -34,8 +40,9 @@
         <br>
 
         <register-credit @credit-canceled="cancelCredit" @email-error="emailError" @credit-created="creditCreated" v-if="showRegisterCredit"></register-credit>
-        
-        <create-admin @create-canceled="cancelCreateAdmin" @admin-created="adminCreated" v-if="showCreateAdmin"></create-admin>
+        <register-debit @debit-canceled="cancelDebit" @email-error="emailError" @debit-created="debitCreated" v-if="showRegisterDebit"></register-debit>
+
+        <create-admin @create-canceled="cancelAdmin" @admin-created="adminCreated" v-if="showCreateAdmin"></create-admin>
 
     </div>
 
@@ -44,6 +51,7 @@
 
 <script>
     import RegisterCredit from './RegisterCredit.vue';
+    import RegisterDebit from './RegisterDebit';
     import CreateAdmin from './CreateUserAdmin.vue';
 
     export default {
@@ -52,6 +60,7 @@
                 title: 'Welcome To Virtual Wallet!',
                 wallets: 0,
                 showRegisterCredit: false,
+                showRegisterDebit: false,
                 showSuccess: false,
                 showError: false,
                 successMessage: "",
@@ -66,6 +75,12 @@
             cancelCredit: function(){
                 this.showRegisterCredit = false;
             },
+            registerDebit: function(){ //CREATE DEBIT METHODS
+                this.showRegisterDebit = true;
+            },
+            cancelDebit: function(){
+                this.showRegisterDebit = false;
+            },
             emailError: function(){
                 this.showError = true;
                 this.successMessage = "Email does not exist!";
@@ -74,6 +89,11 @@
                 this.showSuccess = true;
                 this.successMessage = "Credit created with success";
                 this.showRegisterCredit = false;
+            },
+            debitCreated: function(){
+                this.showSuccess = true;
+                this.successMessage = "Debit created with success";
+                this.showRegisterDebit = false;
             },
 
             createAdminOp: function(){  // CREATE ADMIN/OPERATOR METHODS
@@ -97,9 +117,10 @@
         },
 
          components: {
-            'register-credit': RegisterCredit,
-            'create-admin': CreateAdmin
-	    },       
+             'register-credit': RegisterCredit,
+             'register-debit': RegisterDebit,
+             'create-admin': CreateAdmin
+	    },
     }
 </script>
 <style scoped>

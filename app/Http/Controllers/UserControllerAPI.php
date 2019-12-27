@@ -14,8 +14,9 @@ use App\Http\Resources\User as UserResource;
 
 use App\User;
 use App\Wallet;
+use App\Movement;
 use Hash;
-
+use \DateTime;
 
 class UserControllerAPI extends Controller
 {
@@ -235,6 +236,103 @@ class UserControllerAPI extends Controller
         $user->active = 1;
         $user->save();
         return new UserResource($user);
+    }
+
+    public function getTotals($id){
+        $incomesCount = DB::table('movements')->select('value')->where('wallet_id', $id)->where('type', 'i')->get();
+        $expensesCount = DB::table('movements')->select('value')->where('wallet_id', $id)->where('type', 'e')->get();
+
+        $income = 0;
+        for($i=0; $i < count($incomesCount); $i++){
+            $income = $income + $incomesCount[$i]->value;
+        }
+
+        $expenses = 0;
+        for($i=0; $i < count($expensesCount); $i++){
+            $expenses = $expenses + $expensesCount[$i]->value;
+        }
+
+        $totals[0] = number_format((float)$income, 2, '.', '');
+        $totals[1] = number_format((float)$expenses, 2, '.', '');
+        return $totals;
+    }
+
+    public function expensesByCategory($id){
+        $categories = DB::table('categories')->select('id', 'name')->where('type', 'e')->get();
+
+        for ($i=0; $i < count($categories); $i++){
+            $expensesCount[$i] = DB::table('movements')->select('value')->where('wallet_id', $id)->where('category_id', $categories[$i]->id)->where('type', 'e')->get();
+            $countMoneyExpense = 0;
+            for($j=1; $j < count($expensesCount[$i]); $j++){
+                $countMoneyExpense = $countMoneyExpense + $expensesCount[$i][0]->value;
+            }
+            $totalByCategorie[$i]['ammount'] = number_format((float)$countMoneyExpense, 2, '.', '');
+            $totalByCategorie[$i]['category'] = $categories[$i]->name;
+        }
+
+        return $totalByCategorie;
+    }
+
+    public function incomesByCategory($id){
+        $categories = DB::table('categories')->select('id', 'name')->where('type', 'i')->get();
+
+        for ($i=0; $i < count($categories); $i++){
+            $incomesCount[$i] = DB::table('movements')->select('value')->where('wallet_id', $id)->where('category_id', $categories[$i]->id)->where('type', 'i')->get();
+            $countMoneyIncome = 0;
+            for($j=1; $j < count($incomesCount[$i]); $j++){
+                $countMoneyIncome = $countMoneyIncome + $incomesCount[$i][0]->value;
+            }
+            $totalByCategorie[$i]['ammount'] = number_format((float)$countMoneyIncome, 2, '.', '');
+            $totalByCategorie[$i]['category'] = $categories[$i]->name; 
+        }
+
+        return $totalByCategorie;
+    }
+
+    public function balanceThroughTime($id){
+        //todos ordenados por mes
+        $dates = DB::table('movements')->select('date', 'end_balance')->where('wallet_id', $id)->orderBy('date', 'asc')->get();
+
+        $firstYear = DateTime::createFromFormat('Y-m-d H:i:s' ,$dates[0]->date)->format("Y");
+        $firstMonth = DateTime::createFromFormat('Y-m-d H:i:s' ,$dates[0]->date)->format("m");
+        $lastYear = DateTime::createFromFormat('Y-m-d H:i:s' ,$dates[count($dates)-1]->date)->format("Y");
+        $lastMonth = DateTime::createFromFormat('Y-m-d H:i:s' ,$dates[count($dates)-1]->date)->format("m");
+        $count = 0;
+        
+        for ($i=$firstYear; $i <= $lastYear; $i++){ //percorrer anos
+            if($count == 0){
+                for ($j=$firstMonth; $j < $lastMonth+1; $j++){ //percorrer meses                
+                    $datesMonth = DB::table('movements')->select('date', 'start_balance')->where('wallet_id', $id)->where('date', 'like', $i . '-' . $j . '%')->orderBy('date', 'asc')->get();
+                    $firtsDates[$count] = $datesMonth[0];
+                    $count = $count+1;
+                } 
+            }else{
+                $firstMonth = 1; //passar firstMonth para 1 na primeira mudança de ano
+                for ($j=$firstMonth; $j < $lastMonth+1; $j++){ //percorrer meses
+                    if($j < 10){
+                        $h = "0".$j;
+                    }else{
+                        $h = $j;
+                    }                           
+                    $datesMonth = DB::table('movements')->select('date', 'start_balance')->where('wallet_id', $id)->where('date', 'like', $i . '-' . $h . '%')->orderBy('date', 'asc')->get();
+                    $firtsDates[$count] = $datesMonth[0];
+                    $count = $count+1;
+                } 
+            }
+        }
+
+        //formatar dados para estatisticas
+        $total = count($firtsDates);
+        for($i = 0; $i < $total; $i++){
+            $labels[] = $firtsDates[$i]->date;
+            $rows[] = $firtsDates[$i]->start_balance;
+        }
+        $data = [
+            'labels' => $labels,
+            'rows' => $rows,
+        ];
+
+        return $data;
     }
 
 }

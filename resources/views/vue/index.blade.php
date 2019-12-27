@@ -7,6 +7,8 @@
     <ul class="nav">
         <li><router-link to="/home">Home</router-link></li>
 
+        <li v-if="this.$store.state.user"><router-link to="/userStatistics" v-show="this.$store.state.user.type == 'u'">Statistics</router-link></li>
+
         <li v-if="this.$store.state.user"><router-link to="/wallet" v-show="this.$store.state.user.type == 'u'">Wallet</router-link></li>
 
         <li v-if="this.$store.state.user"><router-link to="/accounts" v-show="this.$store.state.user.type == 'a'">Accounts</router-link></li>

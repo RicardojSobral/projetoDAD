@@ -45,15 +45,19 @@ const accounts = Vue.component('accounts', ListAccountsComponent);
 import AccountComponent from './components/accountCreate.vue';
 const accountCreate = Vue.component('accountCreate', AccountComponent);
 
+import UserStatisticsComponent from './components/userStatistics.vue';
+const userStatistics = Vue.component('userStatistics', UserStatisticsComponent);
+
  const routes = [
      { path: '/', redirect: '/home'},
      { path: '/home', component: home },
-     { path: '/accountcreate', component: accountCreate},
+     { path: '/accountcreate', component: accountCreate, meta:{ requiresVisitor: true }},
      { path: '/login', component: login,  meta:{ requiresVisitor: true } },
      { path: '/logout', component: logout, meta:{ requiresAuth: true } },
      { path: '/profile', component: profile, meta:{ requiresAuth: true } },
      { path: '/wallet', component: wallet, meta:{ requiresAuth: true } },
      { path: '/accounts', component: accounts, meta:{ requiresAuth: true } },
+     { path: '/userStatistics', component: userStatistics, meta:{ requiresAuth: true } },
  ];
 
  const router = new VueRouter({

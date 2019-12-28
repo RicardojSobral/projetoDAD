@@ -48,6 +48,9 @@ const accountCreate = Vue.component('accountCreate', AccountComponent);
 import UserStatisticsComponent from './components/userStatistics.vue';
 const userStatistics = Vue.component('userStatistics', UserStatisticsComponent);
 
+import MovementDebitComponent from './components/RegisterDebit.vue';
+const movementDebit = Vue.component('movementDebit', MovementDebitComponent);
+
  const routes = [
      { path: '/', redirect: '/home'},
      { path: '/home', component: home },
@@ -58,6 +61,7 @@ const userStatistics = Vue.component('userStatistics', UserStatisticsComponent);
      { path: '/wallet', component: wallet, meta:{ requiresAuth: true } },
      { path: '/accounts', component: accounts, meta:{ requiresAuth: true } },
      { path: '/userStatistics', component: userStatistics, meta:{ requiresAuth: true } },
+     { path: '/movements/debit', component: movementDebit, meta: { requiresAuth: true } },
  ];
 
  const router = new VueRouter({

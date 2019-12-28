@@ -107,11 +107,11 @@ class UserControllerAPI extends Controller
         ]);
 
         $base64_string = explode(',', $request->photoBase64);
-        $imageBin = base64_decode($base64_string[1]);    
+        $imageBin = base64_decode($base64_string[1]);
         if (!Storage::disk('public')->exists('fotos/' . $request->photo)) {
             Storage::disk('public')->put('fotos/' . $request->photo, $imageBin);
-        }     
-
+        }
+        
         $user = new User();
         $user->fill($request->all());
         $user->password = Hash::make($user->password);

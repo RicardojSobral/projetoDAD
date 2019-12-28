@@ -6,6 +6,7 @@ use App\Http\Resources\Wallet as WalletResource;
 
 use Illuminate\Http\Request;
 use App\Wallet;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class WalletControllerAPI extends Controller
@@ -23,7 +24,12 @@ class WalletControllerAPI extends Controller
 
     public function getBalance($id)
     {
-        $balance = DB::table('wallets')->select('balance')->where('id', $id)->get();
-        return $balance[0]->balance;
+        //$balance = DB::table('wallets')->select('balance')->where('id', $id)->get();
+        $balance = DB::table('wallets')->where('id', $id)->value('balance');
+        return $balance;
+    }
+
+    public function updateBalance($id, $value) {
+        DB::table('wallets')->where('id', $id)->update(['balance' => $value]);
     }
 }

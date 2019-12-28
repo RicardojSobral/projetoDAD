@@ -1964,7 +1964,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _RegisterCredit_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RegisterCredit.vue */ "./resources/js/components/RegisterCredit.vue");
-/* harmony import */ var _CreateUserAdmin_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateUserAdmin.vue */ "./resources/js/components/CreateUserAdmin.vue");
+/* harmony import */ var _RegisterDebit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RegisterDebit */ "./resources/js/components/RegisterDebit.vue");
+/* harmony import */ var _CreateUserAdmin_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CreateUserAdmin.vue */ "./resources/js/components/CreateUserAdmin.vue");
 //
 //
 //
@@ -2009,6 +2010,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2017,6 +2026,7 @@ __webpack_require__.r(__webpack_exports__);
       title: 'Welcome To Virtual Wallet!',
       wallets: 0,
       showRegisterCredit: false,
+      showRegisterDebit: false,
       showSuccess: false,
       showError: false,
       successMessage: "",
@@ -2031,6 +2041,13 @@ __webpack_require__.r(__webpack_exports__);
     cancelCredit: function cancelCredit() {
       this.showRegisterCredit = false;
     },
+    registerDebit: function registerDebit() {
+      //CREATE DEBIT METHODS
+      this.showRegisterDebit = true;
+    },
+    cancelDebit: function cancelDebit() {
+      this.showRegisterDebit = false;
+    },
     emailError: function emailError() {
       this.showError = true;
       this.successMessage = "Email does not exist!";
@@ -2039,6 +2056,11 @@ __webpack_require__.r(__webpack_exports__);
       this.showSuccess = true;
       this.successMessage = "Credit created with success";
       this.showRegisterCredit = false;
+    },
+    debitCreated: function debitCreated() {
+      this.showSuccess = true;
+      this.successMessage = "Debit created with success";
+      this.showRegisterDebit = false;
     },
     createAdminOp: function createAdminOp() {
       // CREATE ADMIN/OPERATOR METHODS
@@ -2062,7 +2084,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   components: {
     'register-credit': _RegisterCredit_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    'create-admin': _CreateUserAdmin_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    'register-debit': _RegisterDebit__WEBPACK_IMPORTED_MODULE_1__["default"],
+    'create-admin': _CreateUserAdmin_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   }
 });
 
@@ -56805,6 +56828,29 @@ var render = function() {
       _vm._v(" "),
       this.$store.state.user != null
         ? _c("div", [
+            this.$store.state.user.type == "o"
+              ? _c("div", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.registerDebit()
+                        }
+                      }
+                    },
+                    [_vm._v("Register Debit")]
+                  )
+                ])
+              : _vm._e()
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      this.$store.state.user != null
+        ? _c("div", [
             this.$store.state.user.type == "a"
               ? _c("div", [
                   _c(
@@ -56880,10 +56926,20 @@ var render = function() {
           })
         : _vm._e(),
       _vm._v(" "),
+      _vm.showRegisterDebit
+        ? _c("register-debit", {
+            on: {
+              "debit-canceled": _vm.cancelDebit,
+              "email-error": _vm.emailError,
+              "debit-created": _vm.debitCreated
+            }
+          })
+        : _vm._e(),
+      _vm._v(" "),
       _vm.showCreateAdmin
         ? _c("create-admin", {
             on: {
-              "create-canceled": _vm.cancelCreateAdmin,
+              "create-canceled": _vm.cancelAdmin,
               "admin-created": _vm.adminCreated
             }
           })
@@ -58178,6 +58234,578 @@ var render = function() {
             click: function($event) {
               $event.preventDefault()
               return _vm.cancelCredit()
+            }
+          }
+        },
+        [_vm._v("Cancel")]
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RegisterDebit.vue?vue&type=template&id=2643132e&scoped=true&":
+/*!****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/RegisterDebit.vue?vue&type=template&id=2643132e&scoped=true& ***!
+  \****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "jumbotron" }, [
+    _c("h2", [_vm._v("Register Debit")]),
+    _vm._v(" "),
+    _vm.showError
+      ? _c("div", { staticClass: "alert alert-danger" }, [
+          _c(
+            "button",
+            {
+              staticClass: "close-btn",
+              attrs: { type: "button" },
+              on: {
+                click: function($event) {
+                  _vm.showError = false
+                }
+              }
+            },
+            [_vm._v("×")]
+          ),
+          _vm._v(" "),
+          _c("strong", [_vm._v(_vm._s(_vm.successMessage))])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.showMessage
+      ? _c("div", { staticClass: "alert", class: _vm.typeofmsg }, [
+          _c("strong", [_vm._v(_vm._s(_vm.message))])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "inputType_movement" } }, [
+        _vm._v("Type Of Movement:")
+      ]),
+      _vm._v(" "),
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.movement.type_movement,
+              expression: "movement.type_movement"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            name: "type_movement",
+            id: "inputType_movement",
+            required: ""
+          },
+          on: {
+            change: function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.$set(
+                _vm.movement,
+                "type_movement",
+                $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+              )
+            }
+          }
+        },
+        [
+          _c("option", { attrs: { selected: "", value: "" } }, [
+            _vm._v(" -- select an option -- ")
+          ]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "0" } }, [_vm._v("Payment")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "1" } }, [_vm._v("Transfer")])
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "invalid-feedback" }, [
+        _vm._v(
+          "\n            " + _vm._s(_vm.errors.type_movement) + "\n        "
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "inputValue" } }, [_vm._v("Value:")]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.movement.value,
+            expression: "movement.value"
+          }
+        ],
+        staticClass: "form-control",
+        attrs: {
+          type: "number",
+          name: "value",
+          id: "inputValue",
+          placeholder: "Insert the amount to send",
+          required: "",
+          title: "You must enter a valid value"
+        },
+        domProps: { value: _vm.movement.value },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.movement, "value", $event.target.value)
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "invalid-feedback" }, [
+        _vm._v("\n            " + _vm._s(_vm.errors.value) + "\n        ")
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "inputCategory" } }, [
+        _vm._v("Category of expense:")
+      ]),
+      _vm._v(" "),
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.movement.category,
+              expression: "movement.category"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { name: "category", id: "inputCategory", required: "" },
+          on: {
+            change: function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.$set(
+                _vm.movement,
+                "category",
+                $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+              )
+            }
+          }
+        },
+        [
+          _c("option", { attrs: { selected: "", value: "" } }, [
+            _vm._v(" -- select an option -- ")
+          ]),
+          _vm._v(" "),
+          _vm._l(_vm.movement.categories, function(category) {
+            return _c("option", { domProps: { value: category.id } }, [
+              _vm._v(
+                "\n                " + _vm._s(category.name) + "\n            "
+              )
+            ])
+          })
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "invalid-feedback" }, [
+        _vm._v("\n            " + _vm._s(_vm.errors.category_id) + "\n        ")
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "inputDescription" } }, [
+        _vm._v("Description:")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.movement.description,
+            expression: "movement.description"
+          }
+        ],
+        staticClass: "form-control",
+        attrs: {
+          type: "text",
+          name: "description",
+          id: "inputDescription",
+          placeholder: "Insert a description of the movement"
+        },
+        domProps: { value: _vm.movement.description },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.movement, "description", $event.target.value)
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "invalid-feedback" }, [
+        _vm._v("\n            " + _vm._s(_vm.errors.description) + "\n        ")
+      ])
+    ]),
+    _vm._v(" "),
+    _vm.movement.type_movement === "0"
+      ? _c("div", [
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "inputType_payment" } }, [
+              _vm._v("Type Of Payment:")
+            ]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.movement.type_payment,
+                    expression: "movement.type_payment"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  name: "type_payment",
+                  id: "inputType_payment",
+                  required: ""
+                },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.movement,
+                      "type_payment",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  }
+                }
+              },
+              [
+                _c("option", { attrs: { selected: "", value: "" } }, [
+                  _vm._v(" -- select an option -- ")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "bt" } }, [
+                  _vm._v("Bank Transfer")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "mb" } }, [_vm._v("MB Payment")])
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "invalid-feedback" }, [
+              _vm._v(
+                "\n                " +
+                  _vm._s(_vm.errors.type_payment) +
+                  "\n            "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _vm.movement.type_payment === "bt"
+            ? _c("div", [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "inputIBAN" } }, [
+                    _vm._v("IBAN:")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.movement.iban,
+                        expression: "movement.iban"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "text",
+                      name: "iban",
+                      id: "inputIBAN",
+                      placeholder: "Insert IBAN",
+                      required: "",
+                      title:
+                        "INAN must be 2 upper letters followed by 23 numbers"
+                    },
+                    domProps: { value: _vm.movement.iban },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.movement, "iban", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(_vm.errors.iban) +
+                        "\n                "
+                    )
+                  ])
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.movement.type_payment === "mb"
+            ? _c("div", [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "inputMBEntity" } }, [
+                    _vm._v("MB Entity Code:")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.movement.MBEntity,
+                        expression: "movement.MBEntity"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "text",
+                      name: "mbentity",
+                      id: "inputMBEntity",
+                      placeholder: "Insert MB Entity Code",
+                      required: "",
+                      title: "Entity code must have 5 numbers"
+                    },
+                    domProps: { value: _vm.movement.MBEntity },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.movement, "MBEntity", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(_vm.errors.mb_entity_code) +
+                        "\n                "
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "inputMBReference" } }, [
+                    _vm._v("MB Payment Reference:")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.movement.MBReference,
+                        expression: "movement.MBReference"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "text",
+                      name: "mbreference",
+                      id: "inputMBReference",
+                      placeholder: "Insert MB Payment Reference",
+                      required: "",
+                      title: "Payment Reference must have 9 numbers"
+                    },
+                    domProps: { value: _vm.movement.MBReference },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.movement,
+                          "MBReference",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(_vm.errors.mb_payment_reference) +
+                        "\n                "
+                    )
+                  ])
+                ])
+              ])
+            : _vm._e()
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.movement.type_movement === "1"
+      ? _c("div", [
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "inputEmail" } }, [
+              _vm._v("Email of the destination wallet:")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.movement.email,
+                  expression: "movement.email"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "email",
+                name: "email",
+                id: "inputEmail",
+                placeholder: "Insert email of the destination wallet",
+                required: "",
+                title: "Email must be a valid user email"
+              },
+              domProps: { value: _vm.movement.email },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.movement, "email", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "invalid-feedback" }, [
+              _vm._v(
+                "\n                " +
+                  _vm._s(_vm.errors.email) +
+                  "\n            "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "inputSourceDescription" } }, [
+              _vm._v("Source Description:")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.movement.source_description,
+                  expression: "movement.source_description"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                name: "source_description",
+                id: "inputSourceDescription",
+                placeholder: "Insert a source description",
+                required: ""
+              },
+              domProps: { value: _vm.movement.source_description },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(
+                    _vm.movement,
+                    "source_description",
+                    $event.target.value
+                  )
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "invalid-feedback" }, [
+              _vm._v(
+                "\n                " +
+                  _vm._s(_vm.errors.source_description) +
+                  "\n            "
+              )
+            ])
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group" }, [
+      _c(
+        "a",
+        {
+          staticClass: "btn btn-success",
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              return _vm.createDebit()
+            }
+          }
+        },
+        [_vm._v("Register Movement")]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "btn btn-light",
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              return _vm.cancelDebit()
             }
           }
         },
@@ -75381,6 +76009,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_ListAccounts_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/ListAccounts.vue */ "./resources/js/components/ListAccounts.vue");
 /* harmony import */ var _components_accountCreate_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/accountCreate.vue */ "./resources/js/components/accountCreate.vue");
 /* harmony import */ var _components_userStatistics_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/userStatistics.vue */ "./resources/js/components/userStatistics.vue");
+/* harmony import */ var _components_RegisterDebit_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/RegisterDebit.vue */ "./resources/js/components/RegisterDebit.vue");
 /*jshint esversion: 6 */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
@@ -75417,6 +76046,8 @@ var accounts = Vue.component('accounts', _components_ListAccounts_vue__WEBPACK_I
 var accountCreate = Vue.component('accountCreate', _components_accountCreate_vue__WEBPACK_IMPORTED_MODULE_11__["default"]);
 
 var userStatistics = Vue.component('userStatistics', _components_userStatistics_vue__WEBPACK_IMPORTED_MODULE_12__["default"]);
+
+var movementDebit = Vue.component('movementDebit', _components_RegisterDebit_vue__WEBPACK_IMPORTED_MODULE_9__["default"]);
 var routes = [{
   path: '/',
   redirect: '/home'
@@ -75462,6 +76093,12 @@ var routes = [{
 }, {
   path: '/userStatistics',
   component: userStatistics,
+  meta: {
+    requiresAuth: true
+  }
+}, {
+  path: '/movements/debit',
+  component: movementDebit,
   meta: {
     requiresAuth: true
   }

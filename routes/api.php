@@ -46,8 +46,8 @@ Route::middleware('auth:api')->get('users/stats/totals/{id}', 'UserControllerAPI
 Route::middleware('auth:api')->get('users/stats/expensesByCategory/{id}', 'UserControllerAPI@expensesByCategory');
 Route::middleware('auth:api')->get('users/stats/incomesByCategory/{id}', 'UserControllerAPI@incomesByCategory');
 Route::middleware('auth:api')->get('users/stats/balanceThroughTime/{id}', 'UserControllerAPI@balanceThroughTime');
-
-
+Route::middleware('auth:api')->get('users/stats/expensesThroughTime/{id}', 'UserControllerAPI@expensesThroughTime');
+Route::middleware('auth:api')->get('users/stats/incomesThroughTime/{id}', 'UserControllerAPI@incomesThroughTime');
 
 Route::middleware('auth:api')->post('movements/credit', 'MovementControllerAPI@createCredit');
 Route::middleware('auth:api')->post('movements/debit', 'MovementControllerAPI@createDebit');

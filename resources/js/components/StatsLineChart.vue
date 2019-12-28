@@ -4,15 +4,15 @@ import { Line } from 'vue-chartjs'
 export default {
     extends: Line,
 
-    props:['data', 'labels'],
+    props:['data', 'labels', 'color'],
 
     mounted () {
         this.renderChart({
             labels: this.labels,
             datasets: [                
                 {                    
-                    borderColor: '#33cc33', 
-                    pointBackgroundColor:'#33cc33',
+                    borderColor: this.color, 
+                    pointBackgroundColor: this.color,
                     data: this.data
                 },
                

@@ -1,5 +1,6 @@
 <template>
     <div>
+
         <div v-if="loadedIncExpe" class="container">
             <h4>Total Income/Expenses (€):</h4>
             <income-expense :data="data1" />
@@ -9,22 +10,36 @@
 
         <div v-if="loadedExpCat" class="container">
             <h4>Total Expenses By Category (€):</h4>
-            <expense-category :data="data2" />
+            <expense-category :data="data2" :labels="labels2"/>
         </div>  
 
         <br>
 
         <div v-if="loadedIncCat" class="container">
             <h4>Total Income By Category (€):</h4>
-            <incomes-category :data="data3" />
+            <incomes-category :data="data3" :labels="labels3" />
         </div>
 
         <br>
 
         <div v-if="loadedBalanceTime" class="container">
             <h4>Start Balance Per Month (€):</h4>
-            <balance-time :data="rows" :labels="labels" />
+            <line-chart :data="rows" :labels="labels" :color="'#33cc33'"/>
         </div>  
+
+        <br>
+
+        <div v-if="loadedExpTime" class="container">
+            <h4>Total Expenses Per Month (€):</h4>
+            <line-chart :data="data4" :labels="labels4" :color="'#dd4b39'"/>
+        </div>  
+       
+        <br>
+
+        <div v-if="loadedIncTime" class="container">
+            <h4>Total Income Per Month (€):</h4>
+            <line-chart :data="data5" :labels="labels5" :color="'#36a2eb'"/>
+        </div>          
         
     </div>    
 </template>
@@ -33,7 +48,7 @@
     import TotalsIncomeExpense from './StatsBarsTotals.vue';
     import ExpensesByCategory from './StatsExpensesByCategory.vue';
     import IncomesByCategory from './StatsIncomesByCategory.vue';
-    import BalanceTime from './StatsBalanceTime.vue';
+    import LineChart from './StatsLineChart.vue';
 
 import { Bar, Line } from 'vue-chartjs';
 
@@ -42,16 +57,23 @@ export default {
     data: function(){
         return{
             userId: this.$store.state.user.id,
-            data1: null,
-            data2: null,
-            data3: null,
             rows: null,
             labels:null,
+            data1: null,
+            data2: null,
+            labels2: null,
+            data3: null,
+            labels3:null,
+            data4: null,
+            labels4: null,
+            data5: null,
+            labels5: null,
             loadedIncExpe: false,
             loadedExpCat: false,
             loadedIncCat: false,
             loadedBalanceTime: false,
-
+            loadedExpTime: false,
+            loadedIncTime: false,
         }
     },
 
@@ -66,16 +88,18 @@ export default {
 
         getExpensesByCategory: function(){
             axios.get('api/users/stats/expensesByCategory/'+ this.userId)
-            .then( response => {                
-                this.data2 = response.data;
+            .then( response => { 
+                this.labels2 = response.data.labels;                 
+                this.data2 = response.data.rows;
                 this.loadedExpCat = true;
             })            
         },
 
         getIncomesByCategory: function(){
             axios.get('api/users/stats/incomesByCategory/'+ this.userId)
-            .then( response => {                
-                this.data3 = response.data;
+            .then( response => {     
+                this.labels3 = response.data.labels;           
+                this.data3 = response.data.rows;
                 this.loadedIncCat = true;
             })            
         },
@@ -88,20 +112,41 @@ export default {
                 this.loadedBalanceTime = true;
             })            
         },
+
+        getExpensesThroughTime: function(){
+            axios.get('api/users/stats/expensesThroughTime/'+ this.userId)
+            .then( response => {     
+                this.labels4 = response.data.labels;
+                this.data4 = response.data.rows;
+                this.loadedExpTime = true;
+            })            
+        },
+
+        getIncomesThroughTime: function(){
+            axios.get('api/users/stats/incomesThroughTime/'+ this.userId)
+            .then( response => {     
+                this.labels5 = response.data.labels;
+                this.data5 = response.data.rows;
+                this.loadedIncTime = true;
+            })            
+        },
     },
 
-    async mounted() {
-        await this.getTotals();
-        await this.getExpensesByCategory();
-        await this.getIncomesByCategory();
-        await this.getBalanceThroughTime();
+    mounted() {
+        this.getBalanceThroughTime();
+        this.getTotals();
+        this.getExpensesByCategory();
+        this.getIncomesByCategory();
+        this.getExpensesThroughTime();
+        this.getIncomesThroughTime();
+       
     },
 
     components: {
         'income-expense': TotalsIncomeExpense,
         'expense-category': ExpensesByCategory,
         'incomes-category': IncomesByCategory,
-        'balance-time': BalanceTime,
+        'line-chart': LineChart,
     },   
     
 }

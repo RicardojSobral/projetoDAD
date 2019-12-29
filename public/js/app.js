@@ -1905,8 +1905,6 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.post('api/users/createOpAdmin', this.user).then(function (response) {
-        console.log(response);
-
         _this.$emit('admin-created');
       })["catch"](function (error) {
         console.error(error);
@@ -2066,7 +2064,7 @@ __webpack_require__.r(__webpack_exports__);
       // CREATE ADMIN/OPERATOR METHODS
       this.showCreateAdmin = true;
     },
-    cancelCreateAdmin: function cancelCreateAdmin() {
+    cancelAdmin: function cancelAdmin() {
       this.showCreateAdmin = false;
     },
     adminCreated: function adminCreated() {
@@ -2828,6 +2826,314 @@ __webpack_require__.r(__webpack_exports__);
     cancelCredit: function cancelCredit() {
       this.$emit('credit-canceled');
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RegisterDebit.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/RegisterDebit.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      movement: {
+        type_movement: '',
+        value: '',
+        category: '',
+        description: '',
+        type_payment: '',
+        iban: '',
+        MBEntity: '',
+        MBReference: '',
+        email: '',
+        source_description: '',
+        categories: ''
+      },
+      errors: {
+        type_movement: '',
+        value: '',
+        category_id: '',
+        description: '',
+        type_payment: '',
+        iban: '',
+        mb_entity_code: '',
+        mb_payment_reference: '',
+        email: '',
+        source_description: ''
+      },
+      typeofmsg: "alert-success",
+      showMessage: false,
+      message: "",
+      showError: false
+    };
+  },
+  methods: {
+    createDebit: function createDebit() {
+      var _this = this;
+
+      axios.post('api/movements/debit', {
+        transfer: this.movement.type_movement,
+        type_payment: this.movement.type_payment,
+        category_id: this.movement.category,
+        iban: this.movement.iban,
+        mb_entity_code: this.movement.MBEntity,
+        mb_payment_reference: this.movement.MBReference,
+        description: this.movement.description,
+        source_description: this.movement.source_description,
+        email: this.movement.email,
+        value: this.movement.value
+      }).then(function (response) {
+        if (response.data == "Email is not valid!") {
+          _this.$emit('email-error');
+        } else {
+          _this.$emit('debit-created');
+        }
+      })["catch"](function (error) {
+        if (error.response.data.errors) {
+          var formError = error.response.data.errors;
+
+          if (formError.type_movement) {
+            _this.errors.type_movement = formError.type_movement[0];
+            document.querySelector('#inputType_movement').classList.add('is-invalid');
+          } else {
+            document.querySelector('#inputType_movement').classList.remove('is-invalid');
+          }
+
+          if (formError.value) {
+            _this.errors.value = formError.value[0];
+            document.querySelector('#inputValue').classList.add('is-invalid');
+          } else {
+            document.querySelector('#inputValue').classList.remove('is-invalid');
+          }
+
+          if (formError.category_id) {
+            _this.errors.category_id = formError.category_id[0];
+            document.querySelector('#inputCategory').classList.add('is-invalid');
+          } else {
+            document.querySelector('#inputCategory').classList.remove('is-invalid');
+          }
+
+          if (formError.description) {
+            _this.errors.description = formError.description[0];
+            document.querySelector('#inputDescription').classList.add('is-invalid');
+          } else {
+            document.querySelector('#inputDescription').classList.remove('is-invalid');
+          }
+
+          if (_this.movement.type_movement === '0') {
+            if (formError.type_payment) {
+              _this.errors.type_payment = formError.type_payment[0];
+              document.querySelector('#inputType_payment').classList.add('is-invalid');
+            } else {
+              document.querySelector('#inputType_payment').classList.remove('is-invalid');
+            }
+
+            if (_this.movement.type_payment === 'bt') {
+              if (formError.iban) {
+                _this.errors.iban = formError.iban[0];
+                document.querySelector('#inputIBAN').classList.add('is-invalid');
+              } else {
+                document.querySelector('#inputIBAN').classList.remove('is-invalid');
+              }
+            } else if (_this.movement.type_payment === 'mb') {
+              if (formError.mb_entity_code) {
+                _this.errors.mb_entity_code = formError.mb_entity_code[0];
+                document.querySelector('#inputMBEntity').classList.add('is-invalid');
+              } else {
+                document.querySelector('#inputMBEntity').classList.remove('is-invalid');
+              }
+
+              if (formError.mb_payment_reference) {
+                _this.errors.mb_payment_reference = formError.mb_payment_reference[0];
+                document.querySelector('#inputMBReference').classList.add('is-invalid');
+              } else {
+                document.querySelector('#inputMBReference').classList.remove('is-invalid');
+              }
+            }
+          }
+
+          if (_this.movement.type_movement === '1') {
+            if (formError.email) {
+              _this.errors.email = formError.email[0];
+              document.querySelector('#inputEmail').classList.add('is-invalid');
+            } else {
+              document.querySelector('#inputEmail').classList.remove('is-invalid');
+            }
+
+            if (formError.source_description) {
+              _this.errors.source_description = formError.source_description[0];
+              document.querySelector('#inputSourceDescription').classList.add('is-invalid');
+            } else {
+              document.querySelector('#inputSourceDescription').classList.remove('is-invalid');
+            }
+          }
+        }
+      });
+    },
+    getCategories: function getCategories() {
+      var _this2 = this;
+
+      axios.get('api/categories/e').then(function (response) {
+        _this2.movement.categories = response.data;
+      });
+    },
+    cancelDebit: function cancelDebit() {
+      this.$emit('debit-canceled');
+    }
+  },
+  mounted: function mounted() {
+    this.getCategories();
   }
 });
 
@@ -19786,7 +20092,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\ntr.activerow[data-v-0d955da4] {\n  background: #123456 !important;\n  color: #fff !important;\n}\n", ""]);
+exports.push([module.i, "\ntr.activerow[data-v-0d955da4] {\r\n  background: #123456 !important;\r\n  color: #fff !important;\n}\r\n", ""]);
 
 // exports
 
@@ -56828,7 +57134,7 @@ var render = function() {
       _vm._v(" "),
       this.$store.state.user != null
         ? _c("div", [
-            this.$store.state.user.type == "o"
+            this.$store.state.user.type == "u"
               ? _c("div", [
                   _c(
                     "button",
@@ -76009,7 +76315,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_ListAccounts_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/ListAccounts.vue */ "./resources/js/components/ListAccounts.vue");
 /* harmony import */ var _components_accountCreate_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/accountCreate.vue */ "./resources/js/components/accountCreate.vue");
 /* harmony import */ var _components_userStatistics_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/userStatistics.vue */ "./resources/js/components/userStatistics.vue");
-/* harmony import */ var _components_RegisterDebit_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/RegisterDebit.vue */ "./resources/js/components/RegisterDebit.vue");
+/* harmony import */ var _components_RegisterDebit_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/RegisterDebit.vue */ "./resources/js/components/RegisterDebit.vue");
 /*jshint esversion: 6 */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
@@ -76047,7 +76353,7 @@ var accountCreate = Vue.component('accountCreate', _components_accountCreate_vue
 
 var userStatistics = Vue.component('userStatistics', _components_userStatistics_vue__WEBPACK_IMPORTED_MODULE_12__["default"]);
 
-var movementDebit = Vue.component('movementDebit', _components_RegisterDebit_vue__WEBPACK_IMPORTED_MODULE_9__["default"]);
+var movementDebit = Vue.component('movementDebit', _components_RegisterDebit_vue__WEBPACK_IMPORTED_MODULE_13__["default"]);
 var routes = [{
   path: '/',
   redirect: '/home'
@@ -76828,6 +77134,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterCredit_vue_vue_type_template_id_55684ca7_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterCredit_vue_vue_type_template_id_55684ca7_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/RegisterDebit.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/components/RegisterDebit.vue ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _RegisterDebit_vue_vue_type_template_id_2643132e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RegisterDebit.vue?vue&type=template&id=2643132e&scoped=true& */ "./resources/js/components/RegisterDebit.vue?vue&type=template&id=2643132e&scoped=true&");
+/* harmony import */ var _RegisterDebit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RegisterDebit.vue?vue&type=script&lang=js& */ "./resources/js/components/RegisterDebit.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _RegisterDebit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _RegisterDebit_vue_vue_type_template_id_2643132e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _RegisterDebit_vue_vue_type_template_id_2643132e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "2643132e",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/RegisterDebit.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/RegisterDebit.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/RegisterDebit.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterDebit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./RegisterDebit.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RegisterDebit.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterDebit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/RegisterDebit.vue?vue&type=template&id=2643132e&scoped=true&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/components/RegisterDebit.vue?vue&type=template&id=2643132e&scoped=true& ***!
+  \**********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterDebit_vue_vue_type_template_id_2643132e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./RegisterDebit.vue?vue&type=template&id=2643132e&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RegisterDebit.vue?vue&type=template&id=2643132e&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterDebit_vue_vue_type_template_id_2643132e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterDebit_vue_vue_type_template_id_2643132e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

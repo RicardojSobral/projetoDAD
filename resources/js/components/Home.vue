@@ -14,7 +14,7 @@
         </div>
 
         <div v-if="this.$store.state.user != null">
-            <div v-if="this.$store.state.user.type == 'o'">
+            <div v-if="this.$store.state.user.type == 'u'">
                 <button type="button" class="btn btn-primary" v-on:click.prevent="registerDebit()">Register Debit</button>
             </div>
         </div>
@@ -99,7 +99,7 @@
             createAdminOp: function(){  // CREATE ADMIN/OPERATOR METHODS
                 this.showCreateAdmin = true;
             },
-            cancelCreateAdmin: function(){
+            cancelAdmin: function(){
                 this.showCreateAdmin = false;
             },
             adminCreated: function(){

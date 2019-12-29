@@ -65,7 +65,7 @@ io.on("connection", function(socket) {
         }
     });
 
-    socket.on("user_changed_transfer", function(msg, sourceUser, destUser) { //esperar pela us9/10
+    socket.on("user_changed_transfer", function(msg, sourceUser, destUser) {
         console.log(sourceUser);
         let userInfo = loggedUsers.userInfoByID(destUser.id);
         let socket_id = userInfo !== undefined ? userInfo.socketID : null;

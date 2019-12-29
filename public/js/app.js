@@ -76392,27 +76392,30 @@ var routes = [{
   path: '/wallet',
   component: wallet,
   meta: {
-    requiresAuth: true
+    requiresUser: true
   }
-}, {
+}, //so users
+{
   path: '/accounts',
   component: accounts,
   meta: {
-    requiresAuth: true
+    requiresAdmin: true
   }
-}, {
+}, //so admins
+{
   path: '/userStatistics',
   component: userStatistics,
   meta: {
-    requiresAuth: true
+    requiresUser: true
   }
-}, {
+}, //so users
+{
   path: '/movements/debit',
   component: movementDebit,
   meta: {
-    requiresAuth: true
+    requiresUser: true
   }
-} // ver caso
+} // ver caso / so users
 ];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_3__["default"]({
   routes: routes
@@ -76421,6 +76424,7 @@ router.beforeEach(function (to, from, next) {
   if (to.matched.some(function (record) {
     return record.meta.requiresAuth;
   })) {
+    //logado
     if (!sessionStorage.getItem('user')) {
       next({
         path: '/login'
@@ -76431,7 +76435,38 @@ router.beforeEach(function (to, from, next) {
   } else if (to.matched.some(function (record) {
     return record.meta.requiresVisitor;
   })) {
+    //nao logado
     if (_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.user) {
+      next({
+        path: '/home'
+      });
+    } else {
+      next();
+    }
+  } else if (to.matched.some(function (record) {
+    return record.meta.requiresUser;
+  })) {
+    //user
+    if (!sessionStorage.getItem('user')) {
+      next({
+        path: '/login'
+      });
+    } else if (_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.user.type != 'u') {
+      next({
+        path: '/home'
+      });
+    } else {
+      next();
+    }
+  } else if (to.matched.some(function (record) {
+    return record.meta.requiresAdmin;
+  })) {
+    //admin
+    if (!sessionStorage.getItem('user')) {
+      next({
+        path: '/login'
+      });
+    } else if (_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.user.type != 'a') {
       next({
         path: '/home'
       });

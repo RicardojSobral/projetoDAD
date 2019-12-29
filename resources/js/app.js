@@ -53,35 +53,59 @@ const movementDebit = Vue.component('movementDebit', MovementDebitComponent);
 
  const routes = [
      { path: '/', redirect: '/home'},
-     { path: '/home', component: home },
+     { path: '/home', component: home }, 
      { path: '/accountcreate', component: accountCreate, meta:{ requiresVisitor: true }},
      { path: '/login', component: login,  meta:{ requiresVisitor: true } },
-     { path: '/logout', component: logout, meta:{ requiresAuth: true } },
+     { path: '/logout', component: logout, meta:{ requiresAuth: true } }, 
      { path: '/profile', component: profile, meta:{ requiresAuth: true } },
-     { path: '/wallet', component: wallet, meta:{ requiresAuth: true } },
-     { path: '/accounts', component: accounts, meta:{ requiresAuth: true } },
-     { path: '/userStatistics', component: userStatistics, meta:{ requiresAuth: true } },
-     { path: '/movements/debit', component: movementDebit, meta: { requiresAuth: true } }, // ver caso
+     { path: '/wallet', component: wallet, meta:{ requiresUser: true } }, //so users
+     { path: '/accounts', component: accounts, meta:{ requiresAdmin: true } }, //so admins
+     { path: '/userStatistics', component: userStatistics, meta:{ requiresUser: true } }, //so users
+     { path: '/movements/debit', component: movementDebit, meta: { requiresUser: true } }, // ver caso / so users
  ];
 
  const router = new VueRouter({
-     routes:routes
+    routes:routes
  });
 
  router.beforeEach((to, from, next) =>{
-    if(to.matched.some(record => record.meta.requiresAuth)){
+    if(to.matched.some(record => record.meta.requiresAuth)){ //logado
         if(!sessionStorage.getItem('user')){
-        next({
-            path: '/login'
-        });
+            next({
+                path: '/login'
+            });
         } else {
             next();
         }
-    } else if(to.matched.some(record => record.meta.requiresVisitor)){
+    } else if(to.matched.some(record => record.meta.requiresVisitor)){ //nao logado
         if(store.state.user){
-        next({
-            path: '/home'
-        });
+            next({
+                path: '/home'
+            });
+        } else {
+            next();
+        }
+    } else if(to.matched.some(record => record.meta.requiresUser)){ //user
+        if(!sessionStorage.getItem('user')){
+            next({
+                path: '/login'
+            });
+        } else if(store.state.user.type != 'u'){
+            next({
+                path: '/home'
+            });
+        } else {
+            next();
+        }
+    } else if(to.matched.some(record => record.meta.requiresAdmin)){ //admin
+        if(!sessionStorage.getItem('user')){
+            next({
+                path: '/login'
+            });
+        } else if(store.state.user.type != 'a'){
+            next({
+                path: '/home'
+            });
         } else {
             next();
         }

@@ -204,7 +204,7 @@
                 this.getFilteredMovements();
                 this.getBalance();
             },
-            user_changed_income (newMovement) {
+            user_changed_transfer (newMovement) {
                 this.getFilteredMovements();
                 this.getBalance();
             }

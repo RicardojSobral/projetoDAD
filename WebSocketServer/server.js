@@ -66,13 +66,13 @@ io.on("connection", function(socket) {
     });
 
     socket.on("user_changed_transfer", function(msg, sourceUser, destUser) { //esperar pela us9/10
+        console.log(sourceUser);
         let userInfo = loggedUsers.userInfoByID(destUser.id);
         let socket_id = userInfo !== undefined ? userInfo.socketID : null;
         if (socket_id === null) {
             //socket.emit("privateMessage_unavailable", destUser); //enviar mail
         } else {
             io.to(socket_id).emit("user_changed_transfer", msg, sourceUser); 
-            //socket.emit("user_transfer_sent", msg, destUser);
         }
     });
 

@@ -61,7 +61,7 @@ const movementDebit = Vue.component('movementDebit', MovementDebitComponent);
      { path: '/wallet', component: wallet, meta:{ requiresAuth: true } },
      { path: '/accounts', component: accounts, meta:{ requiresAuth: true } },
      { path: '/userStatistics', component: userStatistics, meta:{ requiresAuth: true } },
-     { path: '/movements/debit', component: movementDebit, meta: { requiresAuth: true } },
+     { path: '/movements/debit', component: movementDebit, meta: { requiresAuth: true } }, // ver caso
  ];
 
  const router = new VueRouter({
@@ -100,10 +100,8 @@ const app = new Vue({
             );
         },
         user_changed_transfer(dataFromServer) {
-            console.log(dataFromServer);
-            let name = dataFromServer[1] === null ? "Unknown" : dataFromServer[1].name;
             this.$toasted.show(
-                '"' + name + '" transfered' + dataFromServer + 'to your wallet!'
+                'User "' + dataFromServer[1] + '" transfered ' + dataFromServer[0] + '€ to your wallet!'
             );
         }
     },

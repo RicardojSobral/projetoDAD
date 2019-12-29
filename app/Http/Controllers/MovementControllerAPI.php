@@ -163,7 +163,14 @@ class MovementControllerAPI extends Controller
             }
         }
 
-        return new MovementResource($movement);
+        //retornar o user dest para a toast do server
+        if($destinationWallet != null){
+            $user = User::findOrFail($destinationWallet);
+            return $user;
+        }else{
+            return new MovementResource($movement);
+
+        }       
     }
 
     public function createTransferIncome($data) {

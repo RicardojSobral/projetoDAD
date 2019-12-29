@@ -2987,6 +2987,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      sourceUser: this.$store.state.user.name,
       movement: {
         type_movement: '',
         value: '',
@@ -3037,6 +3038,10 @@ __webpack_require__.r(__webpack_exports__);
         if (response.data == "Email is not valid!") {
           _this.$emit('email-error');
         } else {
+          if (_this.movement.type_movement == "1") {
+            _this.$socket.emit("user_changed_transfer", _this.movement.value, _this.sourceUser, response.data);
+          }
+
           _this.$emit('debit-created');
         }
       })["catch"](function (error) {
@@ -3376,8 +3381,6 @@ module.exports = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _MovementDetails_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MovementDetails.vue */ "./resources/js/components/MovementDetails.vue");
 /* harmony import */ var _MovementEdit_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MovementEdit.vue */ "./resources/js/components/MovementEdit.vue");
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 //
 //
 //
@@ -3577,15 +3580,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.errorMessageEdit = 'Category does not exist for this type of movement';
     }
   },
-  sockets: _defineProperty({
+  sockets: {
     user_changed_income: function user_changed_income(newMovement) {
       this.getFilteredMovements();
       this.getBalance();
+    },
+    user_changed_transfer: function user_changed_transfer(newMovement) {
+      this.getFilteredMovements();
+      this.getBalance();
     }
-  }, "user_changed_income", function user_changed_income(newMovement) {
-    this.getFilteredMovements();
-    this.getBalance();
-  }),
+  },
   components: {
     "movement-details": _MovementDetails_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     "movement-edit": _MovementEdit_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
@@ -76408,7 +76412,8 @@ var routes = [{
   meta: {
     requiresAuth: true
   }
-}];
+} // ver caso
+];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_3__["default"]({
   routes: routes
 });
@@ -76445,9 +76450,7 @@ var app = new Vue({
       this.$toasted.show('An income movement of ' + dataFromServer + '€ was added to your wallet by an operator!');
     },
     user_changed_transfer: function user_changed_transfer(dataFromServer) {
-      console.log(dataFromServer);
-      var name = dataFromServer[1] === null ? "Unknown" : dataFromServer[1].name;
-      this.$toasted.show('"' + name + '" transfered' + dataFromServer + 'to your wallet!');
+      this.$toasted.show('User "' + dataFromServer[1] + '" transfered ' + dataFromServer[0] + '€ to your wallet!');
     }
   },
   created: function created() {

@@ -146,6 +146,7 @@
     export default {
         data: function() {
             return {
+                sourceUser: this.$store.state.user.name,
                 movement: {
                     type_movement: '',
                     value: '',
@@ -193,10 +194,12 @@
                     value: this.movement.value
                 })
                     .then(response => {
-
                         if(response.data == "Email is not valid!"){
                             this.$emit('email-error');
                         }else{
+                            if(this.movement.type_movement == "1"){
+                                this.$socket.emit("user_changed_transfer", this.movement.value, this.sourceUser, response.data);
+                            }
                             this.$emit('debit-created');
                         }
                     })

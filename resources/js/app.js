@@ -51,6 +51,9 @@ const userStatistics = Vue.component('userStatistics', UserStatisticsComponent);
 import MovementDebitComponent from './components/RegisterDebit.vue';
 const movementDebit = Vue.component('movementDebit', MovementDebitComponent);
 
+import AdminStatisticsComponent from './components/AdminStatistics.vue';
+const adminStatistics = Vue.component('adminStatistics', AdminStatisticsComponent);
+
  const routes = [
      { path: '/', redirect: '/home'},
      { path: '/home', component: home }, 
@@ -62,6 +65,7 @@ const movementDebit = Vue.component('movementDebit', MovementDebitComponent);
      { path: '/accounts', component: accounts, meta:{ requiresAdmin: true } }, //so admins
      { path: '/userStatistics', component: userStatistics, meta:{ requiresUser: true } }, //so users
      { path: '/movements/debit', component: movementDebit, meta: { requiresUser: true } }, // ver caso / so users
+     { path: '/adminStatistics', component: adminStatistics, meta:{ requiresAdmin: true } }, //so admins
  ];
 
  const router = new VueRouter({
@@ -90,24 +94,33 @@ const movementDebit = Vue.component('movementDebit', MovementDebitComponent);
             next({
                 path: '/login'
             });
-        } else if(store.state.user.type != 'u'){
-            next({
-                path: '/home'
-            });
         } else {
-            next();
+            var jsonUser = sessionStorage.getItem('user');
+            var user = JSON.parse(jsonUser);
+            if(user.type != 'u'){
+                next({
+                    path: '/home'
+                });
+            } else {
+                next();
+            }
         }
+        
     } else if(to.matched.some(record => record.meta.requiresAdmin)){ //admin
         if(!sessionStorage.getItem('user')){
             next({
                 path: '/login'
             });
-        } else if(store.state.user.type != 'a'){
-            next({
-                path: '/home'
-            });
         } else {
-            next();
+            var jsonUserA = sessionStorage.getItem('user');
+            var userA = JSON.parse(jsonUserA);
+            if(userA.type != 'a'){
+                next({
+                    path: '/home'
+                });
+            } else {
+                next();
+            }
         }
     } else {
         next();

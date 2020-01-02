@@ -49,6 +49,13 @@ Route::middleware('auth:api')->get('users/stats/balanceThroughTime/{id}', 'UserC
 Route::middleware('auth:api')->get('users/stats/expensesThroughTime/{id}', 'UserControllerAPI@expensesThroughTime');
 Route::middleware('auth:api')->get('users/stats/incomesThroughTime/{id}', 'UserControllerAPI@incomesThroughTime');
 
+Route::middleware('auth:api')->get('admin/stats/numberActiveUsers', 'UserControllerAPI@getNumberActiveUsers');
+Route::middleware('auth:api')->get('admin/stats/movementsThroughTime', 'UserControllerAPI@getMovementsThroughTime');
+Route::middleware('auth:api')->get('admin/stats/externalIncomeThroughTime', 'UserControllerAPI@getExternalIncomeThroughTimeThroughTime');
+Route::middleware('auth:api')->get('admin/stats/internalTransfersThroughTime', 'UserControllerAPI@getInternalTransfersThroughTimeThroughTime');
+Route::middleware('auth:api')->get('admin/stats/usersRegisteredThroughTime', 'UserControllerAPI@getUsersRegisteredThroughTime');
+
+
 Route::middleware('auth:api')->post('movements/credit', 'MovementControllerAPI@createCredit');
 Route::middleware('auth:api')->post('movements/debit', 'MovementControllerAPI@createDebit');
 Route::middleware('auth:api')->post('movements/filter', 'MovementControllerAPI@getFilteredMovements');

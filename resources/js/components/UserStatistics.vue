@@ -1,45 +1,51 @@
 <template>
     <div>
-
-        <div v-if="loadedIncExpe" class="container">
-            <h4>Total Income/Expenses (€):</h4>
-            <income-expense :data="data1" />
-        </div>   
-
-        <br>
-
-        <div v-if="loadedExpCat" class="container">
-            <h4>Total Expenses By Category (€):</h4>
-            <expense-category :data="data2" :labels="labels2"/>
+        <div v-if="!loadedIncTime" class="jumbotron">
+            <h1>Loading Statistics...</h1>
         </div>  
 
-        <br>
+        <div v-if="loadedIncTime">
+            <div v-if="loadedIncExpe" class="container">
+                <h4>Total Income/Expenses (€):</h4>
+                <income-expense :data="data1" />
+            </div>   
 
-        <div v-if="loadedIncCat" class="container">
-            <h4>Total Income By Category (€):</h4>
-            <incomes-category :data="data3" :labels="labels3" />
+            <br>
+
+            <div v-if="loadedExpCat" class="container">
+                <h4>Total Expenses By Category (€):</h4>
+                <expense-category :data="data2" :labels="labels2"/>
+            </div>  
+
+            <br>
+
+            <div v-if="loadedIncCat" class="container">
+                <h4>Total Income By Category (€):</h4>
+                <incomes-category :data="data3" :labels="labels3" />
+            </div>
+
+            <br>
+
+            <div v-if="loadedBalanceTime" class="container">
+                <h4>Start Balance Per Month (€):</h4>
+                <line-chart :data="rows" :labels="labels" :color="'#33cc33'"/>
+            </div>  
+
+            <br>
+
+            <div v-if="loadedExpTime" class="container">
+                <h4>Total Expenses Per Month (€):</h4>
+                <line-chart :data="data4" :labels="labels4" :color="'#dd4b39'"/>
+            </div>  
+        
+            <br>
+
+            <div v-if="loadedIncTime" class="container">
+                <h4>Total Income Per Month (€):</h4>
+                <line-chart :data="data5" :labels="labels5" :color="'#36a2eb'"/>
+            </div>     
         </div>
-
-        <br>
-
-        <div v-if="loadedBalanceTime" class="container">
-            <h4>Start Balance Per Month (€):</h4>
-            <line-chart :data="rows" :labels="labels" :color="'#33cc33'"/>
-        </div>  
-
-        <br>
-
-        <div v-if="loadedExpTime" class="container">
-            <h4>Total Expenses Per Month (€):</h4>
-            <line-chart :data="data4" :labels="labels4" :color="'#dd4b39'"/>
-        </div>  
-       
-        <br>
-
-        <div v-if="loadedIncTime" class="container">
-            <h4>Total Income Per Month (€):</h4>
-            <line-chart :data="data5" :labels="labels5" :color="'#36a2eb'"/>
-        </div>          
+     
         
     </div>    
 </template>

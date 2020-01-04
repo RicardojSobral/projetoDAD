@@ -3957,6 +3957,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -60352,102 +60358,124 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm.loadedIncExpe
-      ? _c(
-          "div",
-          { staticClass: "container" },
-          [
-            _c("h4", [_vm._v("Total Income/Expenses (€):")]),
-            _vm._v(" "),
-            _c("income-expense", { attrs: { data: _vm.data1 } })
-          ],
-          1
-        )
+    !_vm.loadedIncTime
+      ? _c("div", { staticClass: "jumbotron" }, [
+          _c("h1", [_vm._v("Loading Statistics...")])
+        ])
       : _vm._e(),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _vm.loadedExpCat
-      ? _c(
-          "div",
-          { staticClass: "container" },
-          [
-            _c("h4", [_vm._v("Total Expenses By Category (€):")]),
-            _vm._v(" "),
-            _c("expense-category", {
-              attrs: { data: _vm.data2, labels: _vm.labels2 }
-            })
-          ],
-          1
-        )
-      : _vm._e(),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _vm.loadedIncCat
-      ? _c(
-          "div",
-          { staticClass: "container" },
-          [
-            _c("h4", [_vm._v("Total Income By Category (€):")]),
-            _vm._v(" "),
-            _c("incomes-category", {
-              attrs: { data: _vm.data3, labels: _vm.labels3 }
-            })
-          ],
-          1
-        )
-      : _vm._e(),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _vm.loadedBalanceTime
-      ? _c(
-          "div",
-          { staticClass: "container" },
-          [
-            _c("h4", [_vm._v("Start Balance Per Month (€):")]),
-            _vm._v(" "),
-            _c("line-chart", {
-              attrs: { data: _vm.rows, labels: _vm.labels, color: "#33cc33" }
-            })
-          ],
-          1
-        )
-      : _vm._e(),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _vm.loadedExpTime
-      ? _c(
-          "div",
-          { staticClass: "container" },
-          [
-            _c("h4", [_vm._v("Total Expenses Per Month (€):")]),
-            _vm._v(" "),
-            _c("line-chart", {
-              attrs: { data: _vm.data4, labels: _vm.labels4, color: "#dd4b39" }
-            })
-          ],
-          1
-        )
-      : _vm._e(),
-    _vm._v(" "),
-    _c("br"),
     _vm._v(" "),
     _vm.loadedIncTime
-      ? _c(
-          "div",
-          { staticClass: "container" },
-          [
-            _c("h4", [_vm._v("Total Income Per Month (€):")]),
-            _vm._v(" "),
-            _c("line-chart", {
-              attrs: { data: _vm.data5, labels: _vm.labels5, color: "#36a2eb" }
-            })
-          ],
-          1
-        )
+      ? _c("div", [
+          _vm.loadedIncExpe
+            ? _c(
+                "div",
+                { staticClass: "container" },
+                [
+                  _c("h4", [_vm._v("Total Income/Expenses (€):")]),
+                  _vm._v(" "),
+                  _c("income-expense", { attrs: { data: _vm.data1 } })
+                ],
+                1
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _vm.loadedExpCat
+            ? _c(
+                "div",
+                { staticClass: "container" },
+                [
+                  _c("h4", [_vm._v("Total Expenses By Category (€):")]),
+                  _vm._v(" "),
+                  _c("expense-category", {
+                    attrs: { data: _vm.data2, labels: _vm.labels2 }
+                  })
+                ],
+                1
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _vm.loadedIncCat
+            ? _c(
+                "div",
+                { staticClass: "container" },
+                [
+                  _c("h4", [_vm._v("Total Income By Category (€):")]),
+                  _vm._v(" "),
+                  _c("incomes-category", {
+                    attrs: { data: _vm.data3, labels: _vm.labels3 }
+                  })
+                ],
+                1
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _vm.loadedBalanceTime
+            ? _c(
+                "div",
+                { staticClass: "container" },
+                [
+                  _c("h4", [_vm._v("Start Balance Per Month (€):")]),
+                  _vm._v(" "),
+                  _c("line-chart", {
+                    attrs: {
+                      data: _vm.rows,
+                      labels: _vm.labels,
+                      color: "#33cc33"
+                    }
+                  })
+                ],
+                1
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _vm.loadedExpTime
+            ? _c(
+                "div",
+                { staticClass: "container" },
+                [
+                  _c("h4", [_vm._v("Total Expenses Per Month (€):")]),
+                  _vm._v(" "),
+                  _c("line-chart", {
+                    attrs: {
+                      data: _vm.data4,
+                      labels: _vm.labels4,
+                      color: "#dd4b39"
+                    }
+                  })
+                ],
+                1
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _vm.loadedIncTime
+            ? _c(
+                "div",
+                { staticClass: "container" },
+                [
+                  _c("h4", [_vm._v("Total Income Per Month (€):")]),
+                  _vm._v(" "),
+                  _c("line-chart", {
+                    attrs: {
+                      data: _vm.data5,
+                      labels: _vm.labels5,
+                      color: "#36a2eb"
+                    }
+                  })
+                ],
+                1
+              )
+            : _vm._e()
+        ])
       : _vm._e()
   ])
 }

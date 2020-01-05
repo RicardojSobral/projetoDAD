@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bbd8ca5c-8656-481f-b74d-f18c19ed8955" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="bbd8ca5c-8656-481f-b74d-f18c19ed8955" name="Default Changelist" comment="Update store">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -196,9 +196,9 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="PHPUnit.phpunit.xml" />
-      <item itemvalue="PHP Built-in Web Server.Serve" />
       <item itemvalue="Docker.docker-compose.yml.image: Compose Deployment" />
+      <item itemvalue="PHP Built-in Web Server.Serve" />
+      <item itemvalue="PHPUnit.phpunit.xml" />
     </list>
     <recent_temporary>
       <list>
@@ -242,6 +242,12 @@
       <workItem from="1575996900451" duration="9952000" />
       <workItem from="1576020283935" duration="1093000" />
       <workItem from="1576078600994" duration="7128000" />
+      <workItem from="1577033133036" duration="8351000" />
+      <workItem from="1577116603315" duration="12017000" />
+      <workItem from="1577403469828" duration="1807000" />
+      <workItem from="1577471690770" duration="791000" />
+      <workItem from="1577491013034" duration="6000" />
+      <workItem from="1578248939206" duration="604000" />
     </task>
     <task id="LOCAL-00001" summary="Created controller for User API">
       <created>1574474614845</created>
@@ -257,7 +263,21 @@
       <option name="project" value="LOCAL" />
       <updated>1576086273676</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="US9 and US10 done (just have to finish the errors)">
+      <created>1576973054715</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1576973054715</updated>
+    </task>
+    <task id="LOCAL-00004" summary="US 9 and 10 - DONE">
+      <created>1577471875975</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1577471875975</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -280,6 +300,9 @@
     <MESSAGE value="Created controller for User API" />
     <MESSAGE value="Updated loginController to use .env file" />
     <MESSAGE value="Update gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update gitignore" />
+    <MESSAGE value="US9 and US10 done (just have to finish the erros)" />
+    <MESSAGE value="US9 and US10 done (just have to finish the errors)" />
+    <MESSAGE value="US 9 and 10 - DONE" />
+    <option name="LAST_COMMIT_MESSAGE" value="US 9 and 10 - DONE" />
   </component>
 </project>

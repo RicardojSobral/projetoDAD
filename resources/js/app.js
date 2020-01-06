@@ -143,8 +143,10 @@ const app = new Vue({
             );
         },
         send_notification_email(data) {
-            console.log(data)
-            axios.post('/api/movements/sendNotificationEmail', data)
+            axios.post('/api/movements/sendNotificationEmail',{
+                value: data[0],
+                user: data[1]
+            })
         }
     },
     created() {

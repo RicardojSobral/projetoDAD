@@ -1,10 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bbd8ca5c-8656-481f-b74d-f18c19ed8955" name="Default Changelist" comment="Update store">
+    <list default="true" id="bbd8ca5c-8656-481f-b74d-f18c19ed8955" name="Default Changelist" comment="Send notification email working (email view needs to be finished)">
+      <change afterPath="$PROJECT_DIR$/resources/views/emails/notification.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/LoginControllerAPI.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/LoginControllerAPI.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/accepts/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/accepts/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/after/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/after/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/arraybuffer.slice/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/arraybuffer.slice/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/async-limiter/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/async-limiter/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/backo2/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/backo2/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/base64-arraybuffer/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/base64-arraybuffer/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/base64id/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/base64id/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/better-assert/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/better-assert/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/.idea/blob.iml" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/.idea/blob.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/.idea/markdown-navigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/.idea/markdown-navigator.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/.idea/markdown-navigator/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/.idea/markdown-navigator/profiles_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/.zuul.yml" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/.zuul.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/component.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/component.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/test/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/blob/test/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/callsite/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/callsite/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/component-bind/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/component-bind/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/component-emitter/History.md" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/component-emitter/History.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/component-emitter/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/component-emitter/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/component-emitter/Readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/component-emitter/Readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/component-emitter/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/component-emitter/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/component-emitter/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/component-emitter/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/component-inherit/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/component-inherit/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/cookie/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/cookie/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/debug/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/debug/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/engine.io-client/engine.io.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/engine.io-client/engine.io.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/engine.io-client/lib/transports/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/engine.io-client/lib/transports/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/engine.io-client/lib/transports/polling-xhr.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/engine.io-client/lib/transports/polling-xhr.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/engine.io-client/node_modules/ws/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/engine.io-client/node_modules/ws/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/engine.io-client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/engine.io-client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/engine.io-parser/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/engine.io-parser/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/engine.io/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/engine.io/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/has-binary2/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/has-binary2/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/has-cors/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/has-cors/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/indexof/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/indexof/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/isarray/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/isarray/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/mime-db/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/mime-db/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/mime-types/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/mime-types/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/ms/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/ms/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/negotiator/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/negotiator/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/object-component/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/object-component/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/parseqs/.npmignore" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/parseqs/.npmignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/parseqs/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/parseqs/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/parseqs/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/parseqs/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/parseqs/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/parseqs/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/parseqs/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/parseqs/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/parseqs/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/parseqs/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/parseqs/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/parseqs/test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/parseuri/.npmignore" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/parseuri/.npmignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/parseuri/History.md" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/parseuri/History.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/parseuri/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/parseuri/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/parseuri/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/parseuri/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/parseuri/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/parseuri/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/parseuri/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/parseuri/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/parseuri/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/parseuri/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/parseuri/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/parseuri/test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/socket.io-adapter/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/socket.io-adapter/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/socket.io-client/node_modules/ms/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/socket.io-client/node_modules/ms/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/socket.io-client/node_modules/socket.io-parser/node_modules/debug/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/socket.io-client/node_modules/socket.io-parser/node_modules/debug/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/socket.io-client/node_modules/socket.io-parser/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/socket.io-client/node_modules/socket.io-parser/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/socket.io-client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/socket.io-client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/socket.io-parser/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/socket.io-parser/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/socket.io/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/socket.io/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/to-array/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/to-array/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/ws/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/ws/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/xmlhttprequest-ssl/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/xmlhttprequest-ssl/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/node_modules/yeast/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/node_modules/yeast/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSocketServer/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocketServer/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/MovementControllerAPI.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/MovementControllerAPI.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/Wallet.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/Wallet.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -245,6 +325,7 @@
       <workItem from="1576020283935" duration="1093000" />
       <workItem from="1576078600994" duration="7128000" />
       <workItem from="1576855164408" duration="42000" />
+      <workItem from="1578255495011" duration="12884000" />
     </task>
     <task id="LOCAL-00001" summary="Created controller for User API">
       <created>1574474614845</created>

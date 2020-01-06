@@ -59,6 +59,7 @@ Route::middleware('auth:api')->get('admin/stats/usersRegisteredThroughTime', 'Us
 Route::middleware('auth:api')->post('movements/credit', 'MovementControllerAPI@createCredit');
 Route::middleware('auth:api')->post('movements/debit', 'MovementControllerAPI@createDebit');
 Route::middleware('auth:api')->post('movements/filter', 'MovementControllerAPI@getFilteredMovements');
+Route::middleware('auth:api')->post('movements/sendNotificationEmail', 'MovementControllerAPI@sendNotificationEmail');
 Route::middleware('auth:api')->put('movements/{id}', 'MovementControllerAPI@update');
 
 Route::middleware('auth:api')->get('categories/{type}', 'CategoryControllerAPI@getCategoriesByType');

@@ -6,7 +6,8 @@ window.Vue = require('vue');
 import VueSocketIO from "vue-socket.io";
 Vue.use(new VueSocketIO({
     debug: true,
-    connection: 'http://192.168.10.10:8080'
+    connection: 'http://127.17.0.1:8080'
+    //connection: 'http://192.168.10.10:8080'
 }));
 
 import Toasted from "vue-toasted";
@@ -45,7 +46,7 @@ const accounts = Vue.component('accounts', ListAccountsComponent);
 import AccountComponent from './components/accountCreate.vue';
 const accountCreate = Vue.component('accountCreate', AccountComponent);
 
-import UserStatisticsComponent from './components/userStatistics.vue';
+import UserStatisticsComponent from './components/UserStatistics.vue';
 const userStatistics = Vue.component('userStatistics', UserStatisticsComponent);
 
 import MovementDebitComponent from './components/RegisterDebit.vue';
@@ -56,10 +57,10 @@ const adminStatistics = Vue.component('adminStatistics', AdminStatisticsComponen
 
  const routes = [
      { path: '/', redirect: '/home'},
-     { path: '/home', component: home }, 
+     { path: '/home', component: home },
      { path: '/accountcreate', component: accountCreate, meta:{ requiresVisitor: true }},
      { path: '/login', component: login,  meta:{ requiresVisitor: true } },
-     { path: '/logout', component: logout, meta:{ requiresAuth: true } }, 
+     { path: '/logout', component: logout, meta:{ requiresAuth: true } },
      { path: '/profile', component: profile, meta:{ requiresAuth: true } },
      { path: '/wallet', component: wallet, meta:{ requiresUser: true } }, //so users
      { path: '/accounts', component: accounts, meta:{ requiresAdmin: true } }, //so admins
@@ -105,7 +106,7 @@ const adminStatistics = Vue.component('adminStatistics', AdminStatisticsComponen
                 next();
             }
         }
-        
+
     } else if(to.matched.some(record => record.meta.requiresAdmin)){ //admin
         if(!sessionStorage.getItem('user')){
             next({
@@ -140,6 +141,10 @@ const app = new Vue({
             this.$toasted.show(
                 'User "' + dataFromServer[1] + '" transfered ' + dataFromServer[0] + '€ to your wallet!'
             );
+        },
+        send_notification_email(data) {
+            console.log(data)
+            axios.post('/api/movements/sendNotificationEmail', data)
         }
     },
     created() {

@@ -59,20 +59,19 @@ io.on("connection", function(socket) {
         let userInfo = loggedUsers.userInfoByID(destUser.id);
         let socket_id = userInfo !== undefined ? userInfo.socketID : null;
         if (socket_id === null) {
-          //socket.emit("privateMessage_unavailable", destUser); //enviar mail
+            socket.emit("send_notification_email", msg, destUser) //enviar email
         } else {
-          io.to(socket_id).emit("user_changed_income", msg);
+            io.to(socket_id).emit("user_changed_income", msg);
         }
     });
 
     socket.on("user_changed_transfer", function(msg, sourceUser, destUser) {
-        console.log(sourceUser);
         let userInfo = loggedUsers.userInfoByID(destUser.id);
         let socket_id = userInfo !== undefined ? userInfo.socketID : null;
         if (socket_id === null) {
-            //socket.emit("privateMessage_unavailable", destUser); //enviar mail
+            socket.emit("send_notification_email", msg, destUser) //enviar email
         } else {
-            io.to(socket_id).emit("user_changed_transfer", msg, sourceUser); 
+            io.to(socket_id).emit("user_changed_transfer", msg, sourceUser);
         }
     });
 

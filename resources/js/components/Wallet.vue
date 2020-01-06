@@ -1,25 +1,25 @@
 <template>
     <div>
         <div class="jumbotron">
-                <h1>Balance: {{ balance }}€</h1>               
+                <h1>Balance: {{ balance }}€</h1>
         </div>
 
         <div class="row">
-            <div class="col-md-3">            
+            <div class="col-md-3">
                 <div class="form-group">
-                    <input type="text" name="id" class="form-control"  placeholder="Search by movement ID" v-model="search.id">               
-                </div> 
+                    <input type="text" name="id" class="form-control"  placeholder="Search by movement ID" v-model="search.id">
+                </div>
                 <div class="form-group">
                     <select name="type" class="form-control" v-model="search.type">
                         <option value='' selected> -- Type Of Movement -- </option>
                         <option value="e" >Expense</option>
                         <option value="i" >Income</option>
-                    </select>            
-                </div> 
-            </div> 
-            <div class="col-md-3"> 
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
                 <div class="form-group">
-                    <input type="text" name="category" class="form-control" placeholder="Search Category" v-model="search.category">               
+                    <input type="text" name="category" class="form-control" placeholder="Search Category" v-model="search.category">
                 </div>
                 <div class="form-group">
                     <select name="type_payment" class="form-control" v-model="search.type_payment">
@@ -27,35 +27,35 @@
                         <option value="c" >Cash</option>
                         <option value="bt" >Bank Transfer</option>
                         <option value="mb" >MB Payment</option>
-                    </select>            
-                </div>                
+                    </select>
+                </div>
             </div>
             <div class="form-group">
-                <input type="text" name="transfer_email" class="form-control" placeholder="Search Transfer e-mail" v-model="search.transfer_email">               
-            </div> 
-            <div class="col-md-3"> 
+                <input type="text" name="transfer_email" class="form-control" placeholder="Search Transfer e-mail" v-model="search.transfer_email">
+            </div>
+            <div class="col-md-3">
                 <div class="form-group">
-                    <input type="text" name="data_sup" class="form-control" placeholder="Date Superior To (yyyy-mm-dd)" v-model="search.data_sup">               
+                    <input type="text" name="data_sup" class="form-control" placeholder="Date Superior To (yyyy-mm-dd)" v-model="search.data_sup">
                 </div>
                 <div class="form-group">
-                    <input type="text" name="data_inf" class="form-control" placeholder="Date Inferior To (yyyy-mm-dd)" v-model="search.data_inf">               
-                </div>               
+                    <input type="text" name="data_inf" class="form-control" placeholder="Date Inferior To (yyyy-mm-dd)" v-model="search.data_inf">
+                </div>
             </div>
             <span class="form-group-btn">
                 <button type="submit" class="btn btn-primary" v-on:click="getFilteredMovements()">Search</button>
-            </span>       
+            </span>
         </div>
 
-        <div class="alert alert-danger" v-if="showError">			 
+        <div class="alert alert-danger" v-if="showError">
 			<button type="button" class="close-btn" v-on:click="showError=false">&times;</button>
 			<strong>{{ successMessage }}</strong>
 		</div>
 
-        <div class="alert alert-success" v-if="showSuccess">			 
+        <div class="alert alert-success" v-if="showSuccess">
 			<button type="button" class="close-btn" v-on:click="showSuccess=false">&times;</button>
 			<strong>{{ successMessage }}</strong>
 		</div>
-      
+
         <div>
             <table class="table table-striped">
                 <thead>
@@ -84,11 +84,11 @@
                         <td>{{ movement.start_balance }}</td>
                         <td>{{ movement.end_balance }}</td>
                         <td>{{ movement.value }}</td>
-                        <td>                    
+                        <td>
                             <button type="button" class="btn btn-sm btn-primary" v-on:click="movementDetais(movement)">Details</button>
                             <button type="button" class="btn btn-sm btn-secondary" v-on:click="movementEdit(movement)">Edit</button>
                         </td>
-                    </tr>            
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -96,13 +96,13 @@
             <pagination :data="movements" :limit=4 @pagination-change-page="getResults"></pagination>
         </div>
 
-        <div class="alert alert-danger" v-if="showErrorEdit">			 
+        <div class="alert alert-danger" v-if="showErrorEdit">
 			<button type="button" class="close-btn" v-on:click="showErrorEdit=false">&times;</button>
 			<strong>{{ errorMessageEdit }}</strong>
 		</div>
 
         <movement-details :movement="selectedMovement" @details-canceled="cancelMovementDetails" v-if="selectedMovement"></movement-details>
-        <movement-edit :movement="selectedMovementEdit" @edit-canceled="cancelMovementEdit" @save-edit="saveMovementEdit" 
+        <movement-edit :movement="selectedMovementEdit" @edit-canceled="cancelMovementEdit" @save-edit="saveMovementEdit"
         @category-error="showCategoryError" v-if="selectedMovementEdit"> </movement-edit>
     </div>
 
@@ -134,12 +134,12 @@
                     data_sup: '',
                 },
                 showError: false,
-                showSuccess: false, 
+                showSuccess: false,
                 successMessage: '',
                 errorMessageEdit: '',
                 showErrorEdit: false
-                
-            }            
+
+            }
         },
 
         methods: {
@@ -154,9 +154,9 @@
                             this.successMessage = response.data;
                         }else{
                             this.movements = response.data;
-                        }                        
+                        }
                     })
-                    .catch(error => {                        
+                    .catch(error => {
                         console.log(error);
                     })
             },
@@ -165,7 +165,7 @@
                     .then(response=>{
                         this.balance = response.data;
                     })
-                    .catch(error => {                        
+                    .catch(error => {
                         console.log(error);
                     })
             },
@@ -178,7 +178,7 @@
             movementDetais: function(movement){
                 this.selectedMovementEdit = null;
                 this.selectedMovement = movement;
-            },           
+            },
             cancelMovementDetails: function(){
                 this.selectedMovement = null;
             },
@@ -214,7 +214,7 @@
             "movement-details": MovementDetailsComponent,
             "movement-edit": MovementEditComponent,
         },
-        
+
         mounted() {
             this.getBalance();
             this.getFilteredMovements();

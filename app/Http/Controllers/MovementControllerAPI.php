@@ -12,6 +12,7 @@ use App\Movement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Validator;
 
 class MovementControllerAPI extends Controller
@@ -63,7 +64,7 @@ class MovementControllerAPI extends Controller
         $user = User::findOrFail($wallet->id);
         return $user;
 
-        //return new MovementResource($movement);       
+        //return new MovementResource($movement);
     }
 
     public function createDebit(Request $request) {
@@ -170,7 +171,7 @@ class MovementControllerAPI extends Controller
         }else{
             return new MovementResource($movement);
 
-        }       
+        }
     }
 
     public function createTransferIncome($data) {
@@ -250,5 +251,15 @@ class MovementControllerAPI extends Controller
         return new MovementResource($movement);
     }
 
+    public function sendNotificationEmail(Request $request) {
+        $to_name = $request->user['name'];
+        $to_email = $request->user['email'];
 
+        Mail::send('emails.notification', ['value'=> $request->value, 'user' => $request->user], function($message) use ($to_name, $to_email) {
+
+            $message->to($to_email, $to_name);
+            $message->subject('Income movement added to your wallet');
+            $message->from(env('MAIL_USERNAME'),'Wallet Manager');
+        });
+    }
 }

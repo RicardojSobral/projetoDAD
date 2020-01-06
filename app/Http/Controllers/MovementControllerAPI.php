@@ -252,13 +252,13 @@ class MovementControllerAPI extends Controller
     }
 
     public function sendNotificationEmail(Request $request) {
-        $to_name = $request->name;
-        $to_email = $request->email;
+        $to_name = $request->user['name'];
+        $to_email = $request->user['email'];
 
-        Mail::send('emails.notification', ['data' => $request->all()], function($message) use ($to_name, $to_email) {
+        Mail::send('emails.notification', ['value'=> $request->value, 'user' => $request->user], function($message) use ($to_name, $to_email) {
 
             $message->to($to_email, $to_name);
-            $message->subject('Income added to your wallet');
+            $message->subject('Income movement added to your wallet');
             $message->from(env('MAIL_USERNAME'),'Wallet Manager');
         });
     }
